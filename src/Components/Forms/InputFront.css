@@ -1,0 +1,230 @@
+.front-input {
+  width: 70%;
+  height: 2.2rem;
+  background-color: var(--input-background);
+  border-radius: 21px;
+  backdrop-filter: var(--input-filter);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border: none;
+  box-shadow: none;
+  margin-top: 1.3rem;
+  margin-bottom: 0rem;
+  border: 2px solid transparent;
+  outline: none;
+  transition: 500ms ease;
+  font-size: 16px;
+}
+
+.front-input:focus {
+  border: 2px solid #00d7ca;
+  background-color: white;
+}
+
+.hidden {
+  height: 0px;
+  border: none;
+  padding: 0px;
+  width: 0px;
+  background-color: transparent;
+}
+
+.search-input {
+  border-radius: 23px;
+  height: 2.4rem;
+  width: 17rem;
+  box-shadow: var(--search-shadow);
+  border: none;
+  outline: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 16px;
+}
+
+.message-input {
+  height: 1.8rem;
+  border-radius: 15px;
+  border: var(--grey-border);
+  outline: none;
+  box-shadow: none;
+  width: 18rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 16px;
+}
+
+.message-input-desk {
+  margin-left: 1rem;
+  height: 2.5rem;
+  border-radius: 2rem;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 18rem;
+  flex-grow: 3;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background: var(--grey-background);
+  font-size: 16px;
+}
+
+.check-input-sm {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: var(--grey-border);
+  margin: 3px;
+  width: 9rem;
+  transition: 500ms ease;
+  height: 1.5rem;
+  font-size: 16px;
+}
+
+.check-input-sm-danger {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.671);
+  margin: 3px;
+  width: 9rem;
+  transition: 500ms ease;
+  height: 1.5rem;
+  font-size: 16px;
+}
+
+.check-input-sm-danger::placeholder {
+  color: rgba(255, 0, 0, 0.541);
+}
+
+.input-margin-sm {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 844px) {
+  .input-margin-top-med {
+    margin-top: 0rem;
+  }
+}
+
+@media (min-width: 845px) {
+  .input-margin-sm {
+    margin-top: 4rem;
+  }
+  .input-margin-top-med {
+    margin-top: 3rem;
+  }
+}
+
+.input-margin-med {
+  margin-top: 4rem;
+}
+
+.check-input-lg {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: var(--grey-border);
+  /* margin: 1rem; */
+  width: 18rem;
+  transition: 500ms ease;
+  height: 1.5rem;
+  font-size: 16px;
+}
+
+.check-input-tny {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: var(--grey-border);
+  margin: 3px;
+  width: 5rem;
+  transition: 500ms ease;
+  height: 1.5rem;
+  font-size: 16px;
+}
+
+.check-input-tny-danger {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid red;
+  margin: 3px;
+  width: 5rem;
+  transition: 500ms ease;
+  height: 1.5rem;
+  font-size: 16px;
+}
+
+.check-input-tny-danger::placeholder {
+  color: rgba(255, 0, 0, 0.534);
+}
+
+.check-input-sm:focus,
+.check-input-lg:focus {
+  border-bottom: 1px solid black;
+}
+.check-input-tny-danger:focus,
+.check-input-sm-danger:focus {
+  border-bottom: 1px solid rgb(255, 0, 0);
+}
+
+.check-input-sm::placeholder,
+.check-input-lg::placeholder {
+  color: rgb(85, 85, 85);
+  transition: 500ms ease;
+}
+.check-input-tny-danger:placeholder,
+.check-input-sm-danger:placeholder {
+  color: rgba(122, 0, 0, 0.527);
+}
+.check-input-sm:focus::placeholder,
+.check-input-lg:focus::placeholder {
+  color: rgb(197, 197, 197);
+}
+
+.check-input-area {
+  height: 6rem;
+  width: 95%;
+  margin: auto;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: var(--grey-border);
+  border-left: var(--grey-border);
+  font-family: var(--font);
+  background: var(--grey-background);
+  font-size: 16px;
+}
+
+.desc-area {
+  height: 6rem;
+  width: 95%;
+  margin: auto;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  border-bottom: var(--grey-border);
+  border-left: var(--grey-border);
+  font-family: var(--font);
+  font-size: 16px;
+  transition: 200ms ease;
+  max-width: 40rem;
+}
+
+.desc-area:focus {
+  border-bottom: 1px solid #00d7ca;
+  border-left: 1px solid #00d7ca;
+}
+
+textarea::placeholder {
+  font-family: var(--font);
+  color: rgb(168, 168, 168);
+}

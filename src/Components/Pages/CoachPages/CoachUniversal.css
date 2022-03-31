@@ -1,0 +1,277 @@
+.dash-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  height: 4rem;
+  width: 100%;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* z-index: 700; */
+}
+
+.dash-head h1 {
+  color: black;
+  margin: none;
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  font-family: var(--font);
+}
+
+.mobile-menu {
+  margin-left: 1rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.add-user-mobile {
+  margin-right: 1rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.dash-search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-items: flex-start; */
+  height: 5rem;
+  width: 100%;
+  background-color: var(--grey-background);
+  margin-top: 6rem;
+}
+
+.magnify {
+  height: 70%;
+  width: 70%;
+  color: white;
+}
+
+.dash-search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-items: flex-start; */
+  height: 5rem;
+  width: 100%;
+  background-color: var(--grey-background);
+  margin-top: 6rem;
+}
+
+.magnify {
+  height: 70%;
+  width: 70%;
+  color: white;
+}
+
+.client-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.absurd-box {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.mobile-select1 {
+  position: absolute;
+  top: 4rem;
+  display: flex;
+  width: 100%;
+  height: 2rem;
+  align-items: flex-end;
+  z-index: 0;
+  background-color: white;
+}
+
+.select1 {
+  width: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  transition: 500ms ease;
+  background: white;
+}
+
+.select2 {
+  width: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  transition: 500ms ease;
+  background: white;
+  z-index: 0;
+}
+
+.select-green {
+  background: var(--teal-button);
+  color: white;
+  z-index: 1;
+}
+
+.select1 p {
+  margin: 0px;
+  margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.select2 p {
+  margin: 0px;
+  margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.desk-center {
+  display: flex;
+  justify-content: space-around;
+  align-items: space-around;
+  min-width: 375px;
+  max-width: 75rem;
+  min-height: 100vh;
+  flex-direction: column;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.right-sector-desk {
+}
+
+.right-bar-desk {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 18rem;
+  height: 80vh;
+  border: var(--grey-border);
+  margin-bottom: 5.4vh;
+  background-color: white;
+}
+
+.client-desk-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: var(--grey-border);
+  height: 4rem;
+}
+
+.client-desk-menu h3 {
+  color: var(--grey-title);
+  margin-left: 1rem;
+}
+
+.analytics-deskHead {
+  width: 100%;
+  border-bottom: var(--grey-border);
+  height: 4em;
+  margin-bottom: 0.5rem;
+}
+
+.analytics-deskHead h3 {
+  color: var(--grey-title);
+  text-align: center;
+}
+
+.share-drop-container {
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  align-items: center;
+  top: 4rem;
+  position: absolute;
+  max-height: 20rem;
+  transition: 500ms ease;
+  width: 16rem;
+  background: rgb(92, 92, 92);
+  z-index: 50;
+  right: 0;
+  overflow: hidden;
+}
+
+.share-null {
+  height: 0rem;
+}
+
+@media (max-width: 849px) {
+  .onlyLarge {
+    display: none;
+  }
+  .right-sector-desk {
+    display: none;
+  }
+  .client-desk-menu {
+    display: none;
+  }
+
+  .desk-center {
+    justify-content: flex-start;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100vw;
+  }
+
+  .absurd-box {
+    max-width: 100vw;
+    overflow: scroll;
+  }
+}
+
+@media (min-width: 850px) {
+  .onlySmall {
+    display: none;
+  }
+
+  .dash-head {
+    display: none;
+  }
+
+  .mobile-select1 {
+    display: none;
+  }
+
+  .client-list-container {
+    display: block;
+    border: var(--grey-border);
+    height: 80vh;
+    margin-bottom: 5vh;
+    background-color: white;
+  }
+
+  .dash-search-container {
+    margin-top: 2rem;
+    height: 7vh;
+    margin-bottom: 3vh;
+    /* margin-bottom: 2rem; */
+    border: var(--grey-border);
+    background-color: white;
+  }
+
+  .right-sector-desk {
+    height: 100vh;
+    min-width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

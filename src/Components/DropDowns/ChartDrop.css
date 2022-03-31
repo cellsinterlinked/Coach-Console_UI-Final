@@ -1,0 +1,137 @@
+.chart-dropdown-wrapper {
+  z-index: 200;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  color: black;
+  /* border-bottom: var(--grey-border); */
+  transition: 500ms ease;
+  text-align: center;
+}
+
+.chart-drop-active-back {
+  /* background: var(--grey-background); */
+  background: rgb(92, 92, 92);
+  border-bottom: 1px solid rgb(255, 255, 255);
+  color: white;
+  z-index: 200;
+}
+
+.chart-drop-menu-container {
+  position: absolute;
+  top: 4rem;
+  right: 0;
+  background: var(--dark-backing);
+  height: auto;
+  width: 12rem;
+  z-index: 200;
+  overflow: scroll;
+  opacity: 1;
+  transition: 500ms ease;
+}
+
+.chart-drop-shrink {
+  height: 0px;
+  opacity: 0;
+  transition: 500ms ease;
+}
+.chart-drop-arrow {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: rgb(61, 61, 61);
+  height: 2rem;
+  width: auto;
+  transition: 500ms ease;
+}
+
+.spun {
+  color: white;
+  transform: rotate(180deg);
+}
+
+.chart-selectionButton {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 3.4rem;
+  width: 100%;
+  transition: 500ms ease;
+  background-color: transparent;
+  border-bottom: 1px solid rgb(121, 121, 121);
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: white;
+  z-index: 200;
+}
+
+.chart-selectionButton:hover {
+  background: rgba(255, 255, 255, 0.096);
+}
+
+.chart-drop-active {
+  background: rgba(122, 122, 122, 0.383);
+}
+
+.chart-drop-icon1 {
+  color: rgb(78, 78, 78);
+  height: 1.7rem;
+  width: auto;
+  margin: auto;
+}
+
+.chart-selected-border {
+  width: 5px;
+  height: 100%;
+  background: var(--teal-button);
+  transition: 500ms ease;
+}
+
+.chart-transborder {
+  opacity: 0;
+  transition: 500ms ease;
+}
+
+.chart-button-date {
+  color: var(--teal-text);
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  right: 1rem;
+}
+
+.drop-check-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--teal-button);
+  border-radius: 50%;
+  height: 1.2rem;
+  width: 1.2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  transition: 500ms ease;
+}
+
+.drop-check {
+  color: white;
+  transition: 500ms ease;
+}
+
+.visible {
+  opacity: 1;
+  transition: 500ms ease;
+}
+
+.invisible {
+  opacity: 0;
+  transition: 500ms ease;
+}

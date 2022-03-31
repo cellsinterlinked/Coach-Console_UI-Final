@@ -1,0 +1,50 @@
+.new-workout-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.new-workout-wrapper h3 {
+  color: var(--grey-title);
+  text-align: center;
+  margin: 2rem;
+  font-weight: normal;
+  font-size: 1.1rem;
+  max-width: 25rem;
+}
+
+.new-workout-wrapper p {
+  color: var(--grey-title);
+  font-size: 0.9rem;
+  margin: 20px;
+}
+
+.day-box-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.day-box-button {
+  cursor: pointer;
+  background: var(--dark-backing);
+  height: 2.5rem;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  color: white;
+  transition: 500ms ease;
+  border-radius: 10px;
+  box-shadow: var(--button-shadow);
+}
+
+.day-selected {
+  background: var(--sm-button-teal);
+  box-shadow: none;
+  /* margin-top: 10px; */
+}

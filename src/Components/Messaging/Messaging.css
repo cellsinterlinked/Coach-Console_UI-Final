@@ -1,0 +1,201 @@
+.messaging-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.message-head-image {
+  height: 2rem;
+  width: 2rem;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.convo-mobile-header {
+  position: relative;
+  font-size: 1.1rem;
+}
+
+.message-head-image img {
+  min-height: 100%;
+  min-width: 100%;
+  max-height: 140%;
+  max-width: 140%;
+  object-fit: cover;
+}
+
+.message-person-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-image-icon {
+  color: white;
+  width: 2.4rem;
+  height: auto;
+}
+
+.message-input-wrapper {
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  border-top: var(--grey-border);
+}
+
+.message-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.greyBottom {
+  border-bottom: var(--grey-border);
+}
+
+.convo-container {
+  top: auto;
+  position: fixed;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  bottom: 5rem;
+  overflow: auto;
+  max-height: 90%;
+}
+
+.message-component-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  z-index: 0;
+}
+
+.message-time-stamp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 2rem;
+  font-size: 0.7rem;
+  color: #8e8e8e;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.message-user-circle {
+  width: 1.6rem;
+  height: 1.6rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 1.7rem;
+  left: 1rem;
+  border-radius: 50%;
+}
+
+.message-user-circle img {
+  max-width: 140%;
+  min-width: 100%;
+  max-height: 140%;
+  min-height: 100%;
+}
+
+.reciever-image-wrapper {
+  justify-self: flex-start;
+  max-width: 60%;
+  margin-left: 3rem;
+  /* border: 1px solid #efefef; */
+  border-radius: 20px;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  max-height: 20rem;
+  overflow: hidden;
+}
+
+.reciever-image-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.sender-image-wrapper {
+  display: flex;
+  align-self: flex-end;
+  max-width: 65%;
+  margin-right: 1rem;
+  /* border: 1px solid #efefef;
+  background-color: #efefef; */
+  border-radius: 20px;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  max-height: 20rem;
+  overflow: hidden;
+}
+
+.sender-image-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.sender-message-wrapper {
+  display: flex;
+  align-self: flex-end;
+  max-width: 58%;
+  margin-right: 1rem;
+  /* border: 1px solid #efefef; */
+  background: var(--friend-message-bg);
+  padding: 0.8rem;
+  border-radius: 2rem;
+  margin-bottom: 1.6rem;
+  font-size: 0.9rem;
+}
+
+.reciever-message-wrapper {
+  justify-self: flex-start;
+  max-width: 55%;
+  margin-left: 3rem;
+  /* border: 1px solid #efefef; */
+  padding: 0.8rem;
+  border-radius: 4rem;
+  margin-bottom: 1.6rem;
+  font-size: 0.9rem;
+  align-self: flex-start;
+  background: var(--user-message-bg);
+}
+
+@media (min-width: 849px) {
+  .message-input-wrapper {
+    /* position: absolute; */
+    display: none;
+  }
+
+  .convo-container {
+    overflow-x: hidden;
+    width: 100%;
+    position: absolute;
+    bottom: 0rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .convo-container {
+    max-height: calc(90% - 4rem);
+  }
+}

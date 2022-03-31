@@ -1,0 +1,83 @@
+.client-button-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  width: 23rem;
+  height: 6rem;
+  box-shadow: var(--client-shadow);
+  margin: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 1.2rem;
+  background: white;
+  transition: 200ms ease;
+  cursor: pointer;
+}
+
+.client-button-wrapper:hover {
+  box-shadow: none;
+  transition: 300ms ease;
+}
+
+.cl-btn-img {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 0.5rem;
+  margin-right: 1rem;
+}
+
+.cl-btn-img img {
+  min-height: 100%;
+  max-height: 140%;
+  min-width: 100%;
+  max-width: 140;
+  object-fit: cover;
+}
+
+.cl-btn-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font);
+}
+
+.cl-btn-info-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-bottom: 1.7rem;
+}
+
+.cl-btn-info-top h3 {
+  font-size: 1rem;
+  margin: 0px;
+}
+
+.cl-btn-info-top p {
+  font-size: 0.7rem;
+  margin: 0px;
+}
+
+.cl-btn-info-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-weight: bolder;
+}
+
+.cl-btn-info-bottom p {
+  font-size: 0.9rem;
+  margin: 0px;
+  margin-right: 1rem;
+}
+
+.grn-btn-text {
+  color: var(--teal-text);
+}

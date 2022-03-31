@@ -1,0 +1,23 @@
+.head-border-bottom {
+  border-bottom: var(--grey-border);
+}
+
+.profile-client-extras {
+  min-height: 4rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.gender-select-wrapper p {
+  text-align: center;
+}
+
+.gender-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

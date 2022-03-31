@@ -1,0 +1,100 @@
+.dropdown-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  height: 3rem;
+  width: 100%;
+  color: black;
+  border-bottom: var(--grey-border);
+  transition: 500ms ease;
+  text-align: center;
+}
+
+.drop-active-back {
+  /* background: var(--grey-background); */
+  background: var(--teal-button);
+  border-bottom: 1px solid rgb(255, 255, 255);
+  color: white;
+}
+
+.drop-menu-container {
+  position: absolute;
+  top: calc(3rem + 1px);
+  left: 0;
+  right: 0;
+  background: var(--grey-background);
+  height: auto;
+  width: 100%;
+  z-index: 20;
+  overflow: scroll;
+  opacity: 1;
+  transition: 500ms ease;
+}
+
+.drop-shrink {
+  height: 0px;
+  opacity: 0;
+  transition: 500ms ease;
+}
+.drop-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 0.4rem;
+  color: rgb(61, 61, 61);
+  height: 2rem;
+  width: auto;
+}
+
+.upside-down {
+}
+
+.selectionButton {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 3rem;
+  width: 100%;
+  transition: 500ms ease;
+  background-color: transparent;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: black;
+}
+
+.selectionButton:hover {
+  background: rgba(255, 255, 255, 0.096);
+}
+
+.drop-active {
+  background: rgba(122, 122, 122, 0.383);
+}
+
+.drop-icon1 {
+  color: rgb(78, 78, 78);
+  height: 1.7rem;
+  width: auto;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+.selected-border {
+  width: 5px;
+  height: 100%;
+  background: var(--teal-button);
+}
+
+.transborder {
+  opacity: 0;
+}
+
+.button-date {
+  color: var(--teal-text);
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  right: 1rem;
+}

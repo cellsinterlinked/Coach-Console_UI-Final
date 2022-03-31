@@ -1,0 +1,146 @@
+.dash-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100vw;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.dash-head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  height: 4rem;
+  width: 100%;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.dash-head h1 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  color: black;
+  text-align: center;
+  font-size: 1.6rem;
+  width: 60%;
+}
+
+.mobile-menu {
+  margin-left: 1rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.add-user-mobile {
+  margin-right: 1rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.dash-search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 100%;
+  background-color: var(--grey-background);
+  margin-top: 6rem;
+}
+
+.magnify {
+  height: 70%;
+  width: 70%;
+  color: white;
+}
+
+.client-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* .mobile-select1 {
+  position: absolute;
+  top: 4rem;
+  display: flex;
+  width: 100%;
+  height: 2rem;
+  align-items: flex-end;
+  z-index: 0;
+} */
+
+.select1 {
+  width: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  transition: 500ms ease;
+  background: white;
+  z-index: 0;
+}
+
+/* .select2 {
+  width: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  transition: 500ms ease;
+  background: white;
+  z-index: 0;
+} */
+
+.select-green {
+  background: var(--teal-button);
+  color: white;
+}
+
+.select1 p {
+  margin: 0px;
+  margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.select2 p {
+  margin: 0px;
+  margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.menu-desktop {
+  max-width: 28rem;
+  height: 100vh;
+}
+
+@media (max-width: 849px) {
+  .menu-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 850px) {
+  .dash-wrapper {
+    flex-direction: row;
+  }
+
+  .dash-wrapper {
+    background: var(--grey-background);
+  }
+}

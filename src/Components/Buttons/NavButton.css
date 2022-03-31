@@ -1,0 +1,30 @@
+.nav-button-wrapper {
+  width: 100%;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(
+    266.26deg,
+    #00bcaf00 0%,
+    rgba(0, 188, 177, 0) 173.86%
+  );
+  transition: 500ms ease;
+}
+
+.green-nav {
+  background: var(--teal-menu);
+  transition: 500ms ease;
+}
+
+.nav-button-wrapper p {
+  margin: 0px;
+  color: white;
+  font-family: var(--font);
+}
+
+.nav-icon-container {
+  height: 1.8rem;
+  width: 1.8rem;
+  margin: 1rem;
+}

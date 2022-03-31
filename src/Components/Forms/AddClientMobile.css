@@ -1,0 +1,21 @@
+.add-client-wrapper {
+  padding-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  background: var(--grey-background);
+}
+@media (min-width: 849px) {
+  .add-client-wrapper {
+    background: white;
+  }
+}
+
+.new-client-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

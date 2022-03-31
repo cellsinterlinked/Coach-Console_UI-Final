@@ -1,0 +1,123 @@
+.checkin-mobile-wrapper {
+  padding-bottom: 6rem;
+  width: 100%;
+}
+
+.checkin-mobile-wrap {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.check-section-mobile-wrap {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.input-expand {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: 500ms ease;
+  height: 10rem;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.mobile-image-input {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: 500ms ease;
+  height: 24rem;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.input-expand-shown {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: 500ms ease;
+  height: 5rem;
+  opacity: 1;
+}
+
+.input-close {
+  height: 0rem;
+  opacity: 0;
+  /* display: none; */
+}
+
+.bf-mobile-header {
+  position: relative;
+  /* margin-top: 5px;
+  margin-bottom: 5px; */
+  width: 100%;
+  height: 2.8rem;
+  border-bottom: var(--grey-border);
+  color: rgb(63, 63, 63);
+  transition: 500ms ease;
+  background: linear-gradient(
+    270deg,
+    #00bcbc00 21.5%,
+    rgba(0, 230, 230, 0) 137.45%
+  );
+  font-size: 0.9rem;
+}
+
+.header-active {
+  background: var(--teal-button);
+  border-bottom: none;
+  color: white;
+}
+
+/* .bf-mobile-header h3 {
+  color: black;
+} */
+
+.checkin-mobile-expand {
+  position: absolute;
+  color: rgb(63, 63, 63);
+  top: 0.4rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  transform: rotateX(0deg);
+  transition: 500ms ease;
+}
+
+.upside-down {
+  transform: rotateX(180deg);
+  color: var(--grey-text);
+  color: white;
+}
+
+.workout-select-display {
+  width: 80%;
+  height: 4rem;
+  box-shadow: var(--client-shadow);
+  margin: auto;
+  border-radius: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.check-section-head {
+  width: 100%;
+  margin: 10px;
+  /* margin-top: 0px;
+  margin-bottom: 0px; */
+}
+
+.tall {
+  height: 20rem;
+}

@@ -1,0 +1,130 @@
+.auth-wrapper {
+  height: 100vh;
+  width: 100vw;
+}
+
+.auth-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.auth-image-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.auth-image-wrapper img {
+  height: 100%;
+  max-height: 100%;
+  min-width: 100%;
+  max-width: 140%;
+  object-fit: cover;
+}
+
+.vignette {
+  position: absolute;
+  background-color: var(--cover);
+  height: 100%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+}
+
+.auth-details {
+  position: absolute;
+  z-index: 5;
+  top: 4rem;
+  width: 20rem;
+  text-align: center;
+  font-family: var(--font);
+  color: white;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  flex-direction: column;
+}
+
+.auth-details h1 {
+  font-size: 2.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-details p {
+  font-weight: bold;
+}
+
+.auth-form {
+  position: absolute;
+  flex-direction: column;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  bottom: 2rem;
+  height: 27rem;
+  width: 20rem;
+  z-index: 5;
+}
+.loginHead {
+  color: white;
+  font-family: var(--font);
+  font-size: 1.6rem;
+  font-weight: lighter;
+  transition: 500ms ease;
+}
+
+@media (max-width: 780px) {
+  .loginHead {
+    margin: 0px;
+    height: 0px;
+    font-size: 0px;
+  }
+}
+
+@media (min-width: 780px) {
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    width: 80vw;
+    max-width: 60rem;
+    flex-direction: row;
+  }
+
+  .auth-image-wrapper {
+    max-width: 60%;
+  }
+
+  .auth-form {
+    position: relative;
+    bottom: 0;
+    height: 100%;
+    width: 40%;
+    background-color: var(--dark-backing);
+  }
+
+  .auth-details {
+    position: absolute;
+    z-index: 5;
+    top: 4rem;
+    width: 20rem;
+    text-align: center;
+    font-family: var(--font);
+    color: white;
+    left: 2rem;
+    flex-direction: column;
+    margin: 0px;
+  }
+}
+
+.text-hidden {
+  font-size: 0px;
+}
