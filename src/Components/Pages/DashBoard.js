@@ -22,18 +22,17 @@ const Dashboard = () => {
 
 
 
-  const userId = '6261a0509dbe2e934b33ccf5'
-  const userRole = 'client'
+  // const userId = '6261a0509dbe2e934b33ccf5'
+  // const userRole = 'client'
 
-  // const auth = useContext(AuthContext)
-  // const userId = auth.userId
-  // const userRole = auth.role.toLowerCase()
+  const auth = useContext(AuthContext)
+  console.log('auth is', auth)
+  const userId = auth.userId
+  const userRole = auth.role
 
 
 
   const [page, setPage] = useState(userRole === 'client' ? 'Home' : 'Clients');
-
-  // const [page, setPage] = useState('Loading');
 
   const [currentClient, setCurrentClient] = useState();
 
@@ -121,7 +120,7 @@ const Dashboard = () => {
   };
 
   const logoutFunction = () => {
-    // auth.logout()
+    auth.logout()
   }
 
   return (

@@ -15,9 +15,7 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-
-
-  const [role, setRole] = useState('coach')
+  const [role, setRole] = useState('coach');
   const [coachCode, setCoachCode] = useState('');
 
   const signInToggle = () => {
@@ -41,11 +39,11 @@ const Auth = () => {
           email: email,
           password: password,
         });
-        auth.login(res.data.userId, res.data.token, res.data.role);
       } catch (err) {
         setError(`Check your credentials and try again ${err}`);
         return;
       }
+      auth.login(res.data.userId, res.data.token, res.data.role);
     }
     console.log(res);
   };
@@ -60,23 +58,23 @@ const Auth = () => {
     } else if (password !== confirmPassword) {
       return setError('Passwords must match');
     } else if (coachCode.length !== 10) {
-      return setError('Please enter the full Coach Code provided by your trainer')
+      return setError(
+        'Please enter the full Coach Code provided by your trainer'
+      );
     } else {
       try {
         res = await Axios.post('http://localhost:5000/api/users/signup', {
           email: email,
           password: password,
           role: role,
-          coachCode: coachCode
+          coachCode: coachCode,
         });
-        auth.login(res.data.userId, res.data.token, res.data.role);
       } catch (err) {
         setError(` ${err}`);
         return;
       }
+      auth.login(res.data.userId, res.data.token, res.data.role);
       console.log(res);
-
-
     }
   };
 
@@ -126,24 +124,42 @@ const Auth = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-            <Input
-            name={(login !== true && role === 'client' )? 'front-input' : 'front-input hidden'}
+          <Input
+            name={
+              login !== true && role === 'client'
+                ? 'front-input'
+                : 'front-input hidden'
+            }
             placeholder="Coach Code"
             value={coachCode}
             onChange={(e) => setCoachCode(e.target.value)}
           />
 
-          { login === false && <section className="role-select-wrapper">
-            <p>Are you here as a coach or client?</p>
-            <div className="role-button-container">
-            <div className ={role === 'coach' ? "role-button role-active" : "role-button"} onClick={() => setRole('coach')}>COACH</div>
-            <div className={role === 'client' ? "role-button role-active" : "role-button"} onClick={() => setRole('client')}>CLIENT</div>
-            </div>
-
-
-          </section>}
-
-
+          {login === false && (
+            <section className="role-select-wrapper">
+              <p>Are you here as a coach or client?</p>
+              <div className="role-button-container">
+                <div
+                  className={
+                    role === 'coach' ? 'role-button role-active' : 'role-button'
+                  }
+                  onClick={() => setRole('coach')}
+                >
+                  COACH
+                </div>
+                <div
+                  className={
+                    role === 'client'
+                      ? 'role-button role-active'
+                      : 'role-button'
+                  }
+                  onClick={() => setRole('client')}
+                >
+                  CLIENT
+                </div>
+              </div>
+            </section>
+          )}
 
           <div className="error-container">{error && <p>{error}</p>}</div>
           <Button
