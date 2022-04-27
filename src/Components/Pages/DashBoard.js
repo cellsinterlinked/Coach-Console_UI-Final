@@ -47,9 +47,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
 
 
-  useEffect(() => {
-
-  })
 
 
   useEffect(() => {
@@ -61,7 +58,6 @@ const Dashboard = () => {
           `http://localhost:5000/api/users/all/${userId}`
         );
       } catch (err) {
-        alert(`couldn't get info from database ${err}`);
         setError("Couldn't fetch from the database");
         setLoading(false)
         return;
@@ -82,8 +78,12 @@ const Dashboard = () => {
         setLoading(false)
         console.log('fullUserData is ', results.data)
       };
-      getAll();
-  }, [reset]);
+
+
+        getAll();
+
+
+  }, [reset, userId, userRole]);
 
 
   const updateAll = async () => {
