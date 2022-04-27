@@ -87,7 +87,7 @@ code {
   color: red;
   font-weight: bold;
   font-family: var(--font);
-  height: 1rem;
+  /* height: 1rem; */
 }
 
 .error-container p {
@@ -175,4 +175,119 @@ code {
 .chart-group {
   height: auto;
   overflow-y: scroll;
+}
+
+.delete-button-cover {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 1.2rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.329);
+  transition: 300ms ease;
+  backdrop-filter: blur(1px);
+  z-index: 200;
+  opacity: 1;
+}
+.cover-transparent {
+  opacity: 0;
+}
+
+.deleteTrash {
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  right: 1rem;
+  background-color: rgba(255, 0, 0, 0.842);
+  color: white;
+  height: 2rem;
+  width: 2rem;
+}
+
+.search-drop {
+  position: absolute;
+  bottom: -7.2rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.685);
+  backdrop-filter: blur(2px);
+  z-index: 300;
+  border: var(--grey-border);
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.search-drop-broken {
+  position: absolute;
+  top: 4.5rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgba(185, 185, 185, 0.685);
+  backdrop-filter: blur(2px);
+  z-index: 300;
+  border: var(--grey-border);
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+@media (max-width: 800px) {
+  .search-drop-broken {
+    top: 3.2rem;
+    padding-top: 5px;
+  }
+}
+
+.weight-display-box {
+  width: 22rem;
+}
+
+.weight-display-box p {
+  /* margin-left: 2rem; */
+  color: var(--grey-title);
+  font-weight: bold;
+}
+
+.weight-display-box strong {
+  color: var(--teal-text);
+}
+
+.mobile-checkin-date {
+  color: var(--teal-text);
+  text-align: center;
+  margin: auto;
+  margin-top: -10px;
+}
+
+.no-data-title {
+  margin: 2rem;
+  color: var(--grey-title);
+  text-align: center;
+  font-weight: 400;
+}
+
+.no-data-addition {
+  color: var(--teal-text);
+  font-weight: normal;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 844px) {
+  .desktop-only {
+    display: none;
+  }
 }

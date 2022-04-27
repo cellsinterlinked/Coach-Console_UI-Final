@@ -10,7 +10,7 @@ import Button from '../Buttons/Button';
 import Axios from 'axios'
 import Modal from '../Modals/Modal'
 
-const CheckinMobile = ({ workouts, diets, currentClient, userId,  }) => {
+const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientData, setAdd  }) => {
   const [error, setError] = useState("")
   const [location, setLocation] = useState()
   const [bfState, setBfState] = useState(false);
@@ -211,9 +211,12 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId,  }) => {
       setError(`Couldnt post the checkin ${err}`)
       return
     }
-    alert("yay!")
+    setError("Successfully added check-in!")
+    updateClientData()
+
   }
   sendCheckin()
+
 
 
 
@@ -289,14 +292,14 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId,  }) => {
             bfState === true ? 'input-expand' : 'input-expand input-close'
           }
         >
-          <Input
+          <Input parentClass="parent-auto"
           name={(location === "bodyfat" && bodyFat.chest === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Chest" value={bodyFat.chest} onChange={(e) => setBodyFat({...bodyFat, chest: e.target.value})} />
-          <Input name={(location === "bodyfat" && bodyFat.axilla === "") ? "check-input-sm-danger" : "check-input-sm"}type="number"  placeholder="Axilla" value={bodyFat.axilla} onChange={(e) => setBodyFat({...bodyFat, axilla: e.target.value})} />
-          <Input name={(location === "bodyfat" && bodyFat.tricep === "") ? "check-input-sm-danger" : "check-input-sm"}type="number"  placeholder="Tricep" value={bodyFat.tricep} onChange={(e) => setBodyFat({...bodyFat, tricep: e.target.value})} />
-          <Input name={(location === "bodyfat" && bodyFat.subscapular === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Subscapular" value={bodyFat.subscapular} onChange={(e) => setBodyFat({...bodyFat, subscapular: e.target.value})} />
-          <Input name={(location === "bodyfat" && bodyFat.abdominal === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Abdominal" value={bodyFat.abdominal} onChange={(e) => setBodyFat({...bodyFat, abdominal: e.target.value})} />
-          <Input name={(location === "bodyfat" && bodyFat.suprailiac === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Suprailiac" value={bodyFat.suprailiac} onChange={(e) => setBodyFat({...bodyFat, suprailiac: e.target.value})} />
-          <Input name={(location === "bodyfat" && bodyFat.thigh === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Thigh" value={bodyFat.thigh} onChange={(e) => setBodyFat({...bodyFat, thigh: e.target.value})}  />
+          <Input     parentClass="parent-auto" name={(location === "bodyfat" && bodyFat.axilla === "") ? "check-input-sm-danger" : "check-input-sm"}type="number"  placeholder="Axilla" value={bodyFat.axilla} onChange={(e) => setBodyFat({...bodyFat, axilla: e.target.value})} />
+          <Input      parentClass="parent-auto"name={(location === "bodyfat" && bodyFat.tricep === "") ? "check-input-sm-danger" : "check-input-sm"}type="number"  placeholder="Tricep" value={bodyFat.tricep} onChange={(e) => setBodyFat({...bodyFat, tricep: e.target.value})} />
+          <Input  parentClass="parent-auto"name={(location === "bodyfat" && bodyFat.subscapular === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Subscapular" value={bodyFat.subscapular} onChange={(e) => setBodyFat({...bodyFat, subscapular: e.target.value})} />
+          <Input  parentClass="parent-auto" name={(location === "bodyfat" && bodyFat.abdominal === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Abdominal" value={bodyFat.abdominal} onChange={(e) => setBodyFat({...bodyFat, abdominal: e.target.value})} />
+          <Input parentClass="parent-auto" name={(location === "bodyfat" && bodyFat.suprailiac === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Suprailiac" value={bodyFat.suprailiac} onChange={(e) => setBodyFat({...bodyFat, suprailiac: e.target.value})} />
+          <Input parentClass="parent-auto" name={(location === "bodyfat" && bodyFat.thigh === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Thigh" value={bodyFat.thigh} onChange={(e) => setBodyFat({...bodyFat, thigh: e.target.value})}  />
         </div>
       </div>
 
@@ -355,14 +358,14 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId,  }) => {
             measureState === true ? 'input-expand' : 'input-expand input-close'
           }
         >
-          <Input name={(location === "measurements" && measurements.neck === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Neck" value={measurements.neck} onChange={(e) => setMeasurements({...measurements, neck: e.target.value})} />
-          <Input name={(location === "measurements" && measurements.bicep === "") ? "check-input-sm-danger" : "check-input-sm"}  type="number" placeholder="Bicep" value={measurements.bicep} onChange={(e) => setMeasurements({...measurements, bicep: e.target.value})}/>
-          <Input name={(location === "measurements" && measurements.forearm === "") ? "check-input-sm-danger" : "check-input-sm"}  type="number" placeholder="Forearm" value={measurements.forearm} onChange={(e) => setMeasurements({...measurements, forearm: e.target.value})}/>
-          <Input name={(location === "measurements" && measurements.chest === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Chest" value={measurements.chest} onChange={(e) => setMeasurements({...measurements, chest: e.target.value})}/>
-          <Input name={(location === "measurements" && measurements.waist === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Waist" value={measurements.waist} onChange={(e) => setMeasurements({...measurements, waist: e.target.value})}/>
-          <Input name={(location === "measurements" && measurements.hips === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Hips" value={measurements.hips} onChange={(e) => setMeasurements({...measurements, hips: e.target.value})}/>
-          <Input name={(location === "measurements" && measurements.thigh === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Thigh" value={measurements.thigh} onChange={(e) => setMeasurements({...measurements, thigh: e.target.value})}/>
-          <Input name={(location === "measurements" && measurements.calf === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Calf" value={measurements.calf} onChange={(e) => setMeasurements({...measurements, calf: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.neck === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Neck" value={measurements.neck} onChange={(e) => setMeasurements({...measurements, neck: e.target.value})} />
+          <Input  parentClass="parent-auto" name={(location === "measurements" && measurements.bicep === "") ? "check-input-sm-danger" : "check-input-sm"}  type="number" placeholder="Bicep" value={measurements.bicep} onChange={(e) => setMeasurements({...measurements, bicep: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.forearm === "") ? "check-input-sm-danger" : "check-input-sm"}  type="number" placeholder="Forearm" value={measurements.forearm} onChange={(e) => setMeasurements({...measurements, forearm: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.chest === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Chest" value={measurements.chest} onChange={(e) => setMeasurements({...measurements, chest: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.waist === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Waist" value={measurements.waist} onChange={(e) => setMeasurements({...measurements, waist: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.hips === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Hips" value={measurements.hips} onChange={(e) => setMeasurements({...measurements, hips: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.thigh === "") ? "check-input-sm-danger" : "check-input-sm"} type="number"  placeholder="Thigh" value={measurements.thigh} onChange={(e) => setMeasurements({...measurements, thigh: e.target.value})}/>
+          <Input parentClass="parent-auto" name={(location === "measurements" && measurements.calf === "") ? "check-input-sm-danger" : "check-input-sm"} type="number" placeholder="Calf" value={measurements.calf} onChange={(e) => setMeasurements({...measurements, calf: e.target.value})}/>
         </div>
       </div>
 
@@ -412,19 +415,19 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId,  }) => {
           }
         >
           <p className="check-section-head">Hrs of Sleep</p>
-          <Input type="number"  name={(location === "sleep" && sleep.mon === "") ? "check-input-tny-danger" : "check-input-tny"} placeholder="Mon" value={sleep.mon} onChange={(e) => setSleep({...sleep, mon: e.target.value})} />
-          <Input type="number"  name={(location === "sleep" && sleep.tue === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Tue" value={sleep.tue} onChange={(e) => setSleep({...sleep, tue: e.target.value})} />
-          <Input type="number"  name={(location === "sleep" && sleep.wed === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Wed" value={sleep.wed} onChange={(e) => setSleep({...sleep, wed: e.target.value})} />
-          <Input type="number"  name={(location === "sleep" && sleep.thu === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Thu" value={sleep.thu} onChange={(e) => setSleep({...sleep, thu: e.target.value})} />
-          <Input type="number"  name={(location === "sleep" && sleep.fri === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Fri" value={sleep.fri} onChange={(e) => setSleep({...sleep, fri: e.target.value})} />
-          <Input type="number"  name={(location === "sleep" && sleep.sat === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Sat" value={sleep.sat} onChange={(e) => setSleep({...sleep, sat: e.target.value})} />
-          <Input type="number"  name={(location === "sleep" && sleep.sun === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Sun" value={sleep.sun} onChange={(e) => setSleep({...sleep, sun: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.mon === "") ? "check-input-tny-danger" : "check-input-tny"} placeholder="Mon" value={sleep.mon} onChange={(e) => setSleep({...sleep, mon: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.tue === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Tue" value={sleep.tue} onChange={(e) => setSleep({...sleep, tue: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.wed === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Wed" value={sleep.wed} onChange={(e) => setSleep({...sleep, wed: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.thu === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Thu" value={sleep.thu} onChange={(e) => setSleep({...sleep, thu: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.fri === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Fri" value={sleep.fri} onChange={(e) => setSleep({...sleep, fri: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.sat === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Sat" value={sleep.sat} onChange={(e) => setSleep({...sleep, sat: e.target.value})} />
+          <Input parentClass="parent-auto" type="number"  name={(location === "sleep" && sleep.sun === "") ? "check-input-tny-danger" : "check-input-tny"}placeholder="Sun" value={sleep.sun} onChange={(e) => setSleep({...sleep, sun: e.target.value})} />
           <p className="check-section-head">Workout Quality 1-5 (1 = Bad - 5 = Great)</p>
           {workoutState.name !== "none" && workoutState.weightData.map((workout, index) => (
-            <Input key={index} type="number" name={(location === "workout" && !workoutQual[index+1]) ? "check-input-tny-danger" : "check-input-tny"} placeholder={`Workout ${index + 1}`} value={workoutQual[index + 1]} onChange={(e) => setWorkoutQual({...workoutQual, [index+1]: e.target.value})} />
+            <Input parentClass="parent-auto" key={index} type="number" name={(location === "workout" && !workoutQual[index+1]) ? "check-input-tny-danger" : "check-input-tny"} placeholder={`Workout ${index + 1}`} value={workoutQual[index + 1]} onChange={(e) => setWorkoutQual({...workoutQual, [index+1]: e.target.value})} />
           ))}
             <p className="check-section-head">Notes:</p>
-            <Input name="check-input-area" placeholder="Write Notes Here..." area="true" value={notes} onChange={(e) => setNotes(e.target.value)}  />
+            <Input  name="check-input-area" placeholder="Write Notes Here..." area="true" value={notes} onChange={(e) => setNotes(e.target.value)}  />
         </div>
       </div>
       <div className="center" style={{width: "100%"}}>

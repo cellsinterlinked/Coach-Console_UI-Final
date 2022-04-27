@@ -18,7 +18,9 @@ const Messaging = ({
   myImage,
   messageContent,
   setMessageContent,
-  sendMessageHandler
+  sendMessageHandler,
+  mobileImageSend,
+
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -110,7 +112,7 @@ const Messaging = ({
                     : 'reciever-image-wrapper'
                 }
               >
-                <img src={myImage} alt="" />
+                <img src={message.image} alt="" />
               </div>
             )}
 
@@ -138,15 +140,19 @@ const Messaging = ({
           <Button
             contents="SEND"
             name="send-message-btn"
-            click={() => console.log('click')}
+            click={sendMessageHandler}
           />
         </div>
         <Button
           contents={
+            <>
             <IoImageOutline
               style={{ color: 'white' }}
               className="add-image-icon"
             />
+            <input type="file" className="message-image-input" onChange={mobileImageSend} />
+
+            </>
           }
           name="image-button"
         />

@@ -33,6 +33,8 @@ const Home = ({ DUMMYCHECKINS, navToggle, workouts, diets, fullUserData, current
   const [checkMode, setCheckMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
 
+  const [loadedCheckin, setLoadedCheckin] = useState()
+
   const [checkinChartData, setCheckinChartData] = useState()
 
   const [chartSelect, setChartSelect] = useState({
@@ -51,6 +53,10 @@ const Home = ({ DUMMYCHECKINS, navToggle, workouts, diets, fullUserData, current
     cardioCals: true,
     sleepTime: true,
   });
+  const [searchList, setSearchList] = useState()
+  const [query, setQuery] = useState("")
+
+
 
   console.log(currentClient)
 
@@ -74,10 +80,27 @@ const Home = ({ DUMMYCHECKINS, navToggle, workouts, diets, fullUserData, current
     getClientData()
   },[currentClient.id])
 
+  useEffect(() => {
+    if(fullUserData && fullUserData.checkins && query) {
+      //change this
+
+    }
+  },[fullUserData, query])
+
   const addCheckinToggle = () => {
     setAdd(!add);
     console.log(add)
   };
+
+
+  const queryHandler = (e) => {
+    setQuery(e.target.value)
+    console.log(query)
+  }
+
+  const cancelSearch = () => {
+    setQuery("")
+  }
 
 
 
@@ -221,6 +244,19 @@ const Home = ({ DUMMYCHECKINS, navToggle, workouts, diets, fullUserData, current
             name="search-button"
             contents={<GoSearch className="magnify" />}
           />
+
+           {(query && query !== "" && searchList && searchList.length > 0 )&& <div className="search-drop">
+            {searchList.map((checkin, index) => <CheckinButton
+               click={() => setLoadedCheckin(checkin)}
+               key={index}
+               name={currentClient.name}
+               image={currentClient.image}
+               date={"fake date"}
+               firstCheckin={"fake date"}
+
+            />)}
+
+          </div>}
         </div>
 
         <div className="client-list-container">

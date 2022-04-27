@@ -37,6 +37,12 @@
   background: #ffffff;
 }
 
+@media (min-width: 844px) {
+  .drawer-bottom-partial {
+    display: none;
+  }
+}
+
 .nav-drawer {
   position: fixed;
   left: 0;

@@ -16,6 +16,7 @@
 
 .auth-button-primary:hover {
   box-shadow: none;
+  cursor: pointer;
 }
 
 .auth-button-primary:disabled {
@@ -41,6 +42,7 @@
   margin-top: 1rem;
   transition: 500ms ease;
   margin-bottom: 0.5rem;
+  cursor: pointer;
 }
 
 .auth-button-danger {
@@ -57,6 +59,7 @@
   margin-top: 1rem;
   transition: 500ms ease;
   margin-bottom: 0.5rem;
+  cursor: pointer;
 }
 
 .auth-button-secondary:hover,
@@ -88,6 +91,7 @@
 }
 
 .image-button {
+  position: relative;
   height: 2rem;
   width: 2rem;
   display: flex;
@@ -101,6 +105,7 @@
 }
 
 .image-button-desk {
+  position: relative;
   height: 2.5rem;
   width: 2.5rem;
   display: flex;
@@ -117,7 +122,7 @@
 .send-message-btn {
   position: absolute;
   right: 0px;
-  height: 1.9rem;
+  height: 2rem;
   width: 4rem;
   display: flex;
   align-items: center;

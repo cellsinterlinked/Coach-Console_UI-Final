@@ -23,6 +23,7 @@ import { columns } from '../../../Data/WorkoutColumns';
 import { cardioColumns } from '../../../Data/CardioColumns';
 import WorkoutTable from '../../Tables/WorkoutTable';
 import CardioTable from '../../Tables/CardioTable';
+import LoadingDots from '../../Animations/LoadingDots';
 
 const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   const [workoutNum, setWorkoutNum] = useState(0);
@@ -31,36 +32,103 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   const [newMode, setNewMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
 
-  const [loadedWorkout, setLoadedWorkout] = useState(fullUserData.workouts[0]);
+  const [loadedWorkout, setLoadedWorkout] = useState(
+    fullUserData.workouts[0] || null
+  );
   const [percent, setPercent] = useState(
-    100 / fullUserData.workouts[0].weightData.length
+    fullUserData.workouts.length > 0
+      ? 100 / fullUserData.workouts[0].weightData.length
+      : 0
   );
   const [error, setError] = useState();
   const [current, setCurrent] = useState(true);
   const [add, setAdd] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [tableData, setTableData] = useState(
-    loadedWorkout.weightData[workoutNum].data
+    loadedWorkout && loadedWorkout.weightData[workoutNum].data
+      ? loadedWorkout.weightData[workoutNum].data
+      : null
   );
 
-  const [cardioData, setCardioData] = useState([loadedWorkout.cardioData.data]);
+  const [cardioData, setCardioData] = useState(
+    loadedWorkout ? [loadedWorkout.cardioData.data] : null
+  );
 
   const [share, setShare] = useState(false);
 
-  const [selectedShare, setSelectedShare] = useState()
+  const [selectedShare, setSelectedShare] = useState();
 
-  console.log('am i rerendering?');
+  const [query, setQuery] = useState('');
+
+  const [searchList, setSearchList] = useState();
+
+  const [workoutList, setWorkoutList] = useState();
+  // conditional rendering to require this
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const getWorkoutsHandler = async () => {
+      let results;
+      try {
+        results = await Axios.get(
+          `http://localhost:5000/api/workouts/${userId}`
+        );
+      } catch (err) {
+        setError('Could not fetch workouts');
+        setLoading(false);
+        return;
+      }
+      setWorkoutList(results.data.workouts.reverse());
+      if(!results.data.workouts || results.data.workouts.length < 1) {
+        setNewMode(true)
+      }
+      console.log(results.data.workouts);
+      setLoading(false);
+    };
+    getWorkoutsHandler();
+  }, [userId, loadedWorkout]);
 
   useEffect(() => {
     console.log('im firing');
-    setTableData(loadedWorkout.weightData[workoutNum].data);
-    setCardioData(loadedWorkout.cardioData.data);
+    if (loadedWorkout && loadedWorkout.weightData[workoutNum].data) {
+      setTableData(loadedWorkout.weightData[workoutNum].data);
+    }
+
+    if (loadedWorkout && loadedWorkout.cardioData.data) {
+      setCardioData(loadedWorkout.cardioData.data);
+    }
   }, [loadedWorkout, workoutNum]);
 
   useEffect(() => {
     console.log('second firing');
-    setPercent(100 / loadedWorkout.weightData.length);
+    if (loadedWorkout && loadedWorkout.weightData) {
+      setPercent(100 / loadedWorkout.weightData.length);
+    }
   }, [loadedWorkout]);
+
+  useEffect(() => {
+    if (workoutList && workoutList.length > 0 && query) {
+      setSearchList(
+        workoutList.filter((workout) =>
+          workout.name.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }
+  }, [workoutList, query]);
+
+  const updateWorkoutsHandler = async () => {
+    let results;
+    try {
+      results = await Axios.get(`http://localhost:5000/api/workouts/${userId}`);
+    } catch (err) {
+      setError('Could not fetch workouts');
+      return;
+    }
+    setWorkoutList(results.data.workouts.reverse());
+    console.log(results.data.workouts);
+  };
 
   const addWorkoutToggle = () => {
     setAdd(!add);
@@ -78,58 +146,71 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       setError(err);
       return;
     }
-    alert('Workout Deleted');
+    updateWorkoutsHandler();
+    setError('Workout Deleted');
+    setLoadedWorkout(workoutList[0]);
   };
 
-  const shareWorkoutHandler = async(client) => {
-    setShare(false)
+  const shareWorkoutHandler = async (client) => {
+    setShare(false);
 
-    let results
+    let results;
     try {
-      results = await Axios.patch('http://localhost:5000/api/workouts/send', {userId: userId, clientId:client.id, workoutId: loadedWorkout.id })
+      results = await Axios.patch('http://localhost:5000/api/workouts/send', {
+        userId: userId,
+        clientId: client.id,
+        workoutId: loadedWorkout.id,
+      });
     } catch (err) {
-      setShare(false)
-      setSelectedShare()
-      setError("They either already have this workout or something else went wrong!")
+      setShare(false);
+      setSelectedShare();
+      setError(
+        'They either already have this workout or something else went wrong!'
+      );
 
-
-      return
+      return;
     }
-    setSelectedShare()
-    setShare(false)
-    alert("success!")
-  }
+    setSelectedShare();
+    setShare(false);
+    alert('success!');
+  };
+
+  const queryHandler = (e) => {
+    setQuery(e.target.value);
+    console.log(query);
+  };
 
   return (
     <>
-
-{selectedShare && <Modal
-        show={selectedShare}
-        onCancel={() => {
-          setSelectedShare()
-          setShare(false)
-        }}
-        children={
-          <div className="error-modal-container">
-            <h3>{`Send ${loadedWorkout.name} to ${selectedShare.name}? `}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="YES"
-              click={() => {
-                shareWorkoutHandler(selectedShare);
-              }}
-            />
-            <Button
-              name="auth-button-secondary button-top-margin-gone "
-              contents="NO"
-              click={() => {
-                setSelectedShare();
-                setShare(false)
-              }}
-            />
-          </div>
-        }
-      />}
+      {selectedShare && loadedWorkout && (
+        <Modal
+          show={selectedShare}
+          onCancel={() => {
+            setSelectedShare();
+            setShare(false);
+          }}
+          children={
+            <div className="error-modal-container">
+              <h3>{`Send ${loadedWorkout.name} to ${selectedShare.name}? `}</h3>
+              <Button
+                name="auth-button-primary"
+                contents="YES"
+                click={() => {
+                  shareWorkoutHandler(selectedShare);
+                }}
+              />
+              <Button
+                name="auth-button-secondary button-top-margin-gone "
+                contents="NO"
+                click={() => {
+                  setSelectedShare();
+                  setShare(false);
+                }}
+              />
+            </div>
+          }
+        />
+      )}
       <Modal
         show={error}
         onCancel={() => setError()}
@@ -169,27 +250,47 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
         }
       />
 
-      <DrawerRight
-        show={current === false}
-        name="drawer-right-partial"
-        children={fullUserData.workouts.map((workout, index) => (
-          <WorkoutButton
-            click={() => {
-              setLoadedWorkout(workout);
-              setCurrent(true);
-            }}
-            key={index}
-            name={workout.name}
-            description={workout.description}
-            dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
-          />
-        ))}
-      />
+      {workoutList && workoutList.length > 0 ? (
+        <DrawerRight
+          show={current === false}
+          name="drawer-right-partial"
+          children={workoutList.map((workout, index) => (
+            <WorkoutButton
+              click={() => {
+                setLoadedWorkout(workout);
+                setCurrent(true);
+              }}
+              key={index}
+              name={workout.name}
+              description={workout.description}
+              dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
+            />
+          ))}
+        />
+      ) : (
+        <DrawerRight
+          show={current === false}
+          name="drawer-right-partial"
+          children={
+            <h3 className="no-data-title">
+              Press add workout button in top right corner to add a new
+              workout...
+            </h3>
+          }
+        />
+      )}
 
       <DrawerBottom
         show={add === true}
         name="drawer-bottom-partial"
-        children={<NewWorkout userId={userId} />}
+        children={
+          <NewWorkout
+            userId={userId}
+            setLoadedWorkout={setLoadedWorkout}
+            setParentError={setError}
+            setNewMode={setNewMode}
+          />
+        }
       />
 
       <header className="dash-head">
@@ -216,31 +317,31 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       </div>
 
       <div className="desk-center">
-        <div className="mobile-head-option-container onlySmall">
-        <div
-              className={
-                share === true
-                  ? 'share-drop-container'
-                  : 'share-drop-container share-null'
-              }
-            >
-              {fullUserData.clients.map((client, index) => (
-                <div
-                  onClick={() => setSelectedShare(client)}
-                  key={index}
-                  className={
-                    share === true
-                      ? 'share-user-select'
-                      : 'share-user-select share-null'
-                  }
-                >
-                  <div className="share-user-image">
-                    <img src={client.image} alt="" />
-                  </div>
-                  <p>{client.name}</p>
+        {loadedWorkout && <div className="mobile-head-option-container onlySmall">
+          <div
+            className={
+              share === true
+                ? 'share-drop-container'
+                : 'share-drop-container share-null'
+            }
+          >
+            {fullUserData.clients.map((client, index) => (
+              <div
+                onClick={() => setSelectedShare(client)}
+                key={index}
+                className={
+                  share === true
+                    ? 'share-user-select'
+                    : 'share-user-select share-null'
+                }
+              >
+                <div className="share-user-image">
+                  <img src={client.image} alt="" />
                 </div>
-              ))}
-            </div>
+                <p>{client.name}</p>
+              </div>
+            ))}
+          </div>
           {loadedWorkout && (
             <h3 className="mobile-options-title">{loadedWorkout.name}</h3>
           )}
@@ -268,18 +369,38 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
           />
 
           <RiUserShared2Line
-          className="share-desk-icon"
-          onClick={() => setShare(!share)}
+            className="share-desk-icon"
+            onClick={() => setShare(!share)}
           />
-
-        </div>
+        </div>}
 
         <div className="dash-search-container onlyLarge">
-          <Input name="search-input" placeholder={'Search Workouts'} />
+          <Input
+            name="search-input"
+            parentClass='parent-auto'
+            placeholder={'Search Workouts'}
+            onChange={queryHandler}
+            value={query}
+            clear={() => setQuery('')}
+            clearable={true}
+          ></Input>
           <Button
             name="search-button"
             contents={<GoSearch className="magnify" />}
           />
+          {query && query !== '' && searchList && searchList.length > 0 && (
+            <div className="search-drop-broken">
+              {searchList.map((workout, index) => (
+                <WorkoutButton
+                  click={() => setLoadedWorkout(workout)}
+                  key={index}
+                  name={workout.name}
+                  description={workout.description}
+                  dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="client-list-container">
@@ -309,24 +430,28 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
               ))}
             </div>
 
-            <FaRunning
-              onClick={() => setCardioDisplay(true)}
-              className={
-                cardioDisplay === true
-                  ? 'cardio-desk-icon icon-active'
-                  : 'cardio-desk-icon'
-              }
-            />
-            <FaDumbbell
-              onClick={() => setCardioDisplay(false)}
-              className={
-                cardioDisplay === false
-                  ? 'weight-desk-icon icon-active'
-                  : 'weight-desk-icon'
-              }
-            />
+            {(newMode === false && loadedWorkout )&& (
+              <FaRunning
+                onClick={() => setCardioDisplay(true)}
+                className={
+                  cardioDisplay === true
+                    ? 'cardio-desk-icon icon-active'
+                    : 'cardio-desk-icon'
+                }
+              />
+            )}
+            {(newMode === false && loadedWorkout) && (
+              <FaDumbbell
+                onClick={() => setCardioDisplay(false)}
+                className={
+                  cardioDisplay === false
+                    ? 'weight-desk-icon icon-active'
+                    : 'weight-desk-icon'
+                }
+              />
+            )}
 
-            {newMode === false ? (
+            {newMode === false && loadedWorkout ? (
               <h3>{loadedWorkout.name}</h3>
             ) : (
               <h3>Create New Workout</h3>
@@ -336,11 +461,14 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
               onClick={() => setNewMode(!newMode)}
             />
 
-            <IoTrashOutline
-              className="desk-trash-icon"
-              onClick={() => setDeleteMode(!deleteMode)}
-            />
-            {newMode === false && (
+            {(newMode === false && loadedWorkout) && (
+              <IoTrashOutline
+                className="desk-trash-icon"
+                onClick={() => setDeleteMode(!deleteMode)}
+              />
+            )}
+            {(newMode === false && loadedWorkout)
+             && (
               <RiUserShared2Line
                 className="share-desk-icon"
                 onClick={() => setShare(!share)}
@@ -348,64 +476,81 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
             )}
           </div>
 
-          {newMode === false && (
-            <div className="absurd-box">
-              <div className="day-changer-container">
-                <div className="day-title-container">
-                  {loadedWorkout.weightData.map((w, index) => (
+          {newMode === false &&
+            loadedWorkout &&
+            loadedWorkout.weightData &&
+            workoutList && (
+              <div className="absurd-box">
+                <div className="day-changer-container">
+                  <div className="day-title-container">
+                    {loadedWorkout.weightData.map((w, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          color: workoutNum === index ? '#00ded1' : '#a5a5a5',
+                          width: `${percent}%`,
+                        }}
+                        onClick={() => setWorkoutNum(index)}
+                        className="day-title-box"
+                      >{`D${index + 1}`}</div>
+                    ))}
+                  </div>
+                  <div className="day-change-line">
                     <div
-                      key={index}
+                      className="moving-line"
                       style={{
-                        color: workoutNum === index ? '#00ded1' : '#a5a5a5',
                         width: `${percent}%`,
+                        left: `${percent * workoutNum}%`,
                       }}
-                      onClick={() => setWorkoutNum(index)}
-                      className="day-title-box"
-                    >{`D${index + 1}`}</div>
-                  ))}
+                    ></div>
+                  </div>
                 </div>
-                <div className="day-change-line">
-                  <div
-                    className="moving-line"
-                    style={{
-                      width: `${percent}%`,
-                      left: `${percent * workoutNum}%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
 
-              {cardioDisplay === false ? (
-                <WorkoutTable
-                  tableData={tableData}
-                  loadedWorkout={loadedWorkout}
-                  workoutNum={workoutNum}
-                  userId={userId}
-                  setTableData={setTableData}
-                  setError={setError}
-                  columns={columns}
-                  selectedRow={selectedRow}
-                  setSelectedRow={setSelectedRow}
-                />
-              ) : (
-                <CardioTable
-                  cardioData={cardioData}
-                  loadedWorkout={loadedWorkout}
-                  workoutNum={workoutNum}
-                  userId={userId}
-                  setCardioData={setCardioData}
-                  setError={setError}
-                  cardioColumns={cardioColumns}
-                  selectedRow={selectedRow}
-                  setSelectedRow={setSelectedRow}
-                />
-              )}
-            </div>
-          )}
+                {loading && <LoadingDots />}
+
+                {cardioDisplay === false &&
+                  (loadedWorkout === null) & !loading && (
+                    <div>Your workout Will be displayed here.</div>
+                  )}
+
+                {cardioDisplay === false && loadedWorkout && (
+                  <WorkoutTable
+                    tableData={tableData}
+                    loadedWorkout={loadedWorkout}
+                    workoutNum={workoutNum}
+                    userId={userId}
+                    setTableData={setTableData}
+                    setError={setError}
+                    columns={columns}
+                    selectedRow={selectedRow}
+                    setSelectedRow={setSelectedRow}
+                  />
+                )}
+
+                {cardioDisplay === true && loadedWorkout && (
+                  <CardioTable
+                    cardioData={cardioData}
+                    loadedWorkout={loadedWorkout}
+                    workoutNum={workoutNum}
+                    userId={userId}
+                    setCardioData={setCardioData}
+                    setError={setError}
+                    cardioColumns={cardioColumns}
+                    selectedRow={selectedRow}
+                    setSelectedRow={setSelectedRow}
+                  />
+                )}
+              </div>
+            )}
 
           {newMode === true && (
             <div className-="absurd-box">
-              <NewWorkout userId={userId} />
+              <NewWorkout
+                userId={userId}
+                setLoadedWorkout={setLoadedWorkout}
+                setParentError={setError}
+                setNewMode={setNewMode}
+              />
             </div>
           )}
         </div>
@@ -416,15 +561,23 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
           <div className="analytics-deskHead">
             <h3>Workout Library</h3>
           </div>
-          {fullUserData.workouts.map((workout, index) => (
-            <WorkoutButton
-              click={() => setLoadedWorkout(workout)}
-              key={index}
-              name={workout.name}
-              description={workout.description}
-              dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
-            />
-          ))}
+          {workoutList && workoutList.length > 0 && (
+            <>
+              {workoutList.map((workout, index) => (
+                <WorkoutButton
+                  click={() => setLoadedWorkout(workout)}
+                  key={index}
+                  name={workout.name}
+                  description={workout.description}
+                  dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
+                />
+              ))}
+            </>
+          )}
+
+          {workoutList && workoutList.length < 1 && (
+           <div></div>
+          )}
         </div>
       </div>
     </>

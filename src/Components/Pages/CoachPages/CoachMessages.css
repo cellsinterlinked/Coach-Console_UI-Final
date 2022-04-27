@@ -47,9 +47,10 @@
 }
 
 .right-messaging {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-direction: column;
   margin-top: 4vh;
   margin-bottom: 4vh;
@@ -62,6 +63,7 @@
 }
 
 .desk-message-list {
+  position: relative;
   padding-top: 1rem;
   background-color: white;
   width: 100%;
@@ -163,6 +165,20 @@
   min-width: 100%;
   max-width: 140%;
   object-fit: cover;
+}
+
+.message-image-input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 2px solid red;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+  opacity: 0;
 }
 
 @media (max-width: 849px) {

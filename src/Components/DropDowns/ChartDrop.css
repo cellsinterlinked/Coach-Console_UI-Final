@@ -28,7 +28,7 @@
   background: var(--dark-backing);
   height: auto;
   width: 12rem;
-  z-index: 200;
+  z-index: 400;
   overflow: scroll;
   opacity: 1;
   transition: 500ms ease;

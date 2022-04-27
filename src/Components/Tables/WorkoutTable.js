@@ -28,7 +28,6 @@ const WorkoutTable = ({
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
             let tempTable = [...tableData, newRow];
-
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = tempTable;
             const sendUpdate = async () => {

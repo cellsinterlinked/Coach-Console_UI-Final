@@ -15,21 +15,25 @@ import CoachMessages from './CoachPages/CoachMessages';
 import Testing from './CoachPages/Testing';
 import CoachProfile from './CoachPages/CoachProfile';
 import {AuthContext} from '../../Context/auth-context';
+import LoadingDots from '../Animations/LoadingDots';
 
 
 const Dashboard = () => {
-  // const userId = '622280d9bb1f869e9869750f';
-  // const userRole = 'coach';
-  // const userId = '6224115f4f2f69066744ec23'
+
+
+
+  const userId = '6261a0509dbe2e934b33ccf5'
   const userRole = 'client'
-  const coachId = "";
-  const auth = useContext(AuthContext)
-  const userId = auth.userId
+
+  // const auth = useContext(AuthContext)
+  // const userId = auth.userId
   // const userRole = auth.role.toLowerCase()
 
-  console.log(auth.role.toLowerCase())
+
 
   const [page, setPage] = useState(userRole === 'client' ? 'Home' : 'Clients');
+
+  // const [page, setPage] = useState('Loading');
 
   const [currentClient, setCurrentClient] = useState();
 
@@ -45,12 +49,17 @@ const Dashboard = () => {
 
 
   useEffect(() => {
+
+  })
+
+
+  useEffect(() => {
     const getAll = async () => {
       setLoading(true)
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/all/${auth.userId}`
+          `http://localhost:5000/api/users/all/${userId}`
         );
       } catch (err) {
         alert(`couldn't get info from database ${err}`);
@@ -60,17 +69,46 @@ const Dashboard = () => {
       }
       let newData = results.data
       setFullUserData(newData);
+      if (newData.name === "" || !newData.name) {
+        setPage('Profile')
+      }
       if (userRole === 'coach') {
-        setCurrentClient(newData.clients[0])
+        setCurrentClient(newData.clients[0] || {name: "none", id: "0"})
+      }
 
-      } else {
+      if (userRole === 'client') {
         setCurrentClient(newData.user)
       }
+
+        setLoading(false)
+        console.log('fullUserData is ', results.data)
+      };
+      getAll();
+  }, [reset]);
+
+
+  const updateAll = async () => {
+    setLoading(true)
+    let results;
+    try {
+      results = await Axios.get(
+        `http://localhost:5000/api/users/all/${userId}`
+      );
+    } catch (err) {
+      alert(`couldn't get info from database ${err}`);
+      setError("Couldn't fetch from the database");
+      setLoading(false)
+      return;
+    }
+    let newData = results.data
+    setFullUserData(newData);
+    if (userRole === 'coach') {
+      setCurrentClient(newData.clients[0] || [{name: "none", id: "0"}])
       setLoading(false)
       console.log('we got the data');
     };
-    getAll();
-  }, [reset]);
+  }
+
 
   const clientSelect = (client) => {
     let fullClient = fullUserData.clients.find(c => c.id === client)
@@ -83,7 +121,7 @@ const Dashboard = () => {
   };
 
   const logoutFunction = () => {
-    auth.logout()
+    // auth.logout()
   }
 
   return (
@@ -105,9 +143,10 @@ const Dashboard = () => {
         <CoachNav page={page} setPage={setPage} fullUserData={fullUserData} logoutFunction={logoutFunction} />
       </div>
 
-      {loading && <div>Loading...</div>}
+      {loading && <LoadingDots />}
 
       {!loading && <>
+
       {page === 'Clients' && (
         <Clients
           userId={userId}
@@ -162,6 +201,9 @@ const Dashboard = () => {
           navToggle={navToggle}
           fullUserData={fullUserData}
           userRole={userRole}
+          updateAll={updateAll}
+          setPage={setPage}
+          setFullUserData={setFullUserData}
         />
       )}
       </>}
@@ -191,9 +233,13 @@ const Dashboard = () => {
         <ClientNav page={page} setPage={setPage} fullUserData={fullUserData} logoutFunction={logoutFunction} />
       </div>
 
-      {loading && <div>Loading...</div>}
+      {loading && <LoadingDots />}
 
       {!loading && <>
+        {page === 'Loading' && (
+          <LoadingDots />
+        )}
+
       {page === 'Workouts' && (
         <CoachWorkouts
           userId={userId}
@@ -236,7 +282,10 @@ const Dashboard = () => {
           userId={userId}
           navToggle={navToggle}
           fullUserData={fullUserData}
+          setFullUserData={setFullUserData}
           userRole={userRole}
+          updateAll={updateAll}
+          setPage={setPage}
         />
       )}
       </>}

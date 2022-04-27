@@ -5,7 +5,7 @@ import './NewWorkout.css';
 import Button from '../Buttons/Button';
 import Modal from '../Modals/Modal';
 
-const NewDiet = ({ userId }) => {
+const NewDiet = ({ userId, setSelectedDiet, setParentError, setNewMode }) => {
   const [error, setError] = useState('');
 
   const [name, setName] = useState('');
@@ -55,13 +55,14 @@ const NewDiet = ({ userId }) => {
         setError('Couldnt submit new workout');
         return;
       }
-      console.log('sent')
-      alert('success!');
+      setSelectedDiet(results.data.diet)
+      setNewMode(false)
+      setParentError('Successfully Started New Diet')
 
       // parent components resends request for workouts and rerenders.
     } else {
       setError('Please fill out all criteria before submitting!');
-      console.log("please fill out all criteria")
+
       return;
     }
   };

@@ -31,6 +31,7 @@
 } */
 
 .dash-search-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -62,6 +63,7 @@
   align-items: flex-start;
   flex-wrap: wrap;
   width: 100%;
+  /* overflow-y: scroll; */
 }
 
 /* .mobile-select1 {
@@ -297,6 +299,7 @@
   }
 
   .dash-search-container {
+    position: relative;
     margin-top: 2rem;
     height: 7vh;
     margin-bottom: 3vh;

@@ -30,15 +30,50 @@
 }
 
 .search-input {
+  position: relative;
   border-radius: 23px;
   height: 2.4rem;
-  width: 17rem;
+  width: 16rem;
   box-shadow: var(--search-shadow);
   border: none;
   outline: none;
   padding-left: 1rem;
-  padding-right: 1rem;
+  padding-right: 2rem;
   font-size: 16px;
+}
+
+.search-clear {
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  right: 0.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: rgb(194, 194, 194);
+  color: white;
+  transition: 200ms ease;
+}
+
+.search-clear:hover {
+  background-color: rgb(112, 112, 112);
+}
+
+.input-parent {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 90%;
+}
+
+.parent-auto {
+  width: auto;
+}
+
+.small-input-parent {
+  position: relative;
 }
 
 .message-input {
@@ -60,7 +95,9 @@
   border: none;
   outline: none;
   box-shadow: none;
-  width: 18rem;
+  /* width: 18rem; */
+  /* width: 80%; */
+  width: 100%;
   flex-grow: 3;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -105,7 +142,7 @@
 
 @media (max-width: 844px) {
   .input-margin-top-med {
-    margin-top: 0rem;
+    margin-top: 2rem;
   }
 }
 

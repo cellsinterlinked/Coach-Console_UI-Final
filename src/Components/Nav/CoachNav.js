@@ -35,7 +35,7 @@ const CoachNav = ({
             />
           )}
         </div>
-        <p>Coach Name</p>
+        {fullUserData && fullUserData.name ? <p>{fullUserData.name}</p> : <p>Add your name in the "Profile" tab.</p>}
       </div>
       <div className="nav-button-container">
         <NavButton

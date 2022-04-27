@@ -140,7 +140,7 @@ return (
 
               }}
 
-              title="Bulk Diet Day 1"
+              title={selectedDiet.food[dietNum].name}
               columns={columns}
               data={tableData}
               onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
