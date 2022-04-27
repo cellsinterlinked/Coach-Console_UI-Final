@@ -87,7 +87,26 @@
   background-color: var(--sm-button-teal);
   border: none;
   box-shadow: var(--search-shadow);
-  margin-left: 1rem;
+  margin-left: 0.5rem;
+}
+
+.search-button-mobile {
+  display: none;
+}
+
+@media (max-width: 849px) {
+  .search-button-mobile {
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--sm-button-teal);
+    border: none;
+    box-shadow: var(--search-shadow);
+    margin-left: 0.5rem;
+  }
 }
 
 .image-button {

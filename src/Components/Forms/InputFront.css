@@ -42,6 +42,12 @@
   font-size: 16px;
 }
 
+@media (max-width: 500px) {
+  .search-input {
+    width: 13rem;
+  }
+}
+
 .search-clear {
   border-radius: 50%;
   position: absolute;

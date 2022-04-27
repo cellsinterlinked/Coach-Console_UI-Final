@@ -13,27 +13,17 @@ import { HiOutlineChevronLeft } from 'react-icons/hi';
 
 import DrawerRight from '../../Nav/DrawerRight';
 import DrawerBottom from '../../Nav/DrawerBottom';
-
+import TotalDisplay from '../../CheckinDisplays/TotalDisplay';
 import CheckinButton from '../../Buttons/CheckinButton';
 import CheckinMobile from '../../Forms/CheckinMobile';
-import LineChart from '../../Charts/LineChart';
 import ChartDrop from '../../DropDowns/ChartDrop';
 import Axios from 'axios';
 import Modal from '../../Modals/Modal';
-import BodyFatDisplay from '../../CheckinDisplays/BodyFatDisplay';
-import MeasurementDisplay from '../../CheckinDisplays/MeasurementDisplay';
-import NutritionDisplay from '../../CheckinDisplays/NutritionDisplay';
-import SleepDisplay from '../../CheckinDisplays/SleepDisplay';
-import WorkoutDisplay from '../../CheckinDisplays/WorkoutDisplay';
-import PictureDisplay from '../../CheckinDisplays/PictureDisplay';
 import ClientCharts from '../../Charts/ClientCharts';
 import LoadingDots from '../../Animations/LoadingDots';
 
 const Home = ({
   navToggle,
-  workouts,
-  diets,
-  fullUserData,
   currentClient,
   userId,
   userRole,
@@ -44,23 +34,15 @@ const Home = ({
   const [loading, setLoading] = useState(false);
   const [checkMode, setCheckMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
-
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteId, setDeleteId] = useState();
-
   const [query, setQuery] = useState('');
   const [searchList, setSearchList] = useState();
-
-  // const [deleteAllMode, setDeleteAllMode] = useState(false)
-
   const [checkinChartData, setCheckinChartData] = useState();
-
   const [checkinList, setCheckinList] = useState();
-
   const [checkinDisplay, setCheckinDisplay] = useState();
-
   const [clients, setClients] = useState();
-
+  const [fullUserData, setFullUserData] = useState();
   const [chartSelect, setChartSelect] = useState({
     fatMass: true,
     bodyFat: true,
@@ -79,30 +61,40 @@ const Home = ({
   });
 
   useEffect(() => {
-    if (currentClient.id !== '0') {
-      console.log('this is the current client', currentClient);
-      const getClientData = async () => {
-        setLoading(true);
-        let result;
-        try {
-          result = await Axios.get(
-            `http://localhost:5000/api/checkins/${currentClient.id}`
-          );
-        } catch (err) {
-          alert(err);
-          setLoading(false);
-
-          return;
-        }
-        setCheckinChartData(result.data);
-        setCheckinList(result.data.checkins);
-        console.log('this is the result', result.data);
+    console.log('this is the current client', currentClient);
+    const getClientData = async () => {
+      setLoading(true);
+      let result;
+      try {
+        result = await Axios.get(
+          `http://localhost:5000/api/checkins/${currentClient.id}`
+        );
+      } catch (err) {
+        alert(err);
         setLoading(false);
-      };
+        return;
+      }
+      let results;
+      try {
+        results = await Axios.get(
+          `http://localhost:5000/api/users/all/${userId}`
+        );
+      } catch (err) {
+        alert(`couldn't get info from database ${err}`);
+        setError("Couldn't fetch from the database");
+        setLoading(false);
+        return;
+      }
 
-      getClientData();
-    }
-  }, [currentClient, currentClient.id, ]);
+      setFullUserData(results.data);
+      setCheckinChartData(result.data);
+      setCheckinList(result.data.checkins);
+      console.log('this is the result', result.data);
+      setLoading(false);
+    };
+
+    getClientData();
+  }, [currentClient, currentClient.id]);
 
   useEffect(() => {
     if (userRole === 'client') {
@@ -120,7 +112,7 @@ const Home = ({
       }
     }
 
-    if (userRole === 'coach') {
+
       if (query && checkinList && checkinList.length > 0) {
         setSearchList(
           checkinList
@@ -135,8 +127,8 @@ const Home = ({
             )
         );
       }
-    }
-  }, [fullUserData.checkins, fullUserData, query, userRole, currentClient.id]);
+
+  }, [checkinList, query, userRole, currentClient.id]);
 
   const updateClientData = async () => {
     setLoading(true);
@@ -181,7 +173,7 @@ const Home = ({
 
   const deleteCheckinHandler = async () => {
     setConfirmDelete(false);
-    console.log(deleteId)
+    console.log(deleteId);
     let results;
 
     try {
@@ -201,6 +193,8 @@ const Home = ({
     setQuery(e.target.value);
     console.log(query);
   };
+
+  console.log(checkinChartData);
 
   return (
     <>
@@ -243,7 +237,9 @@ const Home = ({
         }
       />
 
-      {loading === false && fullUserData ? (
+      {loading && <LoadingDots />}
+
+      {!loading && fullUserData && (
         <>
           <DrawerRight
             show={current === false}
@@ -275,15 +271,13 @@ const Home = ({
                 updateClientData={updateClientData}
                 setAdd={setAdd}
                 setCheckMode={setCheckMode}
-
               />
             }
           />
 
-          {/* if not checkin display  */}
+          {/* header if not checkin display this is only desktop */}
 
-        {!checkinDisplay ?
-          (
+          {!checkinDisplay && (
             <header className="dash-head">
               <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />
               {add !== true ? <h1>Check-Ins</h1> : <h1>New Check-In</h1>}
@@ -318,158 +312,73 @@ const Home = ({
                 </div>
               </div>
             </header>
-          ) : (
-            // if checkin display
-            <header className="dash-head">
-              {add === true && (
-                <HiOutlineMenuAlt2
-                  className="mobile-menu"
-                  onClick={navToggle}
-                />
-              )}
-              {add !== true && (
-                <HiChevronLeft
-                  className="mobile-menu"
-                  onClick={() => setCheckinDisplay()}
-                />
-              )}
-              {add !== true ? (
-                <h1>{currentClient.name}</h1>
-              ) : (
-                <h1>New Check-In</h1>
-              )}
-              {current === true && (
-                <RiUserAddLine
-                  className="add-user-mobile"
-                  onClick={addCheckinToggle}
-                />
-              )}
-              {current === false && (
-                <div className="chart-drop-container">
-                  <ChartDrop
-                    selection={chartSelect}
-                    setSelection={setChartSelect}
-                  />
-                </div>
-              )}
-              <div className="mobile-select1">
-                <h3 className="mobile-checkin-date">{`${checkinDisplay.date.monthString} ${checkinDisplay.date.day} ${checkinDisplay.date.year}`}</h3>
-              </div>
-            </header>
-          )
-        }
+          )}
 
 
+          {/* end header */}
 
-
-
-
-
-
-
+          {/* this is the search bar both desktop and mobile*/}
 
           <div className="desk-center">
-            <div className="dash-search-container">
-              <Input
-                parentClass="parent-auto"
-                name="search-input"
-                placeholder={'Search Check-Ins'}
-                onChange={queryHandler}
-                value={query}
-                clear={() => setQuery('')}
-                clearable={true}
-              />
-              <Button
-                name="search-button"
-                contents={<GoSearch className="magnify" />}
-              />
+            {current === true && (
+              <div className="dash-search-container">
+                <Input
+                  parentClass="parent-auto"
+                  name="search-input"
+                  placeholder={'Search Check-Ins'}
+                  onChange={queryHandler}
+                  value={query}
+                  clear={() => setQuery('')}
+                  clearable={true}
+                />
+                <Button
+                  name="search-button"
+                  contents={<GoSearch className="magnify" />}
+                />
+                <Button
+                  name="search-button-mobile"
+                  contents={<IoTrashOutline className="magnify" />}
+                  click={() => setDeleteMode(!deleteMode)}
+                />
 
-              {query &&
-                query !== '' &&
-                searchList &&
-                searchList.length > 0 &&
-                userRole === 'client' && (
-                  <div className="search-drop-broken">
-                    {searchList.map((checkin, index) => (
-                      <CheckinButton
-                        checkin={checkin}
-                        click={selectHandler}
-                        id={checkin.id}
-                        name={checkin.name}
-                        key={index}
-                        image={checkin.images[0] || currentClient.image}
-                        date={`${checkin.date.monthString} ${checkin.date.day} ${checkin.date.year}`}
-                        firstCheckin={`${fullUserData.userCheckins[0].date.monthString} ${fullUserData.userCheckins[0].date.day} ${fullUserData.userCheckins[0].date.year}`}
-                      />
-                    ))}
-                  </div>
-                )}
-            </div>
-
-            {checkinDisplay && (
-              <div className="client-list-container">
-                <div className="client-desk-menu">
-                  <h3>{currentClient.name}</h3>
-                  <h3
-                    style={{ marginLeft: '2rem', fontSize: '.9rem' }}
-                  >{`${checkinDisplay.date.monthString} ${checkinDisplay.date.day} ${checkinDisplay.date.year}`}</h3>
-                </div>
-                <div className="absurd-box">
-                  {checkinDisplay.images &&
-                    checkinDisplay.images.length !== 0 && (
-                      <PictureDisplay checkin={checkinDisplay} />
-                    )}
-                  {checkinDisplay.bfTotal && (
-                    <BodyFatDisplay checkin={checkinDisplay} />
-                  )}
-                  {checkinDisplay.weight && (
-                    <div className="weight-display-box">
-                      <p>
-                        Weight: <strong>{checkinDisplay.weight}</strong>
-                      </p>
+                {query &&
+                  query !== '' &&
+                  searchList &&
+                  searchList.length > 0 &&
+                  userRole === 'client' && (
+                    <div className="search-drop-broken">
+                      {searchList.map((checkin, index) => (
+                        <CheckinButton
+                          checkin={checkin}
+                          click={selectHandler}
+                          id={checkin.id}
+                          name={checkin.name}
+                          key={index}
+                          image={checkin.images[0] || currentClient.image}
+                          date={`${checkin.date.monthString} ${checkin.date.day} ${checkin.date.year}`}
+                          firstCheckin={`${fullUserData.userCheckins[0].date.monthString} ${fullUserData.userCheckins[0].date.day} ${fullUserData.userCheckins[0].date.year}`}
+                        />
+                      ))}
                     </div>
                   )}
-                  {checkinDisplay.measurementTotal && (
-                    <MeasurementDisplay checkin={checkinDisplay} />
-                  )}
-                  {checkinDisplay.totalCals && (
-                    <NutritionDisplay checkin={checkinDisplay} />
-                  )}
-                  {checkinDisplay.sleepAvg && (
-                    <SleepDisplay checkin={checkinDisplay} />
-                  )}
-                  {checkinDisplay.avgWorkoutQuality && (
-                    <WorkoutDisplay checkin={checkinDisplay} />
-                  )}
-                </div>
               </div>
             )}
+            {/* end search bar */}
 
+            {/* display of checkin mobile and desktop */}
 
+            {checkinDisplay && (
+              <TotalDisplay
+                currentClient={currentClient}
+                checkinDisplay={checkinDisplay}
+              />
+            )}
 
+            {/* end display of checkin */}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {checkinChartData && !checkinDisplay ? (
+            {/* desktop header for checkin list and create new checkin */}
+            {/* this entire block is for if there is checkinChart data and its not checkinDisplay */}
+            {checkinChartData && !checkinDisplay && (
               <div className="client-list-container">
                 <div className="client-desk-menu">
                   {checkMode !== true ? (
@@ -488,7 +397,9 @@ const Home = ({
                     />
                   )}
                 </div>
+                {/* end header for checkin list and create new checkin */}
 
+                {/* add checkin page desktop */}
                 {currentClient && checkMode === true && (
                   <div className="absurd-box">
                     <CheckinMobile
@@ -505,35 +416,12 @@ const Home = ({
                     />
                   </div>
                 )}
+                {/* end add checkin page for desktop */}
 
                 {checkMode === false && (
                   <div className="absurd-box">
-                    {userRole === 'coach' &&
-                      checkinChartData.checkins &&
-                      checkinChartData.checkins !== [] &&
-                      checkinChartData.checkins
-                        .filter(
-                          (checkin) => checkin.client === currentClient.id
-                        )
-                        .map((client, index) => (
-                          <CheckinButton
-                            id={client.id}
-                            name={client.name}
-                            key={index}
-                            image={currentClient.image}
-                            date={'fake date'}
-                            firstCheckin={'fake date'}
-                            deleteMode={deleteMode}
-                            click={
-                              deleteMode === true
-                                ? deleteHandler
-                                : selectHandler
-                            }
-                          />
-                        ))}
-
-                    {userRole === 'client' &&
-                      checkinChartData.checkins &&
+                    {/* checkins list if there are checkins */}
+                    {checkinChartData.checkins &&
                       checkinChartData.checkins !== [] &&
                       checkinChartData.checkins.map((checkin, index) => (
                         <CheckinButton
@@ -550,142 +438,26 @@ const Home = ({
                           }
                         />
                       ))}
+                    {/* end checkins list if there are checkins */}
 
-                    {userRole === 'client' &&
-                      checkinChartData.checkins &&
-                      checkinChartData.checkins === [] && (
+                    {/* checkin list if there are no checkins */}
+                    {checkinChartData.checkins &&
+                      checkinChartData.checkins.length === 0 && (
                         <div className="absurd-box">
                           <h3 className="no-data-title">
                             Oops! You have no checkins. Click the + button on
                             the top right to get started!
                           </h3>
-                          {fullUserData.code && (
-                            <p className="no-data-addition">
-                              {fullUserData.code}
-                            </p>
-                          )}
                         </div>
                       )}
-
-                    {userRole === 'client' &&
-                      checkinChartData.checkins &&
-                      checkinChartData.checkins === [] && (
-                        <div className="absurd-box">
-                          <h3 className="no-data-title">
-                            Oopsies! You have no clients. Get them to sign up
-                            with your Coach Code below!
-                          </h3>
-                          {fullUserData.code && (
-                            <p className="no-data-addition">
-                              {fullUserData.code}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="client-list-container">
-                <div className="client-desk-menu">
-                  {/* {checkMode !== true ? (
-                    <h3>Check-Ins</h3>
-                  ) : (
-                    <h3>New Check-In</h3>
-                  )}
-                  <IoAddSharp
-                    className="add-desk-icon"
-                    onClick={() => setCheckMode(!checkMode)}
-                  />
-                  {checkMode === false && (
-                    <IoTrashOutline
-                      className="desk-trash-icon"
-                      onClick={() => setDeleteMode(!deleteMode)}
-                    />
-                  )} */}
-                </div>
-                {checkMode === false && !currentClient ? (
-                  <div className="absurd-box">
-                    <h3 className="no-data-title">
-                      Oops! You have no clients. Get them to sign up with your
-                      Coach Code below!
-                    </h3>
-                    {fullUserData.code && (
-                      <p className="no-data-addition">{fullUserData.code}</p>
-                    )}
-                    {/* {userRole === 'coach' &&
-                      checkinChartData.checkins
-                        .filter(
-                          (checkin) => checkin.client === currentClient.id
-                        )
-                        .map((client, index) => (
-                          <CheckinButton
-                            id={client.id}
-                            name={client.name}
-                            key={index}
-                            image={currentClient.image}
-                            date={'fake date'}
-                            firstCheckin={'fake date'}
-                            deleteMode={deleteMode}
-                            click={
-                              deleteMode === true
-                                ? deleteHandler
-                                : selectHandler
-                            }
-                          />
-                        ))} */}
-
-                    {userRole === 'client' &&
-                      checkinChartData &&
-                      checkinChartData.checkins &&
-                      checkinChartData.checkins !== [] &&
-                      checkinChartData.checkins.map((checkin, index) => (
-                        <CheckinButton
-                          checkin={checkin}
-                          id={checkin.id}
-                          name={checkin.name}
-                          key={index}
-                          image={checkin.images[0] || currentClient.image}
-                          date={`${checkin.date.monthString} ${checkin.date.day} ${checkin.date.year}`}
-                          firstCheckin={`${fullUserData.userCheckins[0].date.monthString} ${fullUserData.userCheckins[0].date.day} ${fullUserData.userCheckins[0].date.year}`}
-                          deleteMode={deleteMode}
-                          click={
-                            deleteMode === true ? deleteHandler : selectHandler
-                          }
-                        />
-                      ))}
-                  </div>
-                ) : (
-                  <div className="absurd-box">
-                    <CheckinMobile
-                      workouts={fullUserData.workouts}
-                      diets={fullUserData.diets}
-                      currentClient={currentClient}
-                      userId={userId}
-                      userRole={userRole}
-                      updateClientData={updateClientData}
-                      setAdd={setAdd}
-                      setCheckMode={setCheckMode}
-                    />
+                    {/* end checkin list if there are no checkins */}
                   </div>
                 )}
               </div>
             )}
           </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+          {/* right hand side analytics */}
 
           <div className="right-sector-desk">
             <div className="right-bar-desk">
@@ -696,9 +468,7 @@ const Home = ({
                     setSelection={setChartSelect}
                   />
                 </div>
-                <h3>
-                  {userRole === 'coach' ? 'Client Analytics' : 'My Analytics'}
-                </h3>
+                <h3>My Analytics</h3>
               </div>
               {checkinChartData && (
                 <ClientCharts
@@ -708,9 +478,9 @@ const Home = ({
               )}
             </div>
           </div>
+          {/*
+          end right side analytics */}
         </>
-      ) : (
-        <LoadingDots />
       )}
     </>
   );

@@ -34,6 +34,22 @@
   transition: 500ms ease;
 }
 
+@media (max-width: 849px) {
+  .chart-drop-menu-container {
+    position: absolute;
+    top: 4rem;
+    right: 0;
+    background: var(--dark-backing);
+
+    height: auto;
+    width: 12rem;
+    z-index: 400;
+    overflow: scroll;
+    opacity: 1;
+    transition: 500ms ease;
+  }
+}
+
 .chart-drop-shrink {
   height: 0px;
   opacity: 0;
