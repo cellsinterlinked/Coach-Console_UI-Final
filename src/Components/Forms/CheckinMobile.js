@@ -9,8 +9,9 @@ import DietButton from '../Buttons/DietButton';
 import Button from '../Buttons/Button';
 import Axios from 'axios'
 import Modal from '../Modals/Modal'
+import LoadingDots from '../Animations/LoadingDots';
 
-const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientData, setAdd  }) => {
+const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientData, setCheckMode }) => {
   const [error, setError] = useState("")
   const [location, setLocation] = useState()
   const [bfState, setBfState] = useState(false);
@@ -29,6 +30,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
   const [workoutQual, setWorkoutQual] = useState({valid: false})
   const [notes, setNotes] = useState("")
   const [weight, setWeight] = useState("")
+  const [loading, setLoading] = useState(false)
 
 
   useEffect(() => {
@@ -36,7 +38,25 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
   },[imageArray])
 
 
+  const sendCheckin = async(data) => {
+
+    let results;
+    try {
+      results = await Axios.post('http://localhost:5000/api/checkins/', data)
+    } catch (err) {
+      setError(`Couldnt post the checkin ${err}`)
+      return
+    }
+    setError("Successfully added check-in!")
+    updateClientData()
+    setCheckMode(false)
+    setLoading(false)
+
+  }
+
+
   const submitCheckinHandler = () => {
+    setLoading(true)
 
     const submitvalidator = () => {
       let bfArr = []
@@ -49,6 +69,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
           } else {
             setError("Please fill out all or none of the bodyfat criteria.")
             setLocation('bodyfat')
+            setLoading(false)
             return;
           }
           break
@@ -74,6 +95,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
           }  else {
             setError("Please fill out all or none of the measurement criteria")
             setLocation('Measurements')
+            setLoading(false)
             return;
           }
           break
@@ -92,6 +114,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
             setError("Please fill out sleep quality for all days or none")
             setLocation('sleep')
             console.log(sleepArr, location)
+            setLoading(false)
             return;
           }
           break
@@ -109,7 +132,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
             setWorkoutQual({...workoutQual, valid: true})
 
           }  else {
-
+            setLoading(false)
             setError("Please fill out workout quality for all workouts")
             setLocation('workout')
             return;
@@ -153,7 +176,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
       bfThigh: parseInt(bodyFat.thigh),
       }
     }
-
+    console.log(data)
     if (measurements.valid === true) {
       data = {...data,
         neck: parseInt(measurements.neck),
@@ -166,6 +189,7 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
         calf: parseInt(measurements.calf),
       }
     }
+    console.log('this is data 2',data)
 
     if (sleep.valid === true) {
       data = {...data,
@@ -200,31 +224,22 @@ const CheckinMobile = ({ workouts, diets, currentClient, userId, updateClientDat
     }
 
 
-
-    console.log(data.images)
-
-  const sendCheckin = async() => {
-    let results;
-    try {
-      results = await Axios.post('http://localhost:5000/api/checkins/', data)
-    } catch (err) {
-      setError(`Couldnt post the checkin ${err}`)
-      return
-    }
-    setError("Successfully added check-in!")
-    updateClientData()
+    setTimeout(function(){sendCheckin(data)}, 4000)
 
   }
-  sendCheckin()
 
 
 
 
 
-  }
+
+
+
+
 
   return (
     <div className="checkin-mobile-wrapper">
+      {loading && <LoadingDots />}
       <Modal
       show={error}
       onCancel={() => setError("")}

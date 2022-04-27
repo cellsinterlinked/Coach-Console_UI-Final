@@ -16,6 +16,7 @@ import DrawerBottom from '../../Nav/DrawerBottom';
 
 import CheckinButton from '../../Buttons/CheckinButton';
 import CheckinMobile from '../../Forms/CheckinMobile';
+import LineChart from '../../Charts/LineChart';
 import ChartDrop from '../../DropDowns/ChartDrop';
 import Axios from 'axios';
 import Modal from '../../Modals/Modal';
@@ -28,7 +29,7 @@ import PictureDisplay from '../../CheckinDisplays/PictureDisplay';
 import ClientCharts from '../../Charts/ClientCharts';
 import LoadingDots from '../../Animations/LoadingDots';
 
-const Trainee = ({
+const Home = ({
   navToggle,
   workouts,
   diets,
@@ -43,13 +44,23 @@ const Trainee = ({
   const [loading, setLoading] = useState(false);
   const [checkMode, setCheckMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
+
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteId, setDeleteId] = useState();
+
   const [query, setQuery] = useState('');
   const [searchList, setSearchList] = useState();
+
+  // const [deleteAllMode, setDeleteAllMode] = useState(false)
+
   const [checkinChartData, setCheckinChartData] = useState();
+
   const [checkinList, setCheckinList] = useState();
+
   const [checkinDisplay, setCheckinDisplay] = useState();
+
+  const [clients, setClients] = useState();
+
   const [chartSelect, setChartSelect] = useState({
     fatMass: true,
     bodyFat: true,
@@ -68,26 +79,31 @@ const Trainee = ({
   });
 
   useEffect(() => {
-    const getClientData = async () => {
-      setLoading(true);
-      let result;
-      try {
-        result = await Axios.get(
-          `http://localhost:5000/api/checkins/${currentClient.id}`
-        );
-      } catch (err) {
-        setError(err)
+    if (currentClient.id !== '0') {
+      console.log('this is the current client', currentClient);
+      const getClientData = async () => {
+        setLoading(true);
+        let result;
+        try {
+          result = await Axios.get(
+            `http://localhost:5000/api/checkins/${currentClient.id}`
+          );
+        } catch (err) {
+          alert(err);
+          setLoading(false);
+
+          return;
+        }
+        setCheckinChartData(result.data);
+        setCheckinList(result.data.checkins);
+        console.log('this is the result', result.data);
         setLoading(false);
+      };
 
-        return;
-      }
-      setCheckinChartData(result.data);
-      setCheckinList(result.data.checkins);
-      setLoading(false);
+      getClientData();
+    }
+  }, [currentClient, currentClient.id, ]);
 
-    };
-    getClientData();
-  }, [currentClient.id]);
   useEffect(() => {
     if (userRole === 'client') {
       if (query && checkinList && checkinList.length > 0) {
@@ -103,7 +119,25 @@ const Trainee = ({
         );
       }
     }
-  }, [checkinList, query, userRole]);
+
+    if (userRole === 'coach') {
+      if (query && checkinList && checkinList.length > 0) {
+        setSearchList(
+          checkinList
+            .filter((checkin) => checkin.client === currentClient.id)
+            .filter(
+              (checkin) =>
+                checkin.date.monthString
+                  .toLowerCase()
+                  .includes(query.toLowerCase()) ||
+                checkin.date.day.toString().includes(query) ||
+                checkin.date.year.toString().includes(query)
+            )
+        );
+      }
+    }
+  }, [fullUserData.checkins, fullUserData, query, userRole, currentClient.id]);
+
   const updateClientData = async () => {
     setLoading(true);
     let result;
@@ -112,10 +146,12 @@ const Trainee = ({
         `http://localhost:5000/api/checkins/${currentClient.id}`
       );
     } catch (err) {
-      setError(err)
+      alert(err);
       setLoading(false);
+
       return;
     }
+    console.log('its working strangely');
     setCheckinChartData(result.data);
     setCheckinList(result.data.checkins);
     setLoading(false);
@@ -124,26 +160,33 @@ const Trainee = ({
   const addCheckinToggle = () => {
     setAdd(!add);
     setCheckinDisplay();
+    console.log(add);
   };
 
   const deleteHandler = (id) => {
+    // alert(`${id} is checkin we are deleting`)
     setDeleteId(id);
     setConfirmDelete(true);
   };
+
   const selectHandler = (checkin) => {
     setCheckinDisplay(checkin);
     setQuery('');
     setSearchList();
   };
+
   const backHandler = () => {
     setCheckinDisplay();
   };
+
   const deleteCheckinHandler = async () => {
     setConfirmDelete(false);
+    console.log(deleteId)
     let results;
+
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/checkins/${deleteId}`
+        `http://localhost:5000/api/checkins/${deleteId.id}`
       );
     } catch (err) {
       setError(`Couldnt delete this check-in.${err}`);
@@ -153,24 +196,11 @@ const Trainee = ({
     updateClientData();
     setDeleteMode(false);
   };
+
   const queryHandler = (e) => {
     setQuery(e.target.value);
     console.log(query);
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   return (
     <>
@@ -244,6 +274,8 @@ const Trainee = ({
                 userRole={userRole}
                 updateClientData={updateClientData}
                 setAdd={setAdd}
+                setCheckMode={setCheckMode}
+
               />
             }
           />
@@ -469,6 +501,7 @@ const Trainee = ({
                       userRole={userRole}
                       updateClientData={updateClientData}
                       setAdd={setAdd}
+                      setCheckMode={setCheckMode}
                     />
                   </div>
                 )}
@@ -632,6 +665,7 @@ const Trainee = ({
                       userRole={userRole}
                       updateClientData={updateClientData}
                       setAdd={setAdd}
+                      setCheckMode={setCheckMode}
                     />
                   </div>
                 )}
@@ -682,4 +716,4 @@ const Trainee = ({
   );
 };
 
-export default Trainee;
+export default Home;

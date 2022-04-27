@@ -2,6 +2,12 @@ import React from 'react';
 import './NavButton.css';
 
 const NavButton = ({ name, setPage, icon, page, navToggle, logout }) => {
+
+  // const navHandler = () => {
+  //   setPage(name)
+  //   navToggle()
+  // }
+
   return (
     <div
       className={
@@ -11,6 +17,7 @@ const NavButton = ({ name, setPage, icon, page, navToggle, logout }) => {
         setPage(name)
         navToggle()
       }}
+      // onClick= {navHandler}
     >
       <div className="nav-icon-container">{icon}</div>
       <p>{name}</p>
