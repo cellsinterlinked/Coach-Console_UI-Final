@@ -243,7 +243,7 @@ const Home = ({
         <>
           <DrawerRight
             show={current === false}
-            name="drawer-right-partial"
+            name="drawer-right-partial_trainee"
             children={
               <>
                 {checkinChartData && (
@@ -315,6 +315,38 @@ const Home = ({
           )}
 
 
+
+             { checkinDisplay && <header className="dash-head">
+              {add === true && (
+                <HiOutlineMenuAlt2
+                  className="mobile-menu"
+                  onClick={navToggle}
+                />
+              )}
+              {add !== true && (
+                <HiChevronLeft
+                  className="mobile-menu"
+                  onClick={() => setCheckinDisplay()}
+                />
+              )}
+              {add !== true ? (
+                <h1>{currentClient.name}</h1>
+              ) : (
+                <h1>New Check-In</h1>
+              )}
+              {current === true && (
+                <RiUserAddLine
+                  className="add-user-mobile"
+                  onClick={addCheckinToggle}
+                />
+              )}
+
+              <div className="mobile-select1">
+                <h3 className="mobile-checkin-date">{`${checkinDisplay.date.monthString} ${checkinDisplay.date.day} ${checkinDisplay.date.year}`}</h3>
+              </div>
+            </header>}
+
+
           {/* end header */}
 
           {/* this is the search bar both desktop and mobile*/}
@@ -371,6 +403,7 @@ const Home = ({
               <TotalDisplay
                 currentClient={currentClient}
                 checkinDisplay={checkinDisplay}
+                setCheckinDisplay={setCheckinDisplay}
               />
             )}
 
@@ -378,7 +411,7 @@ const Home = ({
 
             {/* desktop header for checkin list and create new checkin */}
             {/* this entire block is for if there is checkinChart data and its not checkinDisplay */}
-            {checkinChartData && !checkinDisplay && (
+            {checkinChartData && (
               <div className="client-list-container">
                 <div className="client-desk-menu">
                   {checkMode !== true ? (
@@ -418,7 +451,7 @@ const Home = ({
                 )}
                 {/* end add checkin page for desktop */}
 
-                {checkMode === false && (
+                {checkMode === false && current === true && !checkinDisplay && (
                   <div className="absurd-box">
                     {/* checkins list if there are checkins */}
                     {checkinChartData.checkins &&

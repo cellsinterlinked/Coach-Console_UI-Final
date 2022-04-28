@@ -185,3 +185,35 @@
 .button-bottom-margin {
   margin-bottom: 3rem;
 }
+
+.back-to-checkins {
+  border-radius: 18px;
+  height: 2rem;
+  padding: 6px;
+  outline: none;
+  box-shadow: var(--button-shadow);
+  background: var(--teal-button);
+  margin-left: 1rem;
+  border: none;
+  color: white;
+  font-weight: bold;
+  width: 4.5rem;
+  transition: 300ms ease;
+  cursor: pointer;
+}
+
+.back-to-checkins:hover {
+  box-shadow: none;
+}
+
+.button-inner-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.button-inner-container p {
+  margin-right: 6px;
+}
