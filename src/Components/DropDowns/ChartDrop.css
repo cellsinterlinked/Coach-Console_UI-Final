@@ -7,10 +7,11 @@
   font-weight: bold;
   height: 100%;
   width: 100%;
-  color: black;
+  color: var(--grey-title);
   /* border-bottom: var(--grey-border); */
   transition: 500ms ease;
   text-align: center;
+  cursor: pointer;
 }
 
 .chart-drop-active-back {
@@ -34,6 +35,22 @@
   transition: 500ms ease;
 }
 
+@media (max-width: 849px) {
+  .chart-drop-menu-container {
+    position: absolute;
+    top: 4rem;
+    right: 0;
+    background: var(--dark-backing);
+
+    height: auto;
+    width: 12rem;
+    z-index: 400;
+    overflow: scroll;
+    opacity: 1;
+    transition: 500ms ease;
+  }
+}
+
 .chart-drop-shrink {
   height: 0px;
   opacity: 0;
@@ -46,7 +63,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  color: rgb(61, 61, 61);
+  color: var(--grey-title);
   height: 2rem;
   width: auto;
   transition: 500ms ease;

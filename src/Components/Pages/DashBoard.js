@@ -16,6 +16,7 @@ import Testing from './CoachPages/Testing';
 import CoachProfile from './CoachPages/CoachProfile';
 import {AuthContext} from '../../Context/auth-context';
 import LoadingDots from '../Animations/LoadingDots';
+import Home from './CoachPages/Home';
 
 
 const Dashboard = () => {
@@ -256,7 +257,7 @@ const Dashboard = () => {
         />
       )}
       {page === 'Home' && (
-        <Trainee
+        <Home
           userId={userId}
           currentClient={currentClient}
           setCurrentClient={setCurrentClient}
