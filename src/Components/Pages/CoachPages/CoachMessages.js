@@ -165,9 +165,9 @@ const CoachMessages = ({
     setAdd(!add);
   };
 
-  const setConvo = (index) => {
-    // e.preventDefault()
-    setSelectedMessage(DUMMYMESSAGES[index]);
+  const setConvo = async(convo) => {
+    // update the convo to set the notifications to zero
+    setSelectedMessage(convo)
     setCurrent(false);
   };
 
@@ -450,6 +450,7 @@ const CoachMessages = ({
                         setSelectedMessage(convo);
                         setCurrent(false);
                       }}
+                      notifications={userRole === 'client' ? convo.clientNotifications : convo.coachNotifications}
                       index={index}
                       userId={userId}
                       key={index}
@@ -537,6 +538,7 @@ const CoachMessages = ({
                       setSelectedMessage(convo);
                       setCurrent(false);
                     }}
+                    notifications={userRole === 'client' ? convo.clientNotifications : convo.coachNotifications}
                     index={index}
                     userId={userId}
                     key={index}
@@ -615,6 +617,7 @@ const CoachMessages = ({
                       setSelectedMessage(convo);
                       setCurrent(false);
                     }}
+                    notifications={userRole === 'client' ? convo.clientNotifications : convo.coachNotifications}
                     index={index}
                     userId={userId}
                     key={index}

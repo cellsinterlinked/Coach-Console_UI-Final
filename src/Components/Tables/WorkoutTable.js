@@ -60,6 +60,7 @@ const WorkoutTable = ({
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = updatedData;
             const sendUpdate = async () => {
+              console.log(userId, loadedWorkout.id, loadedWorkout.cardioData, tempData)
               let results;
               try {
                 results = await Axios.patch(

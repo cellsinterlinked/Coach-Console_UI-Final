@@ -27,6 +27,7 @@ import LoadingDots from '../../Animations/LoadingDots';
 
 const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   const [workoutNum, setWorkoutNum] = useState(0);
+  const [cardioNum, setCardioNum] = useState(0);
   const [cardioDisplay, setCardioDisplay] = useState(false);
 
   const [newMode, setNewMode] = useState(false);
@@ -51,7 +52,9 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   );
 
   const [cardioData, setCardioData] = useState(
-    loadedWorkout ? [loadedWorkout.cardioData.data] : null
+    loadedWorkout && loadedWorkout.cardioData[cardioNum].data
+      ? loadedWorkout.cardioData[cardioNum].data
+      : null
   );
 
   const [share, setShare] = useState(false);
@@ -81,8 +84,8 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
         return;
       }
       setWorkoutList(results.data.workouts.reverse());
-      if(!results.data.workouts || results.data.workouts.length < 1) {
-        setNewMode(true)
+      if (!results.data.workouts || results.data.workouts.length < 1) {
+        setNewMode(true);
       }
       console.log(results.data.workouts);
       setLoading(false);
@@ -317,67 +320,69 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       </div>
 
       <div className="desk-center">
-        {loadedWorkout && <div className="mobile-head-option-container onlySmall">
-          <div
-            className={
-              share === true
-                ? 'share-drop-container'
-                : 'share-drop-container share-null'
-            }
-          >
-            {fullUserData.clients.map((client, index) => (
-              <div
-                onClick={() => setSelectedShare(client)}
-                key={index}
-                className={
-                  share === true
-                    ? 'share-user-select'
-                    : 'share-user-select share-null'
-                }
-              >
-                <div className="share-user-image">
-                  <img src={client.image} alt="" />
+        {loadedWorkout && (
+          <div className="mobile-head-option-container onlySmall">
+            <div
+              className={
+                share === true
+                  ? 'share-drop-container'
+                  : 'share-drop-container share-null'
+              }
+            >
+              {fullUserData.clients.map((client, index) => (
+                <div
+                  onClick={() => setSelectedShare(client)}
+                  key={index}
+                  className={
+                    share === true
+                      ? 'share-user-select'
+                      : 'share-user-select share-null'
+                  }
+                >
+                  <div className="share-user-image">
+                    <img src={client.image} alt="" />
+                  </div>
+                  <p>{client.name}</p>
                 </div>
-                <p>{client.name}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+            {loadedWorkout && (
+              <h3 className="mobile-options-title">{loadedWorkout.name}</h3>
+            )}
+
+            <FaRunning
+              onClick={() => setCardioDisplay(true)}
+              className={
+                cardioDisplay === true
+                  ? 'cardio-desk-icon icon-active'
+                  : 'cardio-desk-icon'
+              }
+            />
+            <FaDumbbell
+              onClick={() => setCardioDisplay(false)}
+              className={
+                cardioDisplay === false
+                  ? 'weight-desk-icon icon-active'
+                  : 'weight-desk-icon'
+              }
+            />
+
+            <IoTrashOutline
+              className="desk-trash-icon"
+              onClick={() => setDeleteMode(!deleteMode)}
+            />
+
+            <RiUserShared2Line
+              className="share-desk-icon"
+              onClick={() => setShare(!share)}
+            />
           </div>
-          {loadedWorkout && (
-            <h3 className="mobile-options-title">{loadedWorkout.name}</h3>
-          )}
-
-          <FaRunning
-            onClick={() => setCardioDisplay(true)}
-            className={
-              cardioDisplay === true
-                ? 'cardio-desk-icon icon-active'
-                : 'cardio-desk-icon'
-            }
-          />
-          <FaDumbbell
-            onClick={() => setCardioDisplay(false)}
-            className={
-              cardioDisplay === false
-                ? 'weight-desk-icon icon-active'
-                : 'weight-desk-icon'
-            }
-          />
-
-          <IoTrashOutline
-            className="desk-trash-icon"
-            onClick={() => setDeleteMode(!deleteMode)}
-          />
-
-          <RiUserShared2Line
-            className="share-desk-icon"
-            onClick={() => setShare(!share)}
-          />
-        </div>}
+        )}
 
         <div className="dash-search-container onlyLarge">
           <Input
             name="search-input"
-            parentClass='parent-auto'
+            parentClass="parent-auto"
             placeholder={'Search Workouts'}
             onChange={queryHandler}
             value={query}
@@ -430,7 +435,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
               ))}
             </div>
 
-            {(newMode === false && loadedWorkout )&& (
+            {newMode === false && loadedWorkout && (
               <FaRunning
                 onClick={() => setCardioDisplay(true)}
                 className={
@@ -440,7 +445,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                 }
               />
             )}
-            {(newMode === false && loadedWorkout) && (
+            {newMode === false && loadedWorkout && (
               <FaDumbbell
                 onClick={() => setCardioDisplay(false)}
                 className={
@@ -461,14 +466,13 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
               onClick={() => setNewMode(!newMode)}
             />
 
-            {(newMode === false && loadedWorkout) && (
+            {newMode === false && loadedWorkout && (
               <IoTrashOutline
                 className="desk-trash-icon"
                 onClick={() => setDeleteMode(!deleteMode)}
               />
             )}
-            {(newMode === false && loadedWorkout)
-             && (
+            {newMode === false && loadedWorkout && (
               <RiUserShared2Line
                 className="share-desk-icon"
                 onClick={() => setShare(!share)}
@@ -481,30 +485,59 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
             loadedWorkout.weightData &&
             workoutList && (
               <div className="absurd-box">
-                <div className="day-changer-container">
-                  <div className="day-title-container">
-                    {loadedWorkout.weightData.map((w, index) => (
+                {cardioDisplay === false && (
+                  <div className="day-changer-container">
+                    <div className="day-title-container">
+                      {loadedWorkout.weightData.map((w, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            color: workoutNum === index ? '#00ded1' : '#a5a5a5',
+                            width: `${percent}%`,
+                          }}
+                          onClick={() => setWorkoutNum(index)}
+                          className="day-title-box"
+                        >{`D${index + 1}`}</div>
+                      ))}
+                    </div>
+                    <div className="day-change-line">
                       <div
-                        key={index}
+                        className="moving-line"
                         style={{
-                          color: workoutNum === index ? '#00ded1' : '#a5a5a5',
                           width: `${percent}%`,
+                          left: `${percent * workoutNum}%`,
                         }}
-                        onClick={() => setWorkoutNum(index)}
-                        className="day-title-box"
-                      >{`D${index + 1}`}</div>
-                    ))}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="day-change-line">
-                    <div
-                      className="moving-line"
-                      style={{
-                        width: `${percent}%`,
-                        left: `${percent * workoutNum}%`,
-                      }}
-                    ></div>
+                )}
+
+                {cardioDisplay === true && (
+                  <div className="day-changer-container">
+                    <div className="day-title-container">
+                      {loadedWorkout.cardioData.map((w, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            color: cardioNum === index ? '#00ded1' : '#a5a5a5',
+                            width: `${percent}%`,
+                          }}
+                          onClick={() => setCardioNum(index)}
+                          className="day-title-box"
+                        >{`D${index + 1}`}</div>
+                      ))}
+                    </div>
+                    <div className="day-change-line">
+                      <div
+                        className="moving-line"
+                        style={{
+                          width: `${percent}%`,
+                          left: `${percent * cardioNum}%`,
+                        }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {loading && <LoadingDots />}
 
@@ -531,7 +564,8 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                   <CardioTable
                     cardioData={cardioData}
                     loadedWorkout={loadedWorkout}
-                    workoutNum={workoutNum}
+                    // workoutNum={workoutNum}
+                    cardioNum={cardioNum}
                     userId={userId}
                     setCardioData={setCardioData}
                     setError={setError}
@@ -575,9 +609,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
             </>
           )}
 
-          {workoutList && workoutList.length < 1 && (
-           <div></div>
-          )}
+          {workoutList && workoutList.length < 1 && <div></div>}
         </div>
       </div>
     </>

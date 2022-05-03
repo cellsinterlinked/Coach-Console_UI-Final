@@ -45,6 +45,14 @@
   .drawer-right-full {
     display: none;
   }
+
+  .drawer-right-partial {
+    display: none;
+  }
+
+  .drawer-right-partial_trainee {
+    display: none;
+  }
 }
 
 .drawer-bottom-partial {

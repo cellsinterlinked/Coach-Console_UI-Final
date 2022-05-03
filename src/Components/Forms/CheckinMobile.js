@@ -67,10 +67,6 @@ const CheckinMobile = ({
   const [weight, setWeight] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(imageArray);
-  }, [imageArray]);
-
   const sendCheckin = async (data) => {
     let results;
     try {
@@ -85,95 +81,37 @@ const CheckinMobile = ({
     setLoading(false);
   };
 
-  const submitCheckinHandler = async () => {
-    setLoading(true);
 
-    const submitvalidator = () => {
-      let bfArr = [];
+  const inputValidate = (obj, location) => {
+    let reg = /([0-9])/g
+    let arr =  Object.values(obj)
+    var matches = arr.some(e => reg.test(e));
+    if (arr.indexOf("") ===  - 1) {
+      return true;
+    } else if (arr.indexOf("") > -1 && matches === true) {
+      setLoading(false)
+      setLocation(location)
+      setError(`Please fill out all ${location} criteria or none.`)
+      return "error"
+    } else {
+      return false
+    }
+  }
 
-      Object.values(bodyFat).forEach((item) => bfArr.push(item));
-      for (let i = 0; i < bfArr.length; i++) {
-        if (bfArr[i] !== '' && bfArr[i] !== false) {
-          if (bfArr.includes('') === false) {
-            setBodyFat({ ...bodyFat, valid: true });
-          } else {
-            setError('Please fill out all or none of the bodyfat criteria.');
-            setLocation('bodyfat');
-            setLoading(false);
-            return;
-          }
-          break;
-        } else {
-          console.log('passed over');
-        }
-      }
 
-      // this first checks if there is anything for the bf parameters
-      // if there are it checks if they are all filled out
-      //if not it gives an error and stops the submit function.
-      // if they are all filled iout it sets valid to true inside bf object
-      // it then breaks out of the loop
-      // if they are all empty, we assume they didn't want to fill these out and its left invalid and won't be sent to the server.
 
-      let measureArr = [];
-      Object.values(measurements).forEach((item) => measureArr.push(item));
-      for (let i = 0; i < measureArr.length; i++) {
-        if (measureArr[i] !== '' && measureArr[i] !== false) {
-          if (measureArr.includes('') === false) {
-            setMeasurements({ ...measurements, valid: true });
-          } else {
-            setError('Please fill out all or none of the measurement criteria');
-            setLocation('Measurements');
-            setLoading(false);
-            return;
-          }
-          break;
-        } else {
-          console.log('passed over');
-        }
-      }
+    const submitCheckinHandler = async () => {
 
-      let sleepArr = [];
-      Object.values(sleep).forEach((item) => sleepArr.push(item));
-      for (let i = 0; i < sleepArr.length; i++) {
-        if (sleepArr[i] !== '' && sleepArr[i] !== false) {
-          if (sleepArr.includes('') === false) {
-            setSleep({ ...sleep, valid: true });
-          } else {
-            setError('Please fill out sleep quality for all days or none');
-            setLocation('sleep');
-            console.log(sleepArr, location);
-            setLoading(false);
-            return;
-          }
-          break;
-        } else {
-          console.log('passed over');
-        }
-      }
+    setLoading(true)
 
-      let workoutArr = [];
-      Object.values(workoutQual).forEach((item) => workoutArr.push(item));
-      for (let i = 0; i < workoutArr.length; i++) {
-        if (workoutArr[i] !== '' && workoutArr[i] !== false) {
-          if (workoutArr.length - 1 === workoutState.weightData.length) {
-            setWorkoutQual({ ...workoutQual, valid: true });
-          } else {
-            setLoading(false);
-            setError('Please fill out workout quality for all workouts');
-            setLocation('workout');
-            return;
-          }
-          break;
-        } else {
-          console.log('passed over');
-        }
-      }
-    };
+    let bodyFatVal = inputValidate(bodyFat, 'bodyfat')
+    let measurementVal = inputValidate(measurements, 'Measurements')
+    let workoutVal = inputValidate(workoutQual, 'workout')
+    let sleepVal = inputValidate(sleep, 'sleep')
 
-    submitvalidator();
-    if (error) {
-      console.log(error);
+    console.log(bodyFatVal,measurementVal, workoutVal, sleepVal)
+
+    if ((bodyFatVal || measurementVal || workoutVal || sleepVal) === 'error') {
       return;
     }
 
@@ -183,6 +121,7 @@ const CheckinMobile = ({
         qualityArr.push(parseInt(item));
       }
     });
+
     let data = {
       coachId: userId,
       clientId: currentClient.id,
@@ -190,7 +129,7 @@ const CheckinMobile = ({
       images: imageArray,
     };
 
-    if (bodyFat.valid === true) {
+    if (bodyFatVal === true) {
       data = {
         ...data,
         bfChest: parseInt(bodyFat.chest),
@@ -202,8 +141,8 @@ const CheckinMobile = ({
         bfThigh: parseInt(bodyFat.thigh),
       };
     }
-    console.log(data);
-    if (measurements.valid === true) {
+
+    if (measurementVal === true) {
       data = {
         ...data,
         neck: parseInt(measurements.neck),
@@ -216,9 +155,9 @@ const CheckinMobile = ({
         calf: parseInt(measurements.calf),
       };
     }
-    console.log('this is data 2', data);
 
-    if (sleep.valid === true) {
+
+    if (sleepVal === true) {
       data = {
         ...data,
         monSleep: parseInt(sleep.mon),
@@ -231,29 +170,29 @@ const CheckinMobile = ({
       };
     }
 
-    if (qualityArr.length > 0) {
-      data = { ...data, workoutQuality: qualityArr };
-    }
 
+    if (workoutVal === true) {
+      if (qualityArr.length > 0) {
+        data = { ...data, workoutQuality: qualityArr };
+      }
+    }
     if (notes !== '') {
       data = { ...data, notes: notes };
     }
-
     if (workoutState.name !== 'none') {
       data = { ...data, workoutId: workoutState.id };
     }
-
-    if (workoutState.name !== 'none') {
-      data = { ...data, workoutId: workoutState.id };
-    }
-
     if (dietState.name !== 'none') {
       data = { ...data, dietId: dietState.id };
     }
 
-    setTimeout(function () {
-      sendCheckin(data);
-    }, 4000);
+        setTimeout(function () {
+          sendCheckin(data);
+        }, 4000);
+
+    // console.log(data)
+
+
 
 
   };

@@ -35,11 +35,14 @@ const ClientNav = ({
             />
           )}
         </div>
-        {fullUserData && fullUserData.user.name ? (
+        {fullUserData && fullUserData.user.name &&
           <p>{fullUserData.user.name}</p>
-        ) : (
+        }
+         {fullUserData && fullUserData.user.name === "" &&
+
           <p>Select Profile to Update Name</p>
-        )}
+        }
+
       </div>
       <div className="nav-button-container">
         <NavButton

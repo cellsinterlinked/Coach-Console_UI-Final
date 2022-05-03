@@ -90,7 +90,7 @@ function App() {
 
         {token && (
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard userId={userId} userRole={role} />} />
           </Routes>
         )}
       </BrowserRouter>

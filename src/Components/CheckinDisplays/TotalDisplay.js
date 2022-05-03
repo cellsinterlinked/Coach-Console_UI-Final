@@ -13,7 +13,7 @@ import { HiChevronLeft } from 'react-icons/hi';
 
 const TotalDisplay = ({currentClient, checkinDisplay, setCheckinDisplay}) => {
   return (
-    <div className="client-list-container">
+    <div className="client-list-container flex-center">
 
 
                 <div className="client-desk-menu">
@@ -45,7 +45,7 @@ const TotalDisplay = ({currentClient, checkinDisplay, setCheckinDisplay}) => {
 
 
 
-                <div className="absurd-box">
+                <div className="absurd-box absurd-limit">
                   {checkinDisplay.images &&
                     checkinDisplay.images.length !== 0 && (
                       <PictureDisplay checkin={checkinDisplay} />

@@ -47,7 +47,7 @@
   height: 2rem;
   width: 2rem;
 }
-
+/*
 .dash-search-container {
   position: relative;
   display: flex;
@@ -58,7 +58,7 @@
   width: 100%;
   background-color: var(--grey-background);
   margin-top: 6rem;
-}
+} */
 
 .magnify {
   height: 70%;

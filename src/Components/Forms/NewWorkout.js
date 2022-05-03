@@ -18,11 +18,20 @@ const NewWorkout = ({ userId, setLoadedWorkout, setNewMode, setParentError }) =>
 
   const createWorkoutHandler = async () => {
     let weightData = [];
-    let cardioData = {data: []};
+    let cardioData = [];
 
     if (description !== '' && name !== '') {
       for (let i = 1; i <= cardioNum; i++) {
-        cardioData.data.push({ day: `Day ${i}`, type: 'Run', time: 0, cals: 0 });
+        cardioData.push({
+          name: `Day ${i}`,
+          data: [
+            {
+            type: 'Run',
+            time: 0,
+            cals: 0
+            }
+          ]
+        });
       }
 
       for (let i = 1; i <= dayNum; i++) {

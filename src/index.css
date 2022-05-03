@@ -302,6 +302,22 @@ code {
   font-size: 1.5rem;
 }
 
+.notification-bubble-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  background-color: rgba(224, 0, 0, 0.712);
+  top: 10px;
+  right: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
 @media (max-width: 844px) {
   .desktop-only {
     display: none;

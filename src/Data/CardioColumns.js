@@ -2,8 +2,8 @@ import React from 'react'
 
 const cardioColumns = [
   {
-    title: 'Day',
-    field: 'day',
+    title: 'Type',
+    field: 'type',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -15,27 +15,13 @@ const cardioColumns = [
       color: 'white',
       fontWeight: 'bold',
     },
-    width: '20%',
+    width: '30%',
   },
-  {
-    title: 'Type',
-    field: 'type',
-    width: '20%',
-    cellStyle: {
-      backgroundColor: 'transparent',
-      color: '828282',
-      fontSize: '.9rem',
-    },
-    headerStyle: {
-      backgroundColor: '#828282',
-      color: 'white',
-      fontWeight: 'bold',
-    },
-  },
+
   {
     title: 'Time(minutes)',
     field: 'time',
-    width: '20%',
+    width: '25%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -50,7 +36,7 @@ const cardioColumns = [
   {
     title: 'Calories Burned',
     field: 'cals',
-    width: '20%',
+    width: '25%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
