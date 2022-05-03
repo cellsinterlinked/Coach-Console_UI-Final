@@ -26,7 +26,7 @@ const CardioTable = ({
       editable={{
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
-            let tempTable = [...cardioData, newRow];
+            let tempTable = [...loadedWorkout.cardioData[cardioNum].data, newRow];
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = tempTable;
             const sendUpdate = async () => {
@@ -55,8 +55,8 @@ const CardioTable = ({
 
         onRowUpdate: (newRow, oldRow) =>
           new Promise((resolve, reject) => {
-            let updatedData = [...cardioData];
-            updatedData[oldRow.cardioData.id] = newRow;
+            let updatedData = [...loadedWorkout.cardioData[cardioNum].data];
+            updatedData[oldRow.tableData.id] = newRow;
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = updatedData;
 
@@ -86,8 +86,8 @@ const CardioTable = ({
 
         onRowDelete: (selectedRow) =>
           new Promise((resolve, reject) => {
-            let updatedData = [...cardioData];
-            updatedData.splice(selectedRow.cardioData.id, 1);
+            let updatedData = [...loadedWorkout.cardioData[cardioNum].data];
+            updatedData.splice(selectedRow.tableData.id, 1);
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = updatedData;
 
@@ -114,10 +114,12 @@ const CardioTable = ({
             setTimeout(() => resolve(), 500);
           }),
 
+        //this isnt working yet
+
         onBulkUpdate: (selectedRows) =>
           new Promise((resolve, reject) => {
             const rows = Object.values(selectedRows);
-            const updatedRows = [...cardioData];
+            const updatedRows = [...loadedWorkout.cardioData[cardioNum].data];
             let index;
             rows.map((emp) => {
               index = emp.oldData.cardioData.id;
@@ -156,7 +158,7 @@ const CardioTable = ({
       columns={cardioColumns}
       data={cardioData}
       onRowClick={(evt, selectedRow) =>
-        setSelectedRow(selectedRow.cardioData.id)
+        setSelectedRow(selectedRow.tableData.id)
       }
       options={{
         // fixedColumns: {

@@ -27,7 +27,7 @@ const WorkoutTable = ({
       editable={{
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
-            let tempTable = [...tableData, newRow];
+            let tempTable = [...loadedWorkout.weightData[workoutNum].data, newRow];
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = tempTable;
             const sendUpdate = async () => {
@@ -55,7 +55,7 @@ const WorkoutTable = ({
 
         onRowUpdate: (newRow, oldRow) =>
           new Promise((resolve, reject) => {
-            let updatedData = [...tableData];
+            let updatedData = [...loadedWorkout.weightData[workoutNum].data];
             updatedData[oldRow.tableData.id] = newRow;
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = updatedData;
@@ -86,7 +86,7 @@ const WorkoutTable = ({
 
         onRowDelete: (selectedRow) =>
           new Promise((resolve, reject) => {
-            let updatedData = [...tableData];
+            let updatedData = [...loadedWorkout.weightData[workoutNum].data];
             updatedData.splice(selectedRow.tableData.id, 1);
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = updatedData;
@@ -113,10 +113,13 @@ const WorkoutTable = ({
             setTimeout(() => resolve(), 500);
           }),
 
+
+        /// this isn't working yet
+
         onBulkUpdate: (selectedRows) =>
           new Promise((resolve, reject) => {
             const rows = Object.values(selectedRows);
-            const updatedRows = [...tableData];
+            const updatedRows = [...loadedWorkout.weightData[workoutNum].data];
             let index;
             rows.map((emp) => {
               index = emp.oldData.tableData.id;

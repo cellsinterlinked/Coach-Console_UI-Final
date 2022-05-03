@@ -41,6 +41,11 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       ? 100 / fullUserData.workouts[0].weightData.length
       : 0
   );
+  const [cardioPercent, setCardioPercent] = useState(
+    fullUserData.workouts.length > 0
+      ? 100 / fullUserData.workouts[0].cardioData.length
+      : 0
+  )
   const [error, setError] = useState();
   const [current, setCurrent] = useState(true);
   const [add, setAdd] = useState(false);
@@ -70,7 +75,14 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
 
   const [loading, setLoading] = useState(false);
 
+
+
+
+
+
+
   useEffect(() => {
+    console.log('getting all workouts')
     setLoading(true);
     const getWorkoutsHandler = async () => {
       let results;
@@ -87,29 +99,37 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       if (!results.data.workouts || results.data.workouts.length < 1) {
         setNewMode(true);
       }
-      console.log(results.data.workouts);
       setLoading(false);
     };
     getWorkoutsHandler();
   }, [userId, loadedWorkout]);
 
+
+
+
+
+
+
+
   useEffect(() => {
-    console.log('im firing');
+    console.log('firing the update')
     if (loadedWorkout && loadedWorkout.weightData[workoutNum].data) {
       setTableData(loadedWorkout.weightData[workoutNum].data);
     }
 
-    if (loadedWorkout && loadedWorkout.cardioData.data) {
-      setCardioData(loadedWorkout.cardioData.data);
+    if (loadedWorkout && loadedWorkout.cardioData[cardioNum].data) {
+      setCardioData(loadedWorkout.cardioData[cardioNum].data);
     }
-  }, [loadedWorkout, workoutNum]);
+  }, [loadedWorkout, workoutNum, cardioNum]);
 
   useEffect(() => {
-    console.log('second firing');
-    if (loadedWorkout && loadedWorkout.weightData) {
+    if (loadedWorkout && loadedWorkout.weightData && loadedWorkout.cardioData) {
       setPercent(100 / loadedWorkout.weightData.length);
+      setCardioPercent(100/ loadedWorkout.cardioData.length)
     }
+
   }, [loadedWorkout]);
+
 
   useEffect(() => {
     if (workoutList && workoutList.length > 0 && query) {
@@ -122,6 +142,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   }, [workoutList, query]);
 
   const updateWorkoutsHandler = async () => {
+    console.log('update handler function')
     let results;
     try {
       results = await Axios.get(`http://localhost:5000/api/workouts/${userId}`);
@@ -130,7 +151,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       return;
     }
     setWorkoutList(results.data.workouts.reverse());
-    console.log(results.data.workouts);
+
   };
 
   const addWorkoutToggle = () => {
@@ -140,7 +161,6 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   const workoutDeleteHandler = async () => {
     let results;
     setDeleteMode(false);
-    console.log(loadedWorkout.id);
     try {
       results = await Axios.delete(
         `http://localhost:5000/api/workouts/${loadedWorkout.id}`
@@ -180,8 +200,9 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
 
   const queryHandler = (e) => {
     setQuery(e.target.value);
-    console.log(query);
   };
+
+
 
   return (
     <>
@@ -520,7 +541,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                           key={index}
                           style={{
                             color: cardioNum === index ? '#00ded1' : '#a5a5a5',
-                            width: `${percent}%`,
+                            width: `${cardioPercent}%`,
                           }}
                           onClick={() => setCardioNum(index)}
                           className="day-title-box"
@@ -531,8 +552,8 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                       <div
                         className="moving-line"
                         style={{
-                          width: `${percent}%`,
-                          left: `${percent * cardioNum}%`,
+                          width: `${cardioPercent}%`,
+                          left: `${cardioPercent * cardioNum}%`,
                         }}
                       ></div>
                     </div>
@@ -564,7 +585,6 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                   <CardioTable
                     cardioData={cardioData}
                     loadedWorkout={loadedWorkout}
-                    // workoutNum={workoutNum}
                     cardioNum={cardioNum}
                     userId={userId}
                     setCardioData={setCardioData}

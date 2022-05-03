@@ -32,7 +32,7 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
   const [add, setAdd] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [tableData, setTableData] = useState(
-    selectedDiet && selectedDiet.food[0] ? selectedDiet.food[0].data : null
+    selectedDiet && selectedDiet.food[dietNum].data ? selectedDiet.food[dietNum].data : null
   );
   const [deleteMode, setDeleteMode] = useState(false);
   const [newMode, setNewMode] = useState(false);
@@ -70,10 +70,10 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
 
   useEffect(() => {
     if (selectedDiet && selectedDiet.food[0].data) {
-      setTableData(selectedDiet.food[0].data);
+      setTableData(selectedDiet.food[dietNum].data);
       console.log(tableData);
     }
-  }, [selectedDiet, tableData]);
+  }, [selectedDiet, tableData, dietNum]);
 
   useEffect(() => {
     if (dietList && dietList.length > 0 && query) {

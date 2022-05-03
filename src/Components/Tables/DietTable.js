@@ -17,7 +17,7 @@ return (
               }}
               editable={{
                 onRowAdd:(newRow) =>new Promise((resolve, reject) => {
-                  let tempTable = [...tableData, newRow];
+                  let tempTable = [...selectedDiet.food[dietNum].data, newRow];
                   let tempData = selectedDiet.food
                   tempData[dietNum].data = tempTable
 
@@ -44,7 +44,7 @@ return (
                   setTimeout(()=>resolve(), 500)
                 }),
                 onRowUpdate:(newRow,oldRow)=> new Promise((resolve, reject) => {
-                  let updatedData = [...tableData]
+                  let updatedData = [...selectedDiet.food[dietNum].data]
                   updatedData[oldRow.tableData.id] = newRow
                   let tempData = selectedDiet.food
                   tempData[dietNum].data = updatedData
@@ -73,7 +73,7 @@ return (
 
 
                 onRowDelete:(selectedRow)=> new Promise((resolve, reject)=> {
-                  let updatedData=[...tableData]
+                  let updatedData=[...selectedDiet.food[dietNum].data]
                   updatedData.splice(selectedRow.tableData.id, 1)
                   let tempData = selectedDiet.food;
                   tempData[dietNum].data = updatedData
@@ -103,7 +103,7 @@ return (
 
                 onBulkUpdate: selectedRows => new Promise((resolve, reject)=> {
                   let rows = Object.values(selectedRows)
-                  let updatedRows=[...tableData]
+                  let updatedRows=[...selectedDiet.food[dietNum].data]
                   let index;
                   rows.map(emp => {
                     index = emp.oldData.tableData.id
