@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './CoachUniversal.css';
 import './CoachWorkouts.css';
 import DrawerRight from '../../Nav/DrawerRight';
@@ -24,8 +24,18 @@ import { cardioColumns } from '../../../Data/CardioColumns';
 import WorkoutTable from '../../Tables/WorkoutTable';
 import CardioTable from '../../Tables/CardioTable';
 import LoadingDots from '../../Animations/LoadingDots';
+import { AuthContext } from '../../../Context/auth-context';
 
-const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
+const CoachWorkouts = ({
+  navToggle,
+  fullUserData,
+  userId,
+  userRole,
+  setFullUserData,
+  setHack,
+  hack,
+}) => {
+  const auth = useContext(AuthContext);
   const [workoutNum, setWorkoutNum] = useState(0);
   const [cardioNum, setCardioNum] = useState(0);
   const [cardioDisplay, setCardioDisplay] = useState(false);
@@ -45,7 +55,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
     fullUserData.workouts.length > 0
       ? 100 / fullUserData.workouts[0].cardioData.length
       : 0
-  )
+  );
   const [error, setError] = useState();
   const [current, setCurrent] = useState(true);
   const [add, setAdd] = useState(false);
@@ -75,20 +85,14 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
 
   const [loading, setLoading] = useState(false);
 
-
-
-
-
-
-
   useEffect(() => {
-    console.log('getting all workouts')
     setLoading(true);
     const getWorkoutsHandler = async () => {
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/workouts/${userId}`
+          `http://localhost:5000/api/workouts/${userId}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
         setError('Could not fetch workouts');
@@ -96,7 +100,8 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
         return;
       }
       setWorkoutList(results.data.workouts.reverse());
-      if (!results.data.workouts || results.data.workouts.length < 1) {
+      if (results.data.workouts.length < 1) {
+        setAdd(true);
         setNewMode(true);
       }
       setLoading(false);
@@ -104,15 +109,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
     getWorkoutsHandler();
   }, [userId, loadedWorkout]);
 
-
-
-
-
-
-
-
   useEffect(() => {
-    console.log('firing the update')
     if (loadedWorkout && loadedWorkout.weightData[workoutNum].data) {
       setTableData(loadedWorkout.weightData[workoutNum].data);
     }
@@ -125,11 +122,9 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   useEffect(() => {
     if (loadedWorkout && loadedWorkout.weightData && loadedWorkout.cardioData) {
       setPercent(100 / loadedWorkout.weightData.length);
-      setCardioPercent(100/ loadedWorkout.cardioData.length)
+      setCardioPercent(100 / loadedWorkout.cardioData.length);
     }
-
   }, [loadedWorkout]);
-
 
   useEffect(() => {
     if (workoutList && workoutList.length > 0 && query) {
@@ -142,16 +137,17 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
   }, [workoutList, query]);
 
   const updateWorkoutsHandler = async () => {
-    console.log('update handler function')
     let results;
     try {
-      results = await Axios.get(`http://localhost:5000/api/workouts/${userId}`);
+      results = await Axios.get(
+        `http://localhost:5000/api/workouts/${userId}`,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
     } catch (err) {
       setError('Could not fetch workouts');
       return;
     }
     setWorkoutList(results.data.workouts.reverse());
-
   };
 
   const addWorkoutToggle = () => {
@@ -163,7 +159,8 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
     setDeleteMode(false);
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/workouts/${loadedWorkout.id}`
+        `http://localhost:5000/api/workouts/${loadedWorkout.id}`,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
       setError(err);
@@ -176,39 +173,72 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
 
   const shareWorkoutHandler = async (client) => {
     setShare(false);
+    setSelectedShare();
+    setLoading(true);
 
     let results;
     try {
-      results = await Axios.patch('http://localhost:5000/api/workouts/send', {
-        userId: userId,
-        clientId: client.id,
-        workoutId: loadedWorkout.id,
-      });
+      results = await Axios.patch(
+        'http://localhost:5000/api/workouts/send',
+        {
+          userId: userId,
+          clientId: client.id,
+          workoutId: loadedWorkout.id,
+        },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
     } catch (err) {
       setShare(false);
       setSelectedShare();
       setError(
         'They either already have this workout or something else went wrong!'
       );
-
+      setLoading(false);
       return;
     }
-    setSelectedShare();
-    setShare(false);
-    alert('success!');
+    setLoading(false);
+    setError('Successfully shared this workout.');
   };
 
   const queryHandler = (e) => {
     setQuery(e.target.value);
   };
 
+  const selectHandler = async (workout) => {
+    setLoading(true);
+    let newData = fullUserData;
+    let result;
+    try {
+      result = await Axios.patch(
+        `http://localhost:5000/api/users/notifications/${userId}`,
+        { workout: workout.id },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+      return;
+    }
 
+    newData.notifications.workouts = newData.notifications.workouts.filter(
+      (item) => item !== workout.id
+    );
+
+    setLoadedWorkout(workout);
+    setCurrent(true);
+    setFullUserData(newData);
+    setQuery('');
+    setSearchList();
+    setLoading(false);
+    setHack(!hack);
+    return;
+  };
 
   return (
     <>
       {selectedShare && loadedWorkout && (
         <Modal
-          show={selectedShare}
+          show={selectedShare !== null}
           onCancel={() => {
             setSelectedShare();
             setShare(false);
@@ -280,10 +310,11 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
           name="drawer-right-partial"
           children={workoutList.map((workout, index) => (
             <WorkoutButton
-              click={() => {
-                setLoadedWorkout(workout);
-                setCurrent(true);
-              }}
+              workout={workout}
+              notifications={fullUserData.notifications.workouts.includes(
+                workout.id
+              )}
+              click={selectHandler}
               key={index}
               name={workout.name}
               description={workout.description}
@@ -343,17 +374,43 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
       <div className="desk-center">
         {loadedWorkout && (
           <div className="mobile-head-option-container onlySmall">
-            <div
-              className={
-                share === true
-                  ? 'share-drop-container'
-                  : 'share-drop-container share-null'
-              }
-            >
-              {fullUserData.clients.map((client, index) => (
+            {userRole === 'coach' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
+                {fullUserData.clients.map((client, index) => (
+                  <div
+                    onClick={() => setSelectedShare(client)}
+                    key={index}
+                    className={
+                      share === true
+                        ? 'share-user-select'
+                        : 'share-user-select share-null'
+                    }
+                  >
+                    <div className="share-user-image">
+                      <img src={client.image} alt="" />
+                    </div>
+                    <p>{client.name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {userRole === 'client' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
                 <div
-                  onClick={() => setSelectedShare(client)}
-                  key={index}
+                  onClick={() => setSelectedShare(fullUserData.coach)}
                   className={
                     share === true
                       ? 'share-user-select'
@@ -361,12 +418,13 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                   }
                 >
                   <div className="share-user-image">
-                    <img src={client.image} alt="" />
+                    <img src={fullUserData.coach.image} alt="" />
                   </div>
-                  <p>{client.name}</p>
+                  <p>{fullUserData.coach.name}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
             {loadedWorkout && (
               <h3 className="mobile-options-title">{loadedWorkout.name}</h3>
             )}
@@ -418,7 +476,11 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
             <div className="search-drop-broken">
               {searchList.map((workout, index) => (
                 <WorkoutButton
-                  click={() => setLoadedWorkout(workout)}
+                  workout={workout}
+                  notifications={fullUserData.notifications.workouts.includes(
+                    workout.id
+                  )}
+                  click={selectHandler}
                   key={index}
                   name={workout.name}
                   description={workout.description}
@@ -431,7 +493,7 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
 
         <div className="client-list-container">
           <div className="client-desk-menu">
-            <div
+            {/* <div
               className={
                 share === true
                   ? 'share-drop-container'
@@ -454,7 +516,58 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
                   <p>{client.name}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
+
+            {userRole === 'coach' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
+                {fullUserData.clients.map((client, index) => (
+                  <div
+                    onClick={() => setSelectedShare(client)}
+                    key={index}
+                    className={
+                      share === true
+                        ? 'share-user-select'
+                        : 'share-user-select share-null'
+                    }
+                  >
+                    <div className="share-user-image">
+                      <img src={client.image} alt="" />
+                    </div>
+                    <p>{client.name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {userRole === 'client' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
+                <div
+                  onClick={() => setSelectedShare(fullUserData.coach)}
+                  className={
+                    share === true
+                      ? 'share-user-select'
+                      : 'share-user-select share-null'
+                  }
+                >
+                  <div className="share-user-image">
+                    <img src={fullUserData.coach.image} alt="" />
+                  </div>
+                  <p>{fullUserData.coach.name}</p>
+                </div>
+              </div>
+            )}
 
             {newMode === false && loadedWorkout && (
               <FaRunning
@@ -599,14 +712,21 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
 
           {newMode === true && (
             <div className-="absurd-box">
-              <NewWorkout
-                userId={userId}
-                setLoadedWorkout={setLoadedWorkout}
-                setParentError={setError}
-                setNewMode={setNewMode}
-              />
+              <div className="desktop-only">
+                <NewWorkout
+                  userId={userId}
+                  setLoadedWorkout={setLoadedWorkout}
+                  setParentError={setError}
+                  setNewMode={setNewMode}
+                />
+              </div>
             </div>
           )}
+          {/* {newMode === false && !loadedWorkout && (
+            <div className="absurd-box">
+            <h3>Click the add workout button in the top right corner to get started</h3>
+            </div>
+          )} */}
         </div>
       </div>
 
@@ -619,7 +739,11 @@ const CoachWorkouts = ({ navToggle, fullUserData, userId }) => {
             <>
               {workoutList.map((workout, index) => (
                 <WorkoutButton
-                  click={() => setLoadedWorkout(workout)}
+                  workout={workout}
+                  notifications={fullUserData.notifications.workouts.includes(
+                    workout.id
+                  )}
+                  click={selectHandler}
                   key={index}
                   name={workout.name}
                   description={workout.description}

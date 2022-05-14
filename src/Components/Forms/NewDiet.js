@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Input from './InputFront';
 import Axios from 'axios';
 import './NewWorkout.css';
 import Button from '../Buttons/Button';
 import Modal from '../Modals/Modal';
+import { AuthContext } from '../../Context/auth-context';
 
-const NewDiet = ({ userId, setSelectedDiet, setParentError, setNewMode }) => {
+const NewDiet = ({
+  userId,
+  setSelectedDiet,
+  setParentError,
+  setNewMode,
+  addDietToggle,
+}) => {
+  const auth = useContext(AuthContext);
   const [error, setError] = useState('');
 
   const [name, setName] = useState('');
@@ -14,50 +22,47 @@ const NewDiet = ({ userId, setSelectedDiet, setParentError, setNewMode }) => {
 
   const [dayNum, setDayNum] = useState(1);
 
-
-
   const createDietHandler = async () => {
-    console.log("im firing")
     let dietData = [];
     let type;
-    if(dayNum === 1) {
-      type = "single"
-
+    if (dayNum === 1) {
+      type = 'single';
     } else {
-      type = "multi"
+      type = 'multi';
     }
 
     if (description !== '' && name !== '') {
       for (let i = 1; i <= dayNum; i++) {
         dietData.push({
           name: `Day ${i}`,
-          data: [{food: "Meal 1"}, {food:"example food", cals: 170, pro: 10 , fat: 10, carb: 10}]
+          data: [
+            { food: 'Meal 1' },
+            { food: 'example food', cals: 170, pro: 10, fat: 10, carb: 10 },
+          ],
         });
       }
-      console.log({
-        userId: userId,
-        name: name,
-        description: description,
-        type: type,
-        food: dietData
-      })
+
       let results;
       try {
-        results = await Axios.post('http://localhost:5000/api/diets/', {
-          userId: userId,
-          name: name,
-          description: description,
-          type: type,
-          food: dietData
-        });
+        results = await Axios.post(
+          'http://localhost:5000/api/diets/',
+          {
+            userId: userId,
+            name: name,
+            description: description,
+            type: type,
+            food: dietData,
+          },
+          { headers: { Authorization: 'Bearer ' + auth.token } }
+        );
       } catch (err) {
-        console.log('issue creating diet')
         setError('Couldnt submit new workout');
         return;
       }
-      setSelectedDiet(results.data.diet)
-      setNewMode(false)
-      setParentError('Successfully Started New Diet')
+      setSelectedDiet(results.data.diet);
+      addDietToggle();
+      setNewMode(false);
+      setParentError('Successfully Started New Diet');
 
       // parent components resends request for workouts and rerenders.
     } else {
@@ -77,7 +82,7 @@ const NewDiet = ({ userId, setSelectedDiet, setParentError, setNewMode }) => {
             <h3>{error}</h3>
             <Button
               name="auth-button-primary"
-              contents={"GOT IT!"}
+              contents={'GOT IT!'}
               click={() => setError('')}
             />
           </div>

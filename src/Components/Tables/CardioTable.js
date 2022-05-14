@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
 import { alpha } from '@material-ui/core/styles';
 import Axios from 'axios';
+import { AuthContext } from '../../Context/auth-context';
 
 const CardioTable = ({
   cardioData,
@@ -14,8 +15,7 @@ const CardioTable = ({
   selectedRow,
   setSelectedRow,
 }) => {
-
-  console.log(cardioData, cardioNum)
+  const auth = useContext(AuthContext);
 
   return (
     <MaterialTable
@@ -26,11 +26,13 @@ const CardioTable = ({
       editable={{
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
-            let tempTable = [...loadedWorkout.cardioData[cardioNum].data, newRow];
+            let tempTable = [
+              ...loadedWorkout.cardioData[cardioNum].data,
+              newRow,
+            ];
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = tempTable;
             const sendUpdate = async () => {
-              console.log('triggering add row')
               let results;
               try {
                 results = await Axios.patch(
@@ -40,7 +42,8 @@ const CardioTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -61,7 +64,6 @@ const CardioTable = ({
             tempData[cardioNum].data = updatedData;
 
             const sendUpdate = async () => {
-              console.log('triggering update')
               let results;
               try {
                 results = await Axios.patch(
@@ -71,7 +73,8 @@ const CardioTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -92,7 +95,6 @@ const CardioTable = ({
             tempData[cardioNum].data = updatedData;
 
             const sendUpdate = async () => {
-              console.log('triggering delete')
               let results;
               try {
                 results = await Axios.patch(
@@ -102,7 +104,8 @@ const CardioTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -139,7 +142,8 @@ const CardioTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);

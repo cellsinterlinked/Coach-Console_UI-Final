@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Input from '../Forms/InputFront';
 import './CheckinMobile.css';
 import { FiChevronDown } from 'react-icons/fi';
@@ -10,6 +10,7 @@ import Button from '../Buttons/Button';
 import Axios from 'axios';
 import Modal from '../Modals/Modal';
 import LoadingDots from '../Animations/LoadingDots';
+import { AuthContext } from '../../Context/auth-context';
 
 const CheckinMobile = ({
   workouts,
@@ -18,7 +19,10 @@ const CheckinMobile = ({
   userId,
   updateClientData,
   setCheckMode,
+  userRole,
+  fullUserData,
 }) => {
+  const auth = useContext(AuthContext);
   const [error, setError] = useState('');
   const [location, setLocation] = useState();
   const [bfState, setBfState] = useState(false);
@@ -70,7 +74,9 @@ const CheckinMobile = ({
   const sendCheckin = async (data) => {
     let results;
     try {
-      results = await Axios.post('http://localhost:5000/api/checkins/', data);
+      results = await Axios.post('http://localhost:5000/api/checkins/', data, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       setError(`Couldnt post the checkin ${err}`);
       return;
@@ -81,35 +87,29 @@ const CheckinMobile = ({
     setLoading(false);
   };
 
-
   const inputValidate = (obj, location) => {
-    let reg = /([0-9])/g
-    let arr =  Object.values(obj)
-    var matches = arr.some(e => reg.test(e));
-    if (arr.indexOf("") ===  - 1) {
+    let reg = /([0-9])/g;
+    let arr = Object.values(obj);
+    var matches = arr.some((e) => reg.test(e));
+    if (arr.indexOf('') === -1) {
       return true;
-    } else if (arr.indexOf("") > -1 && matches === true) {
-      setLoading(false)
-      setLocation(location)
-      setError(`Please fill out all ${location} criteria or none.`)
-      return "error"
+    } else if (arr.indexOf('') > -1 && matches === true) {
+      setLoading(false);
+      setLocation(location);
+      setError(`Please fill out all ${location} criteria or none.`);
+      return 'error';
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
+  const submitCheckinHandler = async () => {
+    setLoading(true);
 
-
-    const submitCheckinHandler = async () => {
-
-    setLoading(true)
-
-    let bodyFatVal = inputValidate(bodyFat, 'bodyfat')
-    let measurementVal = inputValidate(measurements, 'Measurements')
-    let workoutVal = inputValidate(workoutQual, 'workout')
-    let sleepVal = inputValidate(sleep, 'sleep')
-
-    console.log(bodyFatVal,measurementVal, workoutVal, sleepVal)
+    let bodyFatVal = inputValidate(bodyFat, 'bodyfat');
+    let measurementVal = inputValidate(measurements, 'Measurements');
+    let workoutVal = inputValidate(workoutQual, 'workout');
+    let sleepVal = inputValidate(sleep, 'sleep');
 
     if ((bodyFatVal || measurementVal || workoutVal || sleepVal) === 'error') {
       return;
@@ -122,8 +122,19 @@ const CheckinMobile = ({
       }
     });
 
+    let coach;
+
+    if (userRole === 'coach') {
+      coach = userId;
+    }
+
+    if (userRole === 'client') {
+      coach = fullUserData.user.coach[0];
+    }
+
     let data = {
-      coachId: userId,
+      role: userRole,
+      coachId: coach,
       clientId: currentClient.id,
       weight: parseInt(weight),
       images: imageArray,
@@ -156,7 +167,6 @@ const CheckinMobile = ({
       };
     }
 
-
     if (sleepVal === true) {
       data = {
         ...data,
@@ -169,7 +179,6 @@ const CheckinMobile = ({
         sunSleep: parseInt(sleep.sun),
       };
     }
-
 
     if (workoutVal === true) {
       if (qualityArr.length > 0) {
@@ -186,15 +195,9 @@ const CheckinMobile = ({
       data = { ...data, dietId: dietState.id };
     }
 
-        setTimeout(function () {
-          sendCheckin(data);
-        }, 4000);
-
-    // console.log(data)
-
-
-
-
+    setTimeout(function () {
+      sendCheckin(data);
+    }, 4000);
   };
 
   return (

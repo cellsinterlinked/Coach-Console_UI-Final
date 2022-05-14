@@ -3,7 +3,7 @@ import './CheckinButton.css';
 import { IoTrashOutline } from 'react-icons/io5';
 import {TiDeleteOutline} from 'react-icons/ti';
 
-const CheckinButton = ({image, name, firstCheckin, date, deleteMode, deleteClick, selectClick, id, click, checkin}) => {
+const CheckinButton = ({image, name, firstCheckin, date, deleteMode, deleteClick, selectClick, id, click, checkin, notifications}) => {
 
   const setterFunction = () => {
     click(checkin)
@@ -14,6 +14,12 @@ const CheckinButton = ({image, name, firstCheckin, date, deleteMode, deleteClick
     onClick={setterFunction}
 
     >
+      {notifications &&
+      <div className="new-notification-message">
+        <p>NEW CHECK-IN</p>
+      </div>
+      }
+
 
       <div className={deleteMode === true ? "delete-button-cover" : "delete-button-cover cover-transparent"}>
         <TiDeleteOutline className="deleteTrash" />

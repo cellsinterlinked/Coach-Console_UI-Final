@@ -12,72 +12,78 @@ import ClientNav from '../Nav/ClientNav';
 import CoachDiets from './CoachPages/CoachDiets';
 import Trainee from './CoachPages/Trainee';
 import CoachMessages from './CoachPages/CoachMessages';
-import Testing from './CoachPages/Testing';
+
 import CoachProfile from './CoachPages/CoachProfile';
 import { AuthContext } from '../../Context/auth-context';
 import LoadingDots from '../Animations/LoadingDots';
 import Home from './CoachPages/Home';
 
-const Dashboard = ({userId, userRole}) => {
+const Dashboard = ({ userId, userRole }) => {
   const auth = useContext(AuthContext);
-  // const userId = auth.userId;
-  // const userRole = auth.role;
 
+  console.log(auth)
   const [page, setPage] = useState(userRole === 'client' ? 'Home' : 'Clients');
 
   const [currentClient, setCurrentClient] = useState();
 
   const [navActive, setNavActive] = useState(false);
 
-  const [error, setError] = useState('');
-
   const [fullUserData, setFullUserData] = useState();
 
   const [reset, setReset] = useState(false);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false)
+
+  const [error, setError] = useState()
+
+  const [hack, setHack] = useState(true);
 
   useEffect(() => {
-    const getAll = async (userId) => {
+    const getAll = async () => {
+      console.log('dashboard call', auth.token, auth.userId, auth.role)
       setLoading(true);
-      let results;
+      let res;
       try {
-        results = await Axios.get(
-          `http://localhost:5000/api/users/all/${userId}`
+        res = await Axios.get(
+          `http://localhost:5000/api/users/all/${auth.userId}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
+        setFullUserData(res.data);
       } catch (err) {
-        setError("Couldn't fetch from the database");
+        console.log('error', err, auth.token)
         setLoading(false);
         return;
       }
-      let newData = results.data;
-      setFullUserData(newData);
+      let newData = res.data;
       if (newData.name === '' || !newData.name) {
         setPage('Profile');
       }
-      if (userRole === 'coach') {
+      if (auth.role === 'coach') {
         setCurrentClient(newData.clients[0] || { name: 'none', id: '0' });
-        setPage('Clients')
+        setPage('Clients');
       }
-
-      if (userRole === 'client') {
+      if (auth.role === 'client') {
         setCurrentClient(newData.user);
-        setPage('Home')
+        setPage('Home');
       }
 
       setLoading(false);
-      console.log('fullUserData is ', results.data);
     };
+    if (auth.role && auth.userId && auth.token) {
+      getAll();
 
-    getAll(userId);
-  }, [reset, userId, userRole, auth]);
+    }
+
+
+  }, [auth.userId, auth.role, auth.token]);
 
   const updateAll = async () => {
     setLoading(true);
     let results;
     try {
       results = await Axios.get(
-        `http://localhost:5000/api/users/all/${userId}`
+        `http://localhost:5000/api/users/all/${userId}`,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
       alert(`couldn't get info from database ${err}`);
@@ -90,13 +96,35 @@ const Dashboard = ({userId, userRole}) => {
     if (userRole === 'coach') {
       setCurrentClient(newData.clients[0] || [{ name: 'none', id: '0' }]);
       setLoading(false);
-      console.log('we got the data');
     }
   };
 
-  const clientSelect = (client) => {
-    let fullClient = fullUserData.clients.find((c) => c.id === client);
-    setCurrentClient(fullClient);
+  const clientSelect = async (client) => {
+    setLoading(true);
+    let newData = fullUserData;
+    let result;
+    try {
+      result = await Axios.patch(
+        `http://localhost:5000/api/users/notifications/${userId}`,
+        { client: client.id },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+      return;
+    }
+
+    newData.notifications.clients = newData.notifications.clients.filter(
+      (item) => item !== client.id
+    );
+
+    setCurrentClient(client);
+    setFullUserData(newData);
+    // setQuery('');
+    // setSearchList();
+    setLoading(false);
+    setHack(!hack);
     setPage('Client');
   };
 
@@ -110,6 +138,20 @@ const Dashboard = ({userId, userRole}) => {
 
   return (
     <>
+      {/* <Modal
+        show={error}
+        onCancel={() => setError()}
+        children={
+          <div className="error-modal-container">
+            <h3>{error}</h3>
+            <Button
+              name="auth-button-primary"
+              contents="GOT IT!"
+              click={() => setError()}
+            />
+          </div>
+        }
+      /> */}
       {userRole === 'coach' && (
         <div className="dash-wrapper">
           {fullUserData && (
@@ -125,6 +167,7 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   logoutFunction={logoutFunction}
+                  hack={hack}
                 />
               }
             />
@@ -138,12 +181,26 @@ const Dashboard = ({userId, userRole}) => {
               setPage={setPage}
               fullUserData={fullUserData}
               logoutFunction={logoutFunction}
+              hack={hack}
+              // navToggle={navToggle}
             />
           </div>
 
           {loading && <LoadingDots />}
 
-          {!loading && (
+          {!loading && fullUserData && fullUserData.name === '' && (
+            <CoachProfile
+              userId={userId}
+              navToggle={navToggle}
+              fullUserData={fullUserData}
+              userRole={userRole}
+              updateAll={updateAll}
+              setPage={setPage}
+              setFullUserData={setFullUserData}
+            />
+          )}
+
+          {!loading && fullUserData && fullUserData.name !== '' && (
             <>
               {page === 'Clients' && (
                 <Clients
@@ -154,6 +211,9 @@ const Dashboard = ({userId, userRole}) => {
                   fullUserData={fullUserData}
                   userRole={userRole}
                   clientSelect={clientSelect}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Workouts' && (
@@ -162,6 +222,9 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   userRole={userRole}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Nutrition' && (
@@ -170,6 +233,9 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   userRole={userRole}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Client' && (
@@ -180,6 +246,9 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   userRole={userRole}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Messages' && (
@@ -190,6 +259,9 @@ const Dashboard = ({userId, userRole}) => {
                   userRole={userRole}
                   reset={reset}
                   setReset={setReset}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Profile' && (
@@ -201,6 +273,8 @@ const Dashboard = ({userId, userRole}) => {
                   updateAll={updateAll}
                   setPage={setPage}
                   setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
             </>
@@ -223,6 +297,8 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   logoutFunction={logoutFunction}
+                  hack={hack}
+                  setHack={setHack}
                 />
               }
             />
@@ -236,12 +312,29 @@ const Dashboard = ({userId, userRole}) => {
               setPage={setPage}
               fullUserData={fullUserData}
               logoutFunction={logoutFunction}
+              hack={hack}
+              setHack={setHack}
+              // navToggle={navToggle}
             />
           </div>
 
           {loading && <LoadingDots />}
 
-          {!loading && (
+          {!loading && fullUserData && fullUserData.name === '' && (
+            <CoachProfile
+              userId={userId}
+              navToggle={navToggle}
+              fullUserData={fullUserData}
+              userRole={userRole}
+              updateAll={updateAll}
+              setPage={setPage}
+              setFullUserData={setFullUserData}
+              hack={hack}
+              setHack={setHack}
+            />
+          )}
+
+          {!loading && fullUserData && fullUserData.name !== '' && (
             <>
               {page === 'Loading' && <LoadingDots />}
 
@@ -251,6 +344,9 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   userRole={userRole}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Nutrition' && (
@@ -259,6 +355,9 @@ const Dashboard = ({userId, userRole}) => {
                   navToggle={navToggle}
                   fullUserData={fullUserData}
                   userRole={userRole}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Home' && (
@@ -267,8 +366,11 @@ const Dashboard = ({userId, userRole}) => {
                   currentClient={currentClient}
                   setCurrentClient={setCurrentClient}
                   navToggle={navToggle}
-                  fullUserData={fullUserData}
+                  fullUserData2={fullUserData}
                   userRole={userRole}
+                  setFullUserData2={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Messages' && (
@@ -279,6 +381,9 @@ const Dashboard = ({userId, userRole}) => {
                   userRole={userRole}
                   reset={reset}
                   setReset={setReset}
+                  setFullUserData={setFullUserData}
+                  hack={hack}
+                  setHack={setHack}
                 />
               )}
               {page === 'Profile' && (
@@ -290,6 +395,9 @@ const Dashboard = ({userId, userRole}) => {
                   userRole={userRole}
                   updateAll={updateAll}
                   setPage={setPage}
+                  hack={hack}
+                  setHack={setHack}
+                  currentClient={currentClient}
                 />
               )}
             </>

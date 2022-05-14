@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
 import { alpha } from '@material-ui/core/styles';
 import Axios from 'axios';
+import { AuthContext } from '../../Context/auth-context';
 
 
 
@@ -17,6 +18,7 @@ const WorkoutTable = ({
   selectedRow,
   setSelectedRow,
 }) => {
+  const auth = useContext(AuthContext);
 
   return (
     <MaterialTable
@@ -40,7 +42,8 @@ const WorkoutTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -60,7 +63,7 @@ const WorkoutTable = ({
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = updatedData;
             const sendUpdate = async () => {
-              console.log(userId, loadedWorkout.id, loadedWorkout.cardioData, tempData)
+
               let results;
               try {
                 results = await Axios.patch(
@@ -70,7 +73,8 @@ const WorkoutTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -101,7 +105,8 @@ const WorkoutTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -139,7 +144,8 @@ const WorkoutTable = ({
                     workoutId: loadedWorkout.id,
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);

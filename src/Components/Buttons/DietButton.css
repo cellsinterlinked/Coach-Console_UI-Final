@@ -16,6 +16,7 @@
   background: white;
   transition: 200ms ease;
   cursor: pointer;
+  position: relative;
 }
 
 @media (max-width: 849px) {

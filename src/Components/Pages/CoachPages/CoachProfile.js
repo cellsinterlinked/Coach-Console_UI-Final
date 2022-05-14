@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import './Clients.css';
 import './CoachUniversal.css';
@@ -7,146 +7,209 @@ import './CoachProfile.css';
 import Input from '../../Forms/InputFront';
 import Button from '../../Buttons/Button';
 import ImageUpload from '../../Forms/ImageUpload';
-import Axios from 'axios'
+import Axios from 'axios';
 import Modal from '../../Modals/Modal';
 import LoadingDots from '../../Animations/LoadingDots';
+import LineChart from '../../Charts/LineChart';
+import ClientCharts from '../../Charts/ClientCharts';
+import { AuthContext } from '../../../Context/auth-context';
 
-const CoachProfile = ({ navToggle, userId, userRole, fullUserData, updateAll, setPage, setFullUserData}) => {
-  const [userData, setUserData] = useState()
-  const [age, setAge] = useState()
-  const [gender, setGender] = useState()
+const CoachProfile = ({
+  navToggle,
+  userId,
+  userRole,
+  fullUserData,
+  updateAll,
+  setPage,
+  setFullUserData,
+  currentClient,
+}) => {
+  const auth = useContext(AuthContext);
+  const [userData, setUserData] = useState();
+  const [age, setAge] = useState();
+  const [gender, setGender] = useState();
   const [name, setName] = useState();
 
   const [image, setImage] = useState();
   const [parentPreview, setParentPreview] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [confirmDisplay, setConfirmDisplay] = useState(false);
   const [error, setError] = useState();
-
-
+  const [checkinChartData, setCheckinChartData] = useState();
+  const [chartSelect, setChartSelect] = useState({
+    fatMass: true,
+    bodyFat: true,
+    leanBodyMass: true,
+    weight: true,
+    calories: true,
+    carbs: true,
+    fats: true,
+    protein: true,
+    workoutQuality: true,
+    measurements: true,
+    volume: true,
+    cardioTime: true,
+    cardioCals: true,
+    sleepTime: true,
+  });
 
   useEffect(() => {
     const getAll = async () => {
-      setLoading(true)
+      console.log('profile call', userId, auth.token)
+      setLoading(true);
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/all/${userId}`
+          `http://localhost:5000/api/users/all/${userId}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
-        alert(`couldn't get info from database ${err}`);
+
         setError("Couldn't fetch from the database");
-        setLoading(false)
+        setLoading(false);
         return;
       }
-      let newData = results.data
-      console.log('gotUserData')
-      console.log('new data', newData)
-      setUserData(newData)
+      let newData = results.data;
+      setUserData(newData);
       if (newData.age !== 0) {
-        setAge(newData.age)
+        setAge(newData.age);
       }
 
       if (newData.gender) {
-        setGender(newData.gender)
+        setGender(newData.gender);
       }
 
-      if(newData.name) {
-        setName(newData.name)
+      if (newData.name) {
+        setName(newData.name);
       }
-      setLoading(false)
-
-      }
+      setLoading(false);
+    };
+    if (userId && auth.token) {
       getAll();
-  }, [userId]);
+    }
 
+  }, [userId, auth.token]);
 
+  useEffect(() => {
+    const getClientData = async () => {
+      setLoading(true);
+      let result;
+      try {
+        result = await Axios.get(
+          `http://localhost:5000/api/checkins/${currentClient.id}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
+        );
+      } catch (err) {
+      setError(err)
+        setLoading(false);
+        return;
+      }
+      setCheckinChartData(result.data);
 
-
-
+      setLoading(false);
+    };
+    if (userRole === 'client' && currentClient) {
+      getClientData();
+    }
+  }, [currentClient, userRole]);
 
   const profileSubmit = () => {
-
-    if(parentPreview.length !== 0) {
-      uploadImage(parentPreview)
+    if (parentPreview.length !== 0) {
+      uploadImage(parentPreview);
     }
 
-    if(parentPreview.length === 0) {
-      uploadOther()
+    if (parentPreview.length === 0) {
+      uploadOther();
     }
 
-
-    console.log(name);
   };
 
+  let fullUpdate = fullUserData;
 
-  const uploadOther = async() => {
-    setLoading(true)
-    let data = {}
+  const uploadOther = async () => {
+    setLoading(true);
+    let data = {};
 
     if (name) {
-      data.name = name
+      data.name = name;
+      fullUpdate.name = name;
     }
 
     if (age) {
-      data.age = age
+      data.age = age;
+      fullUpdate.age = age;
     }
 
     if (gender) {
-      data.gender = gender
+      data.gender = gender;
+      fullUpdate.gender = gender;
     }
 
-    let results
+    let results;
     try {
-      results = await Axios.patch(`http://localhost:5000/api/users/${userId}`, data)
+      results = await Axios.patch(
+        `http://localhost:5000/api/users/${userId}`,
+        data,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
     } catch (err) {
-      setLoading(false)
-      setError(err)
-      console.log(err)
+      setLoading(false);
+      setError(err);
+
     }
-    setLoading(false)
-    setConfirmDisplay(true)
-  }
+    setFullUserData(fullUpdate);
+    setLoading(false);
+    setConfirmDisplay(true);
+  };
 
-
-
-  const uploadImage = async(base64EncodedImage) => {
-    setLoading(true)
-    let data = {image: base64EncodedImage}
+  const uploadImage = async (base64EncodedImage) => {
+    setLoading(true);
+    let data = { image: base64EncodedImage };
 
     if (name) {
-      data.name = name
+      data.name = name;
+      fullUpdate.name = name;
     }
 
     if (age) {
-      data.age = age
+      data.age = age;
+      fullUpdate.age = age;
     }
 
     if (gender) {
-      data.gender = gender
+      data.gender = gender;
+      fullUpdate.gender = gender;
     }
 
-    console.log(base64EncodedImage)
-    let results
+
+    let results;
     try {
-      results = await Axios.patch(`http://localhost:5000/api/users/${userId}`, data)
+      results = await Axios.patch(
+        `http://localhost:5000/api/users/${userId}`,
+        data,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
     } catch (err) {
-      setLoading(false)
-      setError(err)
-      console.log(err)
+      setLoading(false);
+      return setError(err);
+
     }
-    setLoading(false)
-    setConfirmDisplay(true)
-  }
+
+    setFullUserData({...fullUserData, user:results.data.user});
+    setLoading(false);
+    setConfirmDisplay(true);
+  };
 
   const returnFunc = () => {
     if (userRole === 'coach') {
-      setPage("Clients")
+      setPage('Clients');
+      setConfirmDisplay(false);
     }
     if (userRole === 'client') {
-      setPage('Home')
+      setPage('Home');
+      setConfirmDisplay(false);
     }
-  }
+  };
   return (
     <>
       <Modal
@@ -164,7 +227,7 @@ const CoachProfile = ({ navToggle, userId, userRole, fullUserData, updateAll, se
         }
       />
 
-<Modal
+      <Modal
         show={confirmDisplay === true}
         onCancel={() => setConfirmDisplay(false)}
         children={
@@ -182,7 +245,6 @@ const CoachProfile = ({ navToggle, userId, userRole, fullUserData, updateAll, se
 
       {loading && <LoadingDots />}
 
-
       <header className="dash-head head-border-bottom">
         <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />
         <h1>Edit Profile</h1>
@@ -195,7 +257,7 @@ const CoachProfile = ({ navToggle, userId, userRole, fullUserData, updateAll, se
             <h3>Edit Profile</h3>
           </div>
 
-          <div className="absurd-box profile_margin" >
+          <div className="absurd-box profile_margin">
             <Input
               name="check-input-lg input-margin-top-med"
               placeholder="Name"
@@ -203,43 +265,46 @@ const CoachProfile = ({ navToggle, userId, userRole, fullUserData, updateAll, se
               onChange={(e) => setName(e.target.value)}
               type="text"
             />
-            <div className="profile-client-extras" style={{width: "100%", minHeight: "4rem"}}>
-            {userRole === 'client' &&
-            <>
-            <Input
-            name="check-input-lg input-margin-top-med"
-            placeholder="Age"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            type="number"
-            />
-            <div className="gender-select-wrapper">
-              <p>Select Your Sex</p>
-            <div className="gender-button-wrapper">
-
-              <div
-          className={
-            gender === 1 ? 'day-box-button day-selected' : 'day-box-button'
-          }
-          onClick={() => setGender(1)}
-        >
-         MALE
-        </div>
-        <div
-          className={
-            gender === 2 ? 'day-box-button day-selected' : 'day-box-button'
-          }
-          onClick={() => setGender(2)}
-        >
-          FEMALE
-        </div>
-
-            </div>
-            </div>
-
-            </>
-            }
-
+            <div
+              className="profile-client-extras"
+              style={{ width: '100%', minHeight: '4rem' }}
+            >
+              {userRole === 'client' && (
+                <>
+                  <Input
+                    name="check-input-lg input-margin-top-med"
+                    placeholder="Age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    type="number"
+                  />
+                  <div className="gender-select-wrapper">
+                    <p>Select Your Sex</p>
+                    <div className="gender-button-wrapper">
+                      <div
+                        className={
+                          gender === 1
+                            ? 'day-box-button day-selected'
+                            : 'day-box-button'
+                        }
+                        onClick={() => setGender(1)}
+                      >
+                        MALE
+                      </div>
+                      <div
+                        className={
+                          gender === 2
+                            ? 'day-box-button day-selected'
+                            : 'day-box-button'
+                        }
+                        onClick={() => setGender(2)}
+                      >
+                        FEMALE
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <ImageUpload
@@ -258,11 +323,54 @@ const CoachProfile = ({ navToggle, userId, userRole, fullUserData, updateAll, se
       </div>
 
       <div className="right-sector-profile">
-        <div className="right-bar-profile">
-          <div className="analytics-deskHead">
-            <h3>Clients</h3>
+        {userRole === 'coach' && fullUserData && (
+          <div className="right-bar-profile">
+            <div className="analytics-deskHead">
+              <h3>Stats</h3>
+            </div>
+            <LineChart
+              data={fullUserData.clientTotals}
+              color={'#0ee2d0'}
+              background={'#0ee2d044'}
+              label={'Clients'}
+            />
+
+            <LineChart
+              data={fullUserData.checkinTotals}
+              color={'#0ee2d0'}
+              background={'#0ee2d044'}
+              label={'Checkins'}
+            />
+
+            <LineChart
+              data={fullUserData.workoutTotals}
+              color={'#0ee2d0'}
+              background={'#0ee2d044'}
+              label={'Workouts'}
+            />
+
+            <LineChart
+              data={fullUserData.dietTotals}
+              color={'#0ee2d0'}
+              background={'#0ee2d044'}
+              label={'Diets'}
+            />
           </div>
-        </div>
+        )}
+
+        {userRole === 'client' && fullUserData && (
+          <div className="right-bar-profile">
+            <div className="analytics-deskHead">
+              <h3>Stats</h3>
+            </div>
+            {checkinChartData && (
+              <ClientCharts
+                checkinChartData={checkinChartData}
+                chartSelect={chartSelect}
+              />
+            )}
+          </div>
+        )}
       </div>
     </>
   );

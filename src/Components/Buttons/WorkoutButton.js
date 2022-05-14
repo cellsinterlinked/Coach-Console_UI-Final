@@ -3,12 +3,21 @@ import './WorkoutButton.css';
 import {IoDocumentTextSharp} from 'react-icons/io5'
 import workoutPhoto from '../../Resources/workoutphoto.jpeg';
 
-const WorkoutButton = ({image, name, dateAdded, description, click}) => {
+const WorkoutButton = ({image, name, dateAdded, description, click, notifications, workout}) => {
+
+  const setterFunction = () => {
+    click(workout)
+  }
   return(
     <button
     className="wo-button-wrapper"
-    onClick={click}
+    onClick={setterFunction}
     >
+        {notifications &&
+      <div className="new-notification-message">
+        <p>NEW WORKOUT</p>
+      </div>
+      }
       <div className="wo-btn-img">
         {/* <IoDocumentTextSharp  className="wo-icon"/> */}
         <img src={workoutPhoto} alt="" />

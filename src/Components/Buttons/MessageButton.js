@@ -1,9 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import './MessageButton.css';
 
-const MessageButton = ({image, name, lastMessage, lastMessageTime, onClick, index, lastMessageDay, lastMessageMonth, lastMessageYear, notifications }) => {
+const MessageButton = ({image, name, lastMessage, lastMessageTime, click, index, lastMessageDay, lastMessageMonth, lastMessageYear, notifications, convo }) => {
   const [time, setTime] = useState()
   const [timeDisplay, setTimeDisplay] = useState()
+
+  const setterFunc = () => {
+    click(convo)
+
+  }
 
 
 
@@ -23,9 +28,15 @@ const MessageButton = ({image, name, lastMessage, lastMessageTime, onClick, inde
     <button
     className="message-button-wrapper "
 
-     onClick={() => onClick(index)}
+     onClick={setterFunc}
      >
-       <div className="notification-bubble-button">{notifications}</div>
+
+      {notifications &&
+      <div className="new-notification-message">
+        <p>NEW MESSAGES</p>
+      </div>
+      }
+       {/* <div className="notification-bubble-button">{notifications}</div> */}
       <div className="msg-btn-img">
         <img src={image} alt=""/>
       </div>

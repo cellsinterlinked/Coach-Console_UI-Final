@@ -52,7 +52,7 @@ const ImageUpload = props => {
 
   const pickImageHandler = () => {
     filePickerRef.current.click()
-    console.log("clicky click")
+
   };
 
 

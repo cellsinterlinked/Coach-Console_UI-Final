@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
 import { alpha } from '@material-ui/core/styles';
 import Axios from 'axios';
+import { AuthContext } from '../../Context/auth-context';
 
 const DietTable = ({
   tableData,
@@ -14,6 +15,8 @@ const DietTable = ({
   selectedRow,
   setSelectedRow,
 }) => {
+  const auth = useContext(AuthContext);
+
   return (
     <MaterialTable
       components={{
@@ -36,7 +39,8 @@ const DietTable = ({
                     userId: userId,
                     food: tempData,
                     dietId: selectedDiet.id,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -55,7 +59,7 @@ const DietTable = ({
             updatedData[oldRow.tableData.id] = newRow;
             let tempData = selectedDiet.food;
             tempData[dietNum].data = updatedData;
-            console.log(tempData)
+
             const sendUpdate = async () => {
               let results;
               try {
@@ -65,7 +69,8 @@ const DietTable = ({
                     userId: userId,
                     dietId: selectedDiet.id,
                     food: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -92,7 +97,8 @@ const DietTable = ({
                     userId: userId,
                     dietId: selectedDiet.id,
                     food: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);
@@ -126,7 +132,8 @@ const DietTable = ({
                     userId: userId,
                     dietId: selectedDiet.id,
                     food: tempData,
-                  }
+                  },
+                  { headers: { Authorization: 'Bearer ' + auth.token } }
                 );
               } catch (err) {
                 setError(err);

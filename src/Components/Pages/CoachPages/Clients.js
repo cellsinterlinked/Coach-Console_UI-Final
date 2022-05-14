@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { RiUserAddLine } from 'react-icons/ri';
 import { GoSearch } from 'react-icons/go';
@@ -9,26 +9,22 @@ import Input from '../../Forms/InputFront';
 import Button from '../../Buttons/Button';
 import ClientButton from '../../Buttons/ClientButton';
 import DrawerRight from '../../Nav/DrawerRight';
-import DrawerBottom from '../../Nav/DrawerBottom';
-import ActiveChart from '../../Charts/ActiveChart';
-import ClientFatChart from '../../Charts/ClientFatChart';
-import ClientMuscleChart from '../../Charts/ClientMuscleChart';
-import ClientSatisfaction from '../../Charts/ClientSatisfaction';
-import MacroChart from '../../Charts/MacroChart';
-import { IoAddSharp, IoTrash } from 'react-icons/io5';
+
 import { IoTrashOutline } from 'react-icons/io5';
-import AddClientMobile from '../../Forms/AddClientMobile';
+
 import LineChart from '../../Charts/LineChart';
 import Axios from 'axios';
+import Modal from '../../Modals/Modal';
+import { AuthContext } from '../../../Context/auth-context';
 
 const Clients = ({
-  DUMMYCLIENTS,
   navToggle,
   fullUserData,
   clientSelect,
   userId,
-  currentClient
 }) => {
+  const auth = useContext(AuthContext);
+  const [addClient, setAddClient] = useState(false);
   const [error, setError] = useState('');
   const [current, setCurrent] = useState(true);
   const [add, setAdd] = useState(false);
@@ -45,21 +41,18 @@ const Clients = ({
   useEffect(() => {
     const fetchClientsHandler = async () => {
       setLoading(true);
-      console.log('hitting the use effect')
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/clients/${userId}`
-
+          `http://localhost:5000/api/users/clients/${userId}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
         setLoading(false);
-        console.log({err})
         setError('Couldnt fetch clients');
         return;
       }
       setClients(results.data.clients);
-      console.log('you have fucking clients')
       setLoading(false);
     };
     fetchClientsHandler();
@@ -77,17 +70,45 @@ const Clients = ({
 
   const queryHandler = (e) => {
     setQuery(e.target.value);
-    console.log(query);
   };
-
-
-
-  const addClientToggle = () => {
-    setAdd(!add);
-  };
-
   return (
     <>
+      <Modal
+        show={error}
+        onCancel={() => setError()}
+        children={
+          <div className="error-modal-container">
+            <h3>{error}</h3>
+            <Button
+              name="auth-button-primary"
+              contents="GOT IT!"
+              click={() => setError()}
+            />
+          </div>
+        }
+      />
+
+      {/* ADD MODAL */}
+      <Modal
+        show={addClient}
+        onCancel={() => setAddClient(false)}
+        children={
+          <div className="error-modal-container">
+            <h3>
+              Add clients by having them sign up with your coach code below!
+            </h3>
+            <p>{fullUserData.code}</p>
+            <Button
+              name="auth-button-primary"
+              contents="GOT IT!"
+              click={() => setAddClient(false)}
+            />
+          </div>
+        }
+      />
+
+      {/* END ADD MODAL */}
+
       {fullUserData && (
         <DrawerRight
           show={current === false}
@@ -126,16 +147,15 @@ const Clients = ({
         />
       )}
 
-      <DrawerBottom
-        show={add === true}
-        name="drawer-bottom-partial"
-        children={<AddClientMobile users={DUMMYCLIENTS} />}
-      />
+
 
       <header className="dash-head">
         <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />
         {add === false ? <h1>Clients</h1> : <h1>New Client</h1>}
-        <RiUserAddLine className="add-user-mobile" onClick={() => console.log(currentClient.id)} />
+        <RiUserAddLine
+          className="add-user-mobile"
+          onClick={() => setAddClient(!addClient)}
+        />
       </header>
       <div className="mobile-select1">
         <div
@@ -172,12 +192,18 @@ const Clients = ({
             <div className="search-drop">
               {searchList.map((client, index) => (
                 <ClientButton
+                  notifications={fullUserData.notifications.checkins.some(
+                    (id) => client.checkins.includes(id)
+                  )}
+                  clientNotification={fullUserData.notifications.clients.includes(
+                    client.id
+                  )}
                   name={client.name}
                   key={index}
                   image={client.image}
-                  lastCheckin={'April 1 2020'}
-                  firstCheckin={'July 30 2019'}
-                  click={() => clientSelect(client.id)}
+                  lastCheckin={client.checkins.length}
+                  firstCheckin={`${client.dateJoined.monthString} ${client.dateJoined.day} ${client.dateJoined.year}`}
+                  click={() => clientSelect(client)}
                 />
               ))}
             </div>
@@ -187,10 +213,7 @@ const Clients = ({
         <div className="client-list-container">
           <div className="client-desk-menu">
             {addMode === false ? <h3>Clients</h3> : <h3>New Client</h3>}
-            {/* <IoAddSharp
-              className="add-desk-icon"
-              onClick={() => setAddMode(!addMode)}
-            /> */}
+
             {addMode === false && clients && (
               <IoTrashOutline
                 className="desk-trash-icon"
@@ -198,22 +221,27 @@ const Clients = ({
               />
             )}
           </div>
-          {clients && clients.length > 0 && !loading && (
+          {fullUserData && clients && clients.length > 0 && !loading && (
             <div className="absurd-box">
               {clients.map((client, index) => (
                 <ClientButton
+                  notifications={fullUserData.notifications.checkins.some(
+                    (id) => client.checkins.includes(id)
+                  )}
+                  clientNotification={fullUserData.notifications.clients.includes(
+                    client.id
+                  )}
                   name={client.name}
                   key={index}
                   image={client.image}
-                  lastCheckin={'April 1 2020'}
-                  firstCheckin={'July 30 2019'}
-                  click={() => clientSelect(client.id)}
+                  lastCheckin={client.checkins.length}
+                  firstCheckin={`${client.dateJoined.monthString} ${client.dateJoined.day} ${client.dateJoined.year}`}
+                  click={() => clientSelect(client)}
                 />
               ))}
             </div>
           )}
-          {clients && clients.length === 0 && fullUserData.code && !loading &&
-
+          {clients && clients.length === 0 && fullUserData.code && !loading && (
             <div className="absurd-box">
               <h3 className="no-data-title">
                 Have your clients sign up with the code below to gain access to
@@ -223,25 +251,8 @@ const Clients = ({
                 <p className="no-data-addition">{fullUserData.code}</p>
               )}
             </div>
-          }
-          {/* {addMode === false ? (
-            <div className="absurd-box">
-              {fullUserData.clients.map((client, index) => (
-                <ClientButton
-                  name={client.name}
-                  key={index}
-                  image={client.image}
-                  lastCheckin={"April 1 2020"}
-                  firstCheckin={"July 30 2019"}
-                  click={() => clientSelect(client.id)}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="absurd-box">
-              <AddClientMobile users={DUMMYCLIENTS} />
-            </div>
-          )} */}
+          )}
+
         </div>
       </div>
 

@@ -4,11 +4,21 @@ import {IoDocumentTextSharp} from 'react-icons/io5'
 import dietPhoto from '../../Resources/dietphoto.jpeg'
 
 
-const DietButton = ({image, name, dateAdded, description, click}) => {
+const DietButton = ({image, name, dateAdded, description, click, notifications, diet}) => {
+
+const setterFunction = () => {
+  click(diet)
+}
   return(
     <button className="diet-button-wrapper "
-    onClick={click}
+    onClick={setterFunction}
     >
+
+{notifications &&
+      <div className="new-notification-message">
+        <p>NEW DIET</p>
+      </div>
+      }
       <div className="diet-btn-img">
         {/* <IoDocumentTextSharp  className="diet-icon"/> */}
         <img src={dietPhoto} alt="" />

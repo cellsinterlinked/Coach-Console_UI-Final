@@ -19,7 +19,7 @@ const cardioColumns = [
   },
 
   {
-    title: 'Time(minutes)',
+    title: 'Time (Mins)',
     field: 'time',
     width: '25%',
     cellStyle: {

@@ -13,7 +13,7 @@ import { HiChevronLeft } from 'react-icons/hi';
 
 const TotalDisplay = ({currentClient, checkinDisplay, setCheckinDisplay}) => {
   return (
-    <div className="client-list-container flex-center">
+    <div className="client-list-container flex-center container-flex">
 
 
                 <div className="client-desk-menu">

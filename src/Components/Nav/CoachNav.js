@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Nav.css';
 import NavButton from '../Buttons/NavButton';
 import { IoPerson } from 'react-icons/io5';
@@ -18,7 +18,15 @@ const CoachNav = ({
   navToggle,
   fullUserData,
   logoutFunction,
+  hack
 }) => {
+
+const [something, setSomething] = useState(hack)
+
+useEffect(() => {
+  setSomething(hack)
+}, [hack])
+
   return (
     <div className="nav-wrapper">
       <div className="nav-top">
@@ -37,13 +45,14 @@ const CoachNav = ({
         </div>
         {fullUserData && fullUserData.name ? <p>{fullUserData.name}</p> : <p>Add your name in the "Profile" tab.</p>}
       </div>
-      <div className="nav-button-container">
+      {fullUserData && <div className="nav-button-container">
         <NavButton
           name="Clients"
           icon={<IoPerson className="nav-btn-icon" />}
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.clients.length}
         />
         <div className="nav-split"></div>
         <NavButton
@@ -52,15 +61,17 @@ const CoachNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.messages.length}
         />
         <div className="nav-split"></div>
-        <NavButton
+        {fullUserData.clients.length > 0 &&  <NavButton
           name="Client"
           icon={<MdAddchart className="nav-btn-icon" />}
           setPage={setPage}
           page={page}
           navToggle={navToggle}
-        />
+          notifications={fullUserData.notifications.checkins.length}
+        />}
         <div className="nav-split"></div>
         <NavButton
           name="Workouts"
@@ -68,6 +79,7 @@ const CoachNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.workouts.length}
         />
         <div className="nav-split"></div>
         <NavButton
@@ -76,6 +88,7 @@ const CoachNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.diets.length}
         />
         <div className="nav-split"></div>
         <NavButton
@@ -93,7 +106,7 @@ const CoachNav = ({
           logoutFunction={logoutFunction}
         />
         <div className="nav-split"></div>
-      </div>
+      </div>}
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import React from 'react';
 import './NavButton.css';
+import {FaBell} from 'react-icons/fa';
 
-const NavButton = ({ name, setPage, icon, page, navToggle, logout }) => {
+const NavButton = ({ name, setPage, icon, page, navToggle, logout, notifications }) => {
+
 
   // const navHandler = () => {
   //   setPage(name)
@@ -15,12 +17,25 @@ const NavButton = ({ name, setPage, icon, page, navToggle, logout }) => {
       }
       onClick={() => {
         setPage(name)
-        navToggle()
+        if (navToggle) {
+          navToggle()
+        }
+
       }}
       // onClick= {navHandler}
     >
       <div className="nav-icon-container">{icon}</div>
       <p>{name}</p>
+      { notifications > 0 &&
+      <div className="nav-notification-wrapper">
+        <div className="notification-inner">
+        <p className="notification-number">{notifications}</p>
+        <FaBell className="notification-bell"/>
+
+        </div>
+        </div>
+        }
+
     </div>
   );
 };

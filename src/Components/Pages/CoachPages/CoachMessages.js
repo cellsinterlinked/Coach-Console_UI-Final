@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { GoSearch } from 'react-icons/go';
 import './Clients.css';
@@ -15,16 +15,22 @@ import { IoImageOutline } from 'react-icons/io5';
 import Axios from 'axios';
 import LoadingDots from '../../Animations/LoadingDots';
 import NoImage from '../../../Resources/userimage.jpeg';
+import { AuthContext } from '../../../Context/auth-context';
+import Modal from '../../Modals/Modal';
 
 const CoachMessages = ({
-  DUMMYMESSAGES,
   navToggle,
   fullUserData,
   userRole,
   userId,
   setReset,
   reset,
+  hack,
+  setHack,
+  setFullUserData,
 }) => {
+  const data = { role: userRole };
+  const auth = useContext(AuthContext);
   const [error, setError] = useState('');
   const [current, setCurrent] = useState(true);
   const [add, setAdd] = useState(false);
@@ -38,45 +44,31 @@ const CoachMessages = ({
   const [convos, setConvos] = useState();
 
   const [messageContent, setMessageContent] = useState('');
+  const [query, setQuery] = useState('');
+  const [searchList, setSearchList] = useState();
 
   useEffect(() => {
     const getConvosHandler = async () => {
       setLoading(true);
       let result;
-      console.log('hitting the use effect');
       try {
-        result = await Axios.get(`http://localhost:5000/api/convos/${userId}`, {
-          role: userRole,
-        });
+        result = await Axios.get(
+          `http://localhost:5000/api/convos/${userId}`,
+          data,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
+        );
       } catch (err) {
-        console.log('error');
-        alert('there was an error');
+        setError('err');
         setLoading(false);
         return;
       }
       setConvos(result.data.convos);
-      console.log('here are convos', result.data.convos);
-
       setSelectedMessage(result.data.convos[0]);
       setLoading(false);
     };
     getConvosHandler();
-  }, [userId, userRole]);
+  }, [userId, userRole, auth.token]);
 
-  const updateConvosHandler = async () => {
-    setLoading(true);
-    let result;
-    try {
-      result = await Axios.get(`http://localhost:5000/api/convos/${userId}`, {
-        role: userRole,
-      });
-    } catch (err) {
-      alert('there was an error');
-      return;
-    }
-    setConvos(result.data.convos);
-    setLoading(false);
-  };
 
   const sendImageHandler = async (event) => {
     setLoading(true);
@@ -93,15 +85,6 @@ const CoachMessages = ({
     const fileReader = new FileReader();
     fileReader.onload = async () => {
       finalFile = fileReader.result;
-
-      console.log(
-        {
-          convoId: selectedMessage.id,
-          role: userRole,
-          image: finalFile,
-        },
-        'this is the data sent'
-      );
       let results;
       try {
         results = await Axios.patch(
@@ -110,17 +93,18 @@ const CoachMessages = ({
             convoId: selectedMessage.id,
             role: userRole,
             image: finalFile,
-          }
+          },
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
         setError('Couldnt send image');
         setLoading(false);
         return;
       }
-      updateConvosHandler();
+
       setSelectedMessage(results.data.convo);
+      setConvos(results.data.convos);
       setLoading(false);
-      console.log('sent to convo');
     };
 
     fileReader.readAsDataURL(pickedFile);
@@ -138,45 +122,100 @@ const CoachMessages = ({
             convoId: selectedMessage.id,
             role: userRole,
             message: messageContent,
-          }
+          },
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
-        alert(err);
         setError('Couldnt send message');
         setLoading(false);
         return;
       }
-      // setReset(!reset);
-      console.log(results.data.convo);
       setSelectedMessage(results.data.convo);
+      setConvos(results.data.convos);
       setMessageContent('');
       setLoading(false);
     }
     if (messageContent !== '') {
       sendText();
     } else {
-      alert('you need to type something first');
       setError('There is no content in your message!');
     }
   };
 
-  console.log(current);
-  const addMessageToggle = () => {
-    setAdd(!add);
-  };
+  useEffect(() => {
+    if ( userRole === 'coach' && query && convos && convos.length > 0) {
+      setSearchList(fullUserData.clients.filter(
+        (client) => client.name.toLowerCase()
+            .includes(query.toLowerCase())
+            ))
+          }
+        }, [fullUserData.clients, query, convos, userRole]);
 
-  const setConvo = async(convo) => {
-    // update the convo to set the notifications to zero
-    setSelectedMessage(convo)
+
+
+
+
+
+
+  const setConvo = async (convo) => {
+    setLoading(true);
+    let newData = fullUserData;
+    let result;
+    try {
+      result = await Axios.patch(
+        `http://localhost:5000/api/users/notifications/${userId}`,
+        { message: convo.id },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+      return;
+    }
+
+    newData.notifications.messages = newData.notifications.messages.filter(
+      (item) => item !== convo.id
+    );
+    setFullUserData(newData);
+    setQuery('');
+    setSearchList();
+    setHack(!hack);
+    setSelectedMessage(convo);
     setCurrent(false);
+    setLoading(false);
   };
 
   const backFunction = () => {
     setCurrent(true);
   };
 
+  const queryHandler = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const searchHandler = (c) => {
+    let clickedConvo = convos.filter(convo => convo.id === c.conversations[0])
+    console.log(clickedConvo[0])
+    setConvo(clickedConvo[0])
+  }
+
+
   return (
     <>
+      <Modal
+        show={error}
+        onCancel={() => setError()}
+        children={
+          <div className="error-modal-container">
+            <h3>{error}</h3>
+            <Button
+              name="auth-button-primary"
+              contents="GOT IT!"
+              click={() => setError()}
+            />
+          </div>
+        }
+      />
       {userRole === 'coach' && (
         <DrawerRight
           show={current === false}
@@ -244,12 +283,32 @@ const CoachMessages = ({
               name="search-input"
               parentClass="parent-auto"
               placeholder={'Search Messages'}
+              onChange={queryHandler}
+                  value={query}
+                  clear={() => setQuery('')}
+                  clearable={true}
             />
             <Button
               name="search-button"
               click={() => console.log(convos)}
               contents={<GoSearch className="magnify" />}
             />
+
+            {query && query !== '' && searchList && searchList.length > 0 && (
+                  <div className={"search-drop-broken"}>
+                    {searchList.map((client, index) => (
+                      <div key={client.id}className="cl-message-drop" onClick={() => searchHandler(client)}>
+                      <div className="cl-drop-img">
+                       <img alt="" src={client.image} />
+                      </div>
+                      <p className="cl-drop-name">{client.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+
+
           </div>
           <div className="mid-convo-container">
             <div className="mid-convo-header">
@@ -380,10 +439,11 @@ const CoachMessages = ({
                   {loading === true && <LoadingDots />}
                   {convos.map((convo, index) => (
                     <MessageButton
-                      onClick={() => {
-                        setSelectedMessage(convo);
-                        setCurrent(false);
-                      }}
+                      convo={convo}
+                      click={setConvo}
+                      notifications={fullUserData.notifications.messages.includes(
+                        convo.id
+                      )}
                       index={index}
                       userId={userId}
                       key={index}
@@ -443,14 +503,14 @@ const CoachMessages = ({
               {convos && convos.length > 0 && (
                 //this needs removed if issues or div tag added with column styling.
                 <>
-                  {loading === true && <LoadingDots />}
+                  {/* {loading === true && <LoadingDots />} */}
                   {convos.map((convo, index) => (
                     <MessageButton
-                      onClick={() => {
-                        setSelectedMessage(convo);
-                        setCurrent(false);
-                      }}
-                      notifications={userRole === 'client' ? convo.clientNotifications : convo.coachNotifications}
+                      convo={convo}
+                      click={setConvo}
+                      notifications={fullUserData.notifications.messages.includes(
+                        convo.id
+                      )}
                       index={index}
                       userId={userId}
                       key={index}
@@ -507,11 +567,29 @@ const CoachMessages = ({
             name="search-input"
             parentClass="parent-auto"
             placeholder={'Search Messages'}
+            onChange={queryHandler}
+                  value={query}
+                  clear={() => setQuery('')}
+                  clearable={true}
           />
           <Button
             name="search-button"
             contents={<GoSearch className="magnify" />}
           />
+
+            {query && query !== '' && searchList && searchList.length > 0 && (
+                  <div className={"search-drop-broken"}>
+                    {searchList.map((client, index) => (
+
+                       <div key={client.id}className="cl-message-drop" onClick={() => searchHandler(client)}>
+                       <div className="cl-drop-img">
+                        <img alt="" src={client.image} />
+                       </div>
+                       <p className="cl-drop-name">{client.name}</p>
+                       </div>
+                    ))}
+                  </div>
+                )}
         </div>
         {userRole === 'coach' && (
           <div className="client-list-container">
@@ -534,11 +612,11 @@ const CoachMessages = ({
               <div className="messageList-desktop-condition">
                 {convos.map((convo, index) => (
                   <MessageButton
-                    onClick={() => {
-                      setSelectedMessage(convo);
-                      setCurrent(false);
-                    }}
-                    notifications={userRole === 'client' ? convo.clientNotifications : convo.coachNotifications}
+                    convo={convo}
+                    click={setConvo}
+                    notifications={fullUserData.notifications.messages.includes(
+                      convo.id
+                    )}
                     index={index}
                     userId={userId}
                     key={index}
@@ -598,7 +676,7 @@ const CoachMessages = ({
               <h3>Messaging</h3>
             </div>
 
-            {loading === true && <LoadingDots />}
+            {/* {loading === true && <LoadingDots />} */}
 
             {/* {convos && convos.length < 1 && fullUserData.code &&  (
             <>
@@ -613,11 +691,11 @@ const CoachMessages = ({
               <div className="messageList-desktop-condition">
                 {convos.map((convo, index) => (
                   <MessageButton
-                    onClick={() => {
-                      setSelectedMessage(convo);
-                      setCurrent(false);
-                    }}
-                    notifications={userRole === 'client' ? convo.clientNotifications : convo.coachNotifications}
+                    convo={convo}
+                    click={setConvo}
+                    notifications={fullUserData.notifications.messages.includes(
+                      convo.id
+                    )}
                     index={index}
                     userId={userId}
                     key={index}

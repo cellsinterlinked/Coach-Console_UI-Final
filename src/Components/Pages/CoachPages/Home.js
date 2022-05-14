@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { HiChevronLeft, HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { RiUserAddLine } from 'react-icons/ri';
 import { GoSearch } from 'react-icons/go';
@@ -10,6 +10,7 @@ import Button from '../../Buttons/Button';
 import { IoAddSharp, IoTrash } from 'react-icons/io5';
 import { IoTrashOutline } from 'react-icons/io5';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
+import { AuthContext } from '../../../Context/auth-context';
 
 import DrawerRight from '../../Nav/DrawerRight';
 import DrawerBottom from '../../Nav/DrawerBottom';
@@ -27,7 +28,12 @@ const Home = ({
   currentClient,
   userId,
   userRole,
+  hack,
+  setHack,
+  fullUserData2,
+  setFullUserData2,
 }) => {
+  const auth = useContext(AuthContext);
   const [error, setError] = useState('');
   const [current, setCurrent] = useState(true);
   const [add, setAdd] = useState(false);
@@ -61,13 +67,13 @@ const Home = ({
   });
 
   useEffect(() => {
-    console.log('this is the current client', currentClient);
     const getClientData = async () => {
       setLoading(true);
       let result;
       try {
         result = await Axios.get(
-          `http://localhost:5000/api/checkins/${currentClient.id}`
+          `http://localhost:5000/api/checkins/${currentClient.id}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
         alert(err);
@@ -77,7 +83,8 @@ const Home = ({
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/all/${userId}`
+          `http://localhost:5000/api/users/all/${userId}`,
+          { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
         alert(`couldn't get info from database ${err}`);
@@ -89,7 +96,7 @@ const Home = ({
       setFullUserData(results.data);
       setCheckinChartData(result.data);
       setCheckinList(result.data.checkins);
-      console.log('this is the result', result.data);
+
       setLoading(false);
     };
 
@@ -112,22 +119,20 @@ const Home = ({
       }
     }
 
-
-      if (query && checkinList && checkinList.length > 0) {
-        setSearchList(
-          checkinList
-            .filter((checkin) => checkin.client === currentClient.id)
-            .filter(
-              (checkin) =>
-                checkin.date.monthString
-                  .toLowerCase()
-                  .includes(query.toLowerCase()) ||
-                checkin.date.day.toString().includes(query) ||
-                checkin.date.year.toString().includes(query)
-            )
-        );
-      }
-
+    // if (query && checkinList && checkinList.length > 0) {
+    //   setSearchList(
+    //     checkinList
+    //       .filter((checkin) => checkin.client === currentClient.id)
+    //       .filter(
+    //         (checkin) =>
+    //           checkin.date.monthString
+    //             .toLowerCase()
+    //             .includes(query.toLowerCase()) ||
+    //           checkin.date.day.toString().includes(query) ||
+    //           checkin.date.year.toString().includes(query)
+    //       )
+    //   );
+    // }
   }, [checkinList, query, userRole, currentClient.id]);
 
   const updateClientData = async () => {
@@ -135,7 +140,8 @@ const Home = ({
     let result;
     try {
       result = await Axios.get(
-        `http://localhost:5000/api/checkins/${currentClient.id}`
+        `http://localhost:5000/api/checkins/${currentClient.id}`,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
       alert(err);
@@ -143,7 +149,6 @@ const Home = ({
 
       return;
     }
-    console.log('its working strangely');
     setCheckinChartData(result.data);
     setCheckinList(result.data.checkins);
     setLoading(false);
@@ -152,7 +157,6 @@ const Home = ({
   const addCheckinToggle = () => {
     setAdd(!add);
     setCheckinDisplay();
-    console.log(add);
   };
 
   const deleteHandler = (id) => {
@@ -161,10 +165,32 @@ const Home = ({
     setConfirmDelete(true);
   };
 
-  const selectHandler = (checkin) => {
+  const selectHandler = async (checkin) => {
+    setLoading(true);
+    let newData = fullUserData2;
+    let result;
+    try {
+      result = await Axios.patch(
+        `http://localhost:5000/api/users/notifications/${userId}`,
+        { checkin: checkin.id },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+      return;
+    }
+
+    newData.notifications.checkins = newData.notifications.checkins.filter(
+      (item) => item !== checkin.id
+    );
+
     setCheckinDisplay(checkin);
+    setFullUserData2(newData);
     setQuery('');
     setSearchList();
+    setLoading(false);
+    setHack(!hack);
   };
 
   const backHandler = () => {
@@ -173,12 +199,13 @@ const Home = ({
 
   const deleteCheckinHandler = async () => {
     setConfirmDelete(false);
-    console.log(deleteId);
+
     let results;
 
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/checkins/${deleteId.id}`
+        `http://localhost:5000/api/checkins/${deleteId.id}`,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
       setError(`Couldnt delete this check-in.${err}`);
@@ -191,10 +218,7 @@ const Home = ({
 
   const queryHandler = (e) => {
     setQuery(e.target.value);
-    console.log(query);
   };
-
-  console.log(checkinChartData);
 
   return (
     <>
@@ -261,6 +285,7 @@ const Home = ({
             name="drawer-bottom-partial"
             children={
               <CheckinMobile
+                fullUserData={fullUserData}
                 workouts={fullUserData.workouts}
                 //this may be a problem ^
                 diets={fullUserData.diets}
@@ -314,9 +339,8 @@ const Home = ({
             </header>
           )}
 
-
-
-             { checkinDisplay && <header className="dash-head">
+          {checkinDisplay && (
+            <header className="dash-head">
               {add === true && (
                 <HiOutlineMenuAlt2
                   className="mobile-menu"
@@ -344,8 +368,8 @@ const Home = ({
               <div className="mobile-select1">
                 <h3 className="mobile-checkin-date">{`${checkinDisplay.date.monthString} ${checkinDisplay.date.day} ${checkinDisplay.date.year}`}</h3>
               </div>
-            </header>}
-
+            </header>
+          )}
 
           {/* end header */}
 
@@ -378,9 +402,12 @@ const Home = ({
                   searchList &&
                   searchList.length > 0 &&
                   userRole === 'client' && (
-                    <div className="search-drop-broken">
+                    <div className={checkinDisplay ? "search-drop-broken-checkin" : "search-drop-broken"}>
                       {searchList.map((checkin, index) => (
                         <CheckinButton
+                          notifications={fullUserData.notifications.checkins.includes(
+                            checkin.id
+                          )}
                           checkin={checkin}
                           click={selectHandler}
                           id={checkin.id}
@@ -388,7 +415,7 @@ const Home = ({
                           key={index}
                           image={checkin.images[0] || currentClient.image}
                           date={`${checkin.date.monthString} ${checkin.date.day} ${checkin.date.year}`}
-                          firstCheckin={`${fullUserData.userCheckins[0].date.monthString} ${fullUserData.userCheckins[0].date.day} ${fullUserData.userCheckins[0].date.year}`}
+                          firstCheckin={`${checkinList[0].date.monthString} ${checkinList[0].date.day} ${checkinList[0].date.year}`}
                         />
                       ))}
                     </div>
@@ -436,6 +463,7 @@ const Home = ({
                 {currentClient && checkMode === true && (
                   <div className="absurd-box">
                     <CheckinMobile
+                      fullUserData={fullUserData}
                       workouts={fullUserData.workouts}
                       //this may be a problem ^
                       diets={fullUserData.diets}
@@ -458,6 +486,9 @@ const Home = ({
                       checkinChartData.checkins !== [] &&
                       checkinChartData.checkins.map((checkin, index) => (
                         <CheckinButton
+                          notifications={fullUserData.notifications.checkins.includes(
+                            checkin.id
+                          )}
                           checkin={checkin}
                           id={checkin.id}
                           name={checkin.name}

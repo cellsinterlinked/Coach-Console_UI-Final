@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Input from './InputFront';
 import Axios from 'axios';
 import './NewWorkout.css';
 import Button from '../Buttons/Button';
 import Modal from '../Modals/Modal';
+import { AuthContext } from '../../Context/auth-context';
 
-const NewWorkout = ({ userId, setLoadedWorkout, setNewMode, setParentError }) => {
+const NewWorkout = ({
+  userId,
+  setLoadedWorkout,
+  setNewMode,
+  setParentError,
+}) => {
+  const auth = useContext(AuthContext);
   const [error, setError] = useState('');
 
   const [name, setName] = useState('');
@@ -26,11 +33,11 @@ const NewWorkout = ({ userId, setLoadedWorkout, setNewMode, setParentError }) =>
           name: `Day ${i}`,
           data: [
             {
-            type: 'Run',
-            time: 0,
-            cals: 0
-            }
-          ]
+              type: 'Run',
+              time: 0,
+              cals: 0,
+            },
+          ],
         });
       }
 
@@ -49,30 +56,26 @@ const NewWorkout = ({ userId, setLoadedWorkout, setNewMode, setParentError }) =>
         });
       }
 
-      console.log({
-        userId: userId,
-        name: name,
-        description: description,
-        weightData: weightData,
-        cardioData: cardioData,
-      })
-
       let results;
       try {
-        results = await Axios.post('http://localhost:5000/api/workouts/', {
-          userId: userId,
-          name: name,
-          description: description,
-          weightData: weightData,
-          cardioData: cardioData,
-        });
+        results = await Axios.post(
+          'http://localhost:5000/api/workouts/',
+          {
+            userId: userId,
+            name: name,
+            description: description,
+            weightData: weightData,
+            cardioData: cardioData,
+          },
+          { headers: { Authorization: 'Bearer ' + auth.token } }
+        );
       } catch (err) {
         setError('Couldnt submit new workout');
         return;
       }
-      setLoadedWorkout(results.data.workout)
-      setNewMode(false)
-      setParentError('Successfully Started New Workout!')
+      setLoadedWorkout(results.data.workout);
+      setNewMode(false);
+      setParentError('Successfully Started New Workout!');
 
       // parent components resends request for workouts and rerenders.
     } else {

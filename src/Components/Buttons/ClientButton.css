@@ -13,6 +13,7 @@
   background: white;
   transition: 200ms ease;
   cursor: pointer;
+  position: relative;
 }
 
 .client-button-wrapper:hover {
@@ -63,6 +64,7 @@
 .cl-btn-info-top p {
   font-size: 0.7rem;
   margin: 0px;
+  color: var(--teal-text);
 }
 
 .cl-btn-info-bottom {
@@ -75,7 +77,7 @@
 .cl-btn-info-bottom p {
   font-size: 0.9rem;
   margin: 0px;
-  margin-right: 1rem;
+  margin-right: 0.4rem;
 }
 
 .grn-btn-text {

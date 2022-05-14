@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './CoachUniversal.css';
 import './CoachDiets.css';
 import DrawerRight from '../../Nav/DrawerRight';
@@ -19,8 +19,19 @@ import Axios from 'axios';
 import DietTable from '../../Tables/DietTable';
 import NewDiet from '../../Forms/NewDiet';
 import Modal from '../../Modals/Modal';
+import LoadingDots from '../../Animations/LoadingDots';
+import { AuthContext } from '../../../Context/auth-context';
 
-const CoachDiets = ({ navToggle, fullUserData, userId }) => {
+const CoachDiets = ({
+  navToggle,
+  fullUserData,
+  userId,
+  userRole,
+  setFullUserData,
+  hack,
+  setHack,
+}) => {
+  const auth = useContext(AuthContext);
   const [selectedDiet, setSelectedDiet] = useState(
     fullUserData.diets[0] || null
   );
@@ -32,7 +43,9 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
   const [add, setAdd] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [tableData, setTableData] = useState(
-    selectedDiet && selectedDiet.food[dietNum].data ? selectedDiet.food[dietNum].data : null
+    selectedDiet && selectedDiet.food[dietNum].data
+      ? selectedDiet.food[dietNum].data
+      : null
   );
   const [deleteMode, setDeleteMode] = useState(false);
   const [newMode, setNewMode] = useState(false);
@@ -41,7 +54,7 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
   const [percent, setPercent] = useState(
     fullUserData.diets.length > 0 ? 100 / fullUserData.diets[0].food.length : 0
   );
-
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [searchList, setSearchList] = useState();
 
@@ -49,33 +62,38 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
 
   const [dietList, setDietList] = useState();
 
+  console.log('wtf')
+
   useEffect(() => {
     const getDietsHandler = async () => {
+      console.log("getDietsHandler")
       let results;
       try {
-        results = await Axios.get(`http://localhost:5000/api/diets/${userId}`);
+        results = await Axios.get(`http://localhost:5000/api/diets/${userId}`, {
+          headers: { Authorization: 'Bearer ' + auth.token },
+        });
       } catch (err) {
         setError('Could not fetch diets');
         return;
       }
       setDietList(results.data.diets.reverse());
-
+      setSelectedDiet(results.data.diets[results.data.diets.length - 1]);
       if (results.data.diets.length < 1) {
         setAdd(true);
       }
-      console.log(results.data.diets);
     };
     getDietsHandler();
   }, [userId, selectedDiet]);
 
   useEffect(() => {
+    console.log('selectDiet')
     if (selectedDiet && selectedDiet.food[0].data) {
       setTableData(selectedDiet.food[dietNum].data);
-      console.log(tableData);
     }
   }, [selectedDiet, tableData, dietNum]);
 
   useEffect(() => {
+    console.log('query')
     if (dietList && dietList.length > 0 && query) {
       setSearchList(
         dietList.filter((diet) =>
@@ -86,6 +104,7 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
   }, [dietList, query]);
 
   useEffect(() => {
+    console.log('use effect selected diet')
     if (selectedDiet && selectedDiet.food) {
       setPercent(100 / selectedDiet.food.length);
     }
@@ -94,25 +113,29 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
   const updateDietsHandler = async () => {
     let results;
     try {
-      results = await Axios.get(`http://localhost:5000/api/diets/${userId}`);
+      results = await Axios.get(`http://localhost:5000/api/diets/${userId}`, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       setError('Could not fetch diets');
       return;
     }
     setDietList(results.data.diets.reverse());
-    console.log(results.data.diets);
   };
 
   const addDietToggle = () => {
+    console.log('add diet handler')
     setAdd(!add);
   };
 
   const dietDeleteHandler = async () => {
+    console.log('diet delete handler')
     let results;
     setDeleteMode(false);
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/diets/${selectedDiet.id}`
+        `http://localhost:5000/api/diets/${selectedDiet.id}`,
+        { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
       setError(err);
@@ -124,32 +147,67 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
   };
 
   const shareDietHandler = async (client) => {
+    console.log('sharediethandler')
     setShare(false);
+    setSelectedShare();
+    setLoading(true);
 
     let results;
     try {
-      results = await Axios.patch('http://localhost:5000/api/diet/send', {
-        userId: userId,
-        clientId: client.id,
-        workoutId: selectedDiet.id,
-      });
+      results = await Axios.patch(
+        'http://localhost:5000/api/diets/send',
+        {
+          userId: userId,
+          clientId: client.id,
+          dietId: selectedDiet.id,
+        },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
     } catch (err) {
       setShare(false);
       setSelectedShare();
       setError(
         'They either already have this diet or something else went wrong!'
       );
-
+      setLoading(false);
       return;
     }
-    setSelectedShare();
-    setShare(false);
-    alert('success!');
+    setLoading(false);
+    setError('Successfully shared this diet.');
   };
 
   const queryHandler = (e) => {
     setQuery(e.target.value);
-    console.log(query);
+  };
+
+  const selectHandler = async (diet) => {
+    console.log('select handler')
+    setLoading(true);
+    let newData = fullUserData;
+    let result;
+    try {
+      result = await Axios.patch(
+        `http://localhost:5000/api/users/notifications/${userId}`,
+        { diet: diet.id },
+        { headers: { Authorization: 'Bearer ' + auth.token } }
+      );
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+      return;
+    }
+
+    newData.notifications.diets = newData.notifications.diets.filter(
+      (item) => item !== diet.id
+    );
+    setSelectedDiet(diet);
+    setCurrent(true);
+    setFullUserData(newData);
+    setQuery('');
+    setSearchList();
+    setLoading(false);
+    setHack(!hack);
+    return;
   };
 
   return (
@@ -170,7 +228,7 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
       />
       {selectedShare && selectedDiet && (
         <Modal
-          show={selectedShare}
+          show={selectedShare !== null}
           onCancel={() => {
             setSelectedShare();
             setShare(false);
@@ -228,10 +286,9 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
           name="drawer-right-partial"
           children={dietList.map((diet, index) => (
             <DietButton
-              click={() => {
-                setSelectedDiet(diet);
-                setCurrent(true);
-              }}
+              diet={diet}
+              notifications={fullUserData.notifications.diets.includes(diet.id)}
+              click={selectHandler}
               key={index}
               name={diet.name}
               description={diet.description}
@@ -250,6 +307,7 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
             setSelectedDiet={setSelectedDiet}
             setParentError={setError}
             setNewMode={setNewMode}
+            addDietToggle={addDietToggle}
           />
         }
       />
@@ -275,47 +333,77 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
       </div>
 
       <div className="desk-center">
-         { dietList && dietList.length > 0 ? <div className="mobile-head-option-container onlySmall">
-          <div
-            className={
-              share === true
-                ? 'share-drop-container'
-                : 'share-drop-container share-null'
-            }
-          >
-            {fullUserData.clients.map((client, index) => (
+        {loading && <LoadingDots />}
+        {dietList && dietList.length > 0 ? (
+          <div className="mobile-head-option-container onlySmall">
+            {userRole === 'coach' && (
               <div
-                onClick={() => setSelectedShare(client)}
-                key={index}
                 className={
                   share === true
-                    ? 'share-user-select'
-                    : 'share-user-select share-null'
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
                 }
               >
-                <div className="share-user-image">
-                  <img src={client.image} alt="" />
-                </div>
-                <p>{client.name}</p>
+                {fullUserData.clients.map((client, index) => (
+                  <div
+                    onClick={() => setSelectedShare(client)}
+                    key={index}
+                    className={
+                      share === true
+                        ? 'share-user-select'
+                        : 'share-user-select share-null'
+                    }
+                  >
+                    <div className="share-user-image">
+                      <img src={client.image} alt="" />
+                    </div>
+                    <p>{client.name}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
+
+            {userRole === 'client' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
+                <div
+                  onClick={() => setSelectedShare(fullUserData.coach)}
+                  className={
+                    share === true
+                      ? 'share-user-select'
+                      : 'share-user-select share-null'
+                  }
+                >
+                  <div className="share-user-image">
+                    <img src={fullUserData.coach.image} alt="" />
+                  </div>
+                  <p>{fullUserData.coach.name}</p>
+                </div>
+              </div>
+            )}
+
+            {selectedDiet && selectedDiet.name && (
+              <h3 className="mobile-options-title">{selectedDiet.name}</h3>
+            )}
+
+            <IoTrashOutline
+              className="desk-trash-icon"
+              onClick={() => setDeleteMode(!deleteMode)}
+            />
+
+            <RiUserShared2Line
+              className="share-desk-icon"
+              onClick={() => setShare(!share)}
+            />
           </div>
-          {selectedDiet && selectedDiet.name && (
-            <h3 className="mobile-options-title">{selectedDiet.name}</h3>
-          )}
-
-          <IoTrashOutline
-            className="desk-trash-icon"
-            onClick={() => setDeleteMode(!deleteMode)}
-          />
-
-          <RiUserShared2Line
-            className="share-desk-icon"
-            onClick={() => setShare(!share)}
-          />
-        </div> : <div
-        // style={{width: "100%", height: "6rem"}}
-        ></div>}
+        ) : (
+          <div></div>
+        )}
 
         <div className="dash-search-container onlyLarge">
           <Input
@@ -335,7 +423,11 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
             <div className="search-drop">
               {searchList.map((diet, index) => (
                 <DietButton
-                  click={() => setSelectedDiet(diet)}
+                  diet={diet}
+                  notifications={fullUserData.notifications.diets.includes(
+                    diet.id
+                  )}
+                  click={selectHandler}
                   key={index}
                   name={diet.name}
                   description={diet.description}
@@ -348,17 +440,43 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
 
         <div className="client-list-container">
           <div className="client-desk-menu">
-            <div
-              className={
-                share === true
-                  ? 'share-drop-container'
-                  : 'share-drop-container share-null'
-              }
-            >
-              {fullUserData.clients.map((client, index) => (
+            {userRole === 'coach' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
+                {fullUserData.clients.map((client, index) => (
+                  <div
+                    onClick={() => setSelectedShare(client)}
+                    key={index}
+                    className={
+                      share === true
+                        ? 'share-user-select'
+                        : 'share-user-select share-null'
+                    }
+                  >
+                    <div className="share-user-image">
+                      <img src={client.image} alt="" />
+                    </div>
+                    <p>{client.name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {userRole === 'client' && (
+              <div
+                className={
+                  share === true
+                    ? 'share-drop-container'
+                    : 'share-drop-container share-null'
+                }
+              >
                 <div
-                  onClick={() => setSelectedShare(client)}
-                  key={index}
+                  onClick={() => setSelectedShare(fullUserData.coach)}
                   className={
                     share === true
                       ? 'share-user-select'
@@ -366,14 +484,14 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
                   }
                 >
                   <div className="share-user-image">
-                    <img src={client.image} alt="" />
+                    <img src={fullUserData.coach.image} alt="" />
                   </div>
-                  <p>{client.name}</p>
+                  <p>{fullUserData.coach.name}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
 
-            {newMode === false && selectedDiet  ? (
+            {newMode === false && selectedDiet ? (
               <h3>{selectedDiet.name}</h3>
             ) : (
               <h3>Create New Diet</h3>
@@ -396,7 +514,7 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
               />
             )}
           </div>
-          {newMode === false && selectedDiet  ? (
+          {newMode === false && selectedDiet ? (
             <div className="absurd-box">
               <div className="day-changer-container">
                 <div className="day-title-container">
@@ -438,12 +556,13 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
           ) : (
             <div className="absurd-box">
               <div className="desktop-only">
-               <NewDiet
-                userId={userId}
-                setSelectedDiet={setSelectedDiet}
-                setParentError={setError}
-                setNewMode={setNewMode}
-              />
+                <NewDiet
+                  userId={userId}
+                  setSelectedDiet={setSelectedDiet}
+                  setParentError={setError}
+                  setNewMode={setNewMode}
+                  addDietToggle={addDietToggle}
+                />
               </div>
             </div>
           )}
@@ -459,9 +578,11 @@ const CoachDiets = ({ navToggle, fullUserData, userId }) => {
             <>
               {dietList.map((diet, index) => (
                 <DietButton
-                  click={() => {
-                    setSelectedDiet(diet);
-                  }}
+                  diet={diet}
+                  notifications={fullUserData.notifications.diets.includes(
+                    diet.id
+                  )}
+                  click={selectHandler}
                   key={index}
                   name={diet.name}
                   description={diet.description}

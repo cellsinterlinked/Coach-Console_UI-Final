@@ -6,14 +6,17 @@ import Button from '../Buttons/Button';
 import Validator from 'validator';
 import Axios from 'axios';
 import { AuthContext } from '../../Context/auth-context';
+import icon from '../../Resources/Group 1.png';
+import { useHttpClient } from '../Hooks/http-hook';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError, setError } =
+    useHttpClient();
   const [login, setLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
 
   const [role, setRole] = useState('coach');
   const [coachCode, setCoachCode] = useState('');
@@ -35,18 +38,20 @@ const Auth = () => {
       return setError('Password must be at least 6 characters');
     } else {
       try {
-        res = await Axios.post('http://localhost:5000/api/users/login', {
+        res = await sendRequest('http://localhost:5000/api/users/login','post', {
           email: email,
           password: password,
-        });
-      } catch (err) {
-        setError(`Check your credentials and try again ${err}`);
-        return;
+        },
+        );
+          auth.login(res.data.userId, res.data.token, res.data.role);
+        } catch (err) {
+        }
       }
-      auth.login(res.data.userId, res.data.token, res.data.role);
-    }
-    console.log(res);
-  };
+    };
+
+
+
+
 
   const signUpSubmit = async (e) => {
     let res;
@@ -57,7 +62,7 @@ const Auth = () => {
       return setError('Password must be at least 6 characters');
     } else if (password !== confirmPassword) {
       return setError('Passwords must match');
-    } else if (coachCode.length !== 10) {
+    } else if (role === 'client' && coachCode.length !== 10) {
       return setError(
         'Please enter the full Coach Code provided by your trainer'
       );
@@ -73,8 +78,10 @@ const Auth = () => {
         setError(` ${err}`);
         return;
       }
+
+      console.log('sign up', res.data)
       auth.login(res.data.userId, res.data.token, res.data.role);
-      console.log(res);
+
     }
   };
 
@@ -86,6 +93,9 @@ const Auth = () => {
           <div className="vignette"></div>
         </div>
         <div className="auth-details center">
+          <div className="auth-icon-container">
+            <img alt="" src={icon} />
+          </div>
           <h1>COACH CONSOLE</h1>
           <p>Something About How Cool This App Is</p>
           <p>
