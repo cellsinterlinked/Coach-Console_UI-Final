@@ -83,14 +83,21 @@ const CoachDiets = ({
       }
     };
     getDietsHandler();
-  }, [userId, selectedDiet]);
+  }, [userId,]);
 
   useEffect(() => {
     console.log('selectDiet')
     if (selectedDiet && selectedDiet.food[0].data) {
       setTableData(selectedDiet.food[dietNum].data);
     }
-  }, [selectedDiet, tableData, dietNum]);
+  }, [selectedDiet, dietNum]);
+
+  useEffect(() => {
+    console.log('use effect selected diet')
+    if (selectedDiet && selectedDiet.food) {
+      setPercent(100 / selectedDiet.food.length);
+    }
+  }, [selectedDiet]);
 
   useEffect(() => {
     console.log('query')
@@ -103,12 +110,6 @@ const CoachDiets = ({
     }
   }, [dietList, query]);
 
-  useEffect(() => {
-    console.log('use effect selected diet')
-    if (selectedDiet && selectedDiet.food) {
-      setPercent(100 / selectedDiet.food.length);
-    }
-  }, [selectedDiet]);
 
   const updateDietsHandler = async () => {
     let results;
@@ -308,6 +309,7 @@ const CoachDiets = ({
             setParentError={setError}
             setNewMode={setNewMode}
             addDietToggle={addDietToggle}
+            updateDietsHandler={updateDietsHandler}
           />
         }
       />
@@ -540,7 +542,7 @@ const CoachDiets = ({
                   ></div>
                 </div>
               </div>
-
+            <div className="list-scroll-container">
               <DietTable
                 tableData={tableData}
                 selectedDiet={selectedDiet}
@@ -552,6 +554,7 @@ const CoachDiets = ({
                 selectedRow={selectedRow}
                 setSelectedRow={setSelectedRow}
               />
+              </div>
             </div>
           ) : (
             <div className="absurd-box">
@@ -562,6 +565,7 @@ const CoachDiets = ({
                   setParentError={setError}
                   setNewMode={setNewMode}
                   addDietToggle={addDietToggle}
+                  updateDietsHandler={updateDietsHandler}
                 />
               </div>
             </div>
@@ -574,6 +578,7 @@ const CoachDiets = ({
           <div className="analytics-deskHead">
             <h3>Diet Library</h3>
           </div>
+          <div className="list-scroll-container">
           {dietList && (
             <>
               {dietList.map((diet, index) => (
@@ -591,6 +596,7 @@ const CoachDiets = ({
               ))}
             </>
           )}
+          </div>
         </div>
       </div>
     </>

@@ -155,6 +155,7 @@ const Home = ({
   };
 
   const addCheckinToggle = () => {
+    setQuery("")
     setAdd(!add);
     setCheckinDisplay();
   };
@@ -480,7 +481,7 @@ const Home = ({
                 {/* end add checkin page for desktop */}
 
                 {checkMode === false && current === true && !checkinDisplay && (
-                  <div className="absurd-box">
+                  <div className="list-scroll-container-lg">
                     {/* checkins list if there are checkins */}
                     {checkinChartData.checkins &&
                       checkinChartData.checkins !== [] &&

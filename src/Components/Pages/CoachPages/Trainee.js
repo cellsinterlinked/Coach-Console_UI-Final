@@ -304,7 +304,11 @@ const Trainee = ({
                 </div>
                 <div
                   className={current ? 'select2' : 'select2 select-green'}
-                  onClick={() => setCurrent(false)}
+                  onClick={() => {
+                    setQuery("")
+                    setCurrent(false)
+
+                  }}
                 >
                   <p>
                     {userRole === 'coach' ? 'Client Analytics' : 'My Analyics'}
@@ -376,7 +380,7 @@ const Trainee = ({
                 />
 
                 {query && query !== '' && searchList && searchList.length > 0 && (
-                  <div className={checkinDisplay ? "search-drop-broken-checkin" : "search-drop-broken"}>
+                  <div className={checkinDisplay ? "search-drop-broken-checkin" : "search-drop-checkin"}>
                     {searchList.map((checkin, index) => (
                       <CheckinButton
                         notifications={fullUserData.notifications.checkins.includes(
@@ -450,7 +454,7 @@ const Trainee = ({
                 )}
 
                 {checkMode === false && current === true && !checkinDisplay && (
-                  <div className="absurd-box">
+                  <div className="list-scroll-container-lg">
                     {userRole === 'coach' &&
                       checkinChartData.checkins &&
                       checkinChartData.checkins !== [] &&

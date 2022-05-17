@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './Nav.css';
 import NavButton from '../Buttons/NavButton';
 import { IoPerson } from 'react-icons/io5';
@@ -18,7 +18,15 @@ const ClientNav = ({
   navToggle,
   fullUserData,
   logoutFunction,
+  hack
 }) => {
+
+  const [something, setSomething] = useState(hack)
+
+  useEffect(() => {
+    setSomething(hack)
+  }, [hack])
+
   return (
     <div className="nav-wrapper">
       <div className="nav-top">
@@ -51,6 +59,7 @@ const ClientNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.checkins.length}
         />
 
         <div className="nav-split"></div>
@@ -60,6 +69,7 @@ const ClientNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.messages.length}
         />
         <div className="nav-split"></div>
 
@@ -69,6 +79,7 @@ const ClientNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.workouts.length}
         />
         <div className="nav-split"></div>
         <NavButton
@@ -77,6 +88,7 @@ const ClientNav = ({
           setPage={setPage}
           page={page}
           navToggle={navToggle}
+          notifications={fullUserData.notifications.diets.length}
         />
         <div className="nav-split"></div>
         <NavButton

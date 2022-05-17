@@ -194,6 +194,11 @@
   box-shadow: var(--button-shadow);
   background-color: white;
   cursor: pointer;
+  transition: 500ms ease;
+}
+
+.cl-message-drop:hover {
+  box-shadow: none;
 }
 
 .cl-drop-img {

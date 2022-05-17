@@ -85,6 +85,9 @@ const CoachWorkouts = ({
 
   const [loading, setLoading] = useState(false);
 
+
+  console.log('plese dont rerender')
+
   useEffect(() => {
     setLoading(true);
     const getWorkoutsHandler = async () => {
@@ -107,7 +110,7 @@ const CoachWorkouts = ({
       setLoading(false);
     };
     getWorkoutsHandler();
-  }, [userId, loadedWorkout]);
+  }, [userId]);
 
   useEffect(() => {
     if (loadedWorkout && loadedWorkout.weightData[workoutNum].data) {
@@ -344,6 +347,7 @@ const CoachWorkouts = ({
             setLoadedWorkout={setLoadedWorkout}
             setParentError={setError}
             setNewMode={setNewMode}
+            updateWorkoutsHandler={updateWorkoutsHandler}
           />
         }
       />
@@ -681,6 +685,7 @@ const CoachWorkouts = ({
                   )}
 
                 {cardioDisplay === false && loadedWorkout && (
+                  <div className="list-scroll-container">
                   <WorkoutTable
                     tableData={tableData}
                     loadedWorkout={loadedWorkout}
@@ -692,9 +697,12 @@ const CoachWorkouts = ({
                     selectedRow={selectedRow}
                     setSelectedRow={setSelectedRow}
                   />
+
+                  </div>
                 )}
 
                 {cardioDisplay === true && loadedWorkout && (
+                  <div className="list-scroll-container">
                   <CardioTable
                     cardioData={cardioData}
                     loadedWorkout={loadedWorkout}
@@ -706,6 +714,8 @@ const CoachWorkouts = ({
                     selectedRow={selectedRow}
                     setSelectedRow={setSelectedRow}
                   />
+
+                  </div>
                 )}
               </div>
             )}
@@ -718,6 +728,7 @@ const CoachWorkouts = ({
                   setLoadedWorkout={setLoadedWorkout}
                   setParentError={setError}
                   setNewMode={setNewMode}
+                  updateWorkoutsHandler={updateWorkoutsHandler}
                 />
               </div>
             </div>
@@ -735,6 +746,7 @@ const CoachWorkouts = ({
           <div className="analytics-deskHead">
             <h3>Workout Library</h3>
           </div>
+          <div className="list-scroll-container">
           {workoutList && workoutList.length > 0 && (
             <>
               {workoutList.map((workout, index) => (
@@ -752,6 +764,9 @@ const CoachWorkouts = ({
               ))}
             </>
           )}
+
+
+          </div>
 
           {workoutList && workoutList.length < 1 && <div></div>}
         </div>

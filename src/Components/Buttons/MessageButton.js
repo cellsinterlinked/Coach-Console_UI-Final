@@ -42,8 +42,9 @@ const MessageButton = ({image, name, lastMessage, lastMessageTime, click, index,
       </div>
       <div className="msg-btn-info">
         <div className="msg-btn-info-top">
-          <h3>{name}</h3>
-          <p>{lastMessage}...</p>
+          <h3 >{name}</h3>
+          {lastMessage && <p style={{color: "grey"}}>{lastMessage}...</p>}
+          {!lastMessage && <p style={{color: "grey"}}>Click to send your first message...</p>}
 
         </div>
 

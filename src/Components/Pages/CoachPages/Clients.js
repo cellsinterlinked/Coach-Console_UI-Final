@@ -166,7 +166,10 @@ const Clients = ({
         </div>
         <div
           className={current ? 'select2' : 'select2 select-green'}
-          onClick={() => setCurrent(false)}
+          onClick={() => {
+            setCurrent(false)
+            setQuery("")
+          }}
         >
           <p>Analytics</p>
         </div>
@@ -189,7 +192,7 @@ const Clients = ({
           />
 
           {query && query !== '' && searchList && searchList.length > 0 && (
-            <div className="search-drop">
+            <div className="search-drop-broken">
               {searchList.map((client, index) => (
                 <ClientButton
                   notifications={fullUserData.notifications.checkins.some(
@@ -215,14 +218,15 @@ const Clients = ({
             {addMode === false ? <h3>Clients</h3> : <h3>New Client</h3>}
 
             {addMode === false && clients && (
-              <IoTrashOutline
-                className="desk-trash-icon"
-                onClick={() => setDeleteMode(!deleteMode)}
+              <RiUserAddLine
+                className="desk-add-client-icon"
+                onClick={() => setAddClient(!addClient)}
               />
             )}
           </div>
           {fullUserData && clients && clients.length > 0 && !loading && (
             <div className="absurd-box">
+               {/* <div className="list-scroll-container-lg"> */}
               {clients.map((client, index) => (
                 <ClientButton
                   notifications={fullUserData.notifications.checkins.some(
@@ -239,6 +243,7 @@ const Clients = ({
                   click={() => clientSelect(client)}
                 />
               ))}
+              {/* </div> */}
             </div>
           )}
           {clients && clients.length === 0 && fullUserData.code && !loading && (

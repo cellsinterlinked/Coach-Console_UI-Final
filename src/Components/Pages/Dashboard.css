@@ -66,14 +66,14 @@
   color: white;
 }
 
-.client-list-container {
+/* .client-list-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  overflow: scroll;
-}
+  overflow: hidden;
+} */
 
 /* .mobile-select1 {
   position: absolute;
@@ -147,4 +147,8 @@
   .dash-wrapper {
     background: var(--grey-background);
   }
+
+  /* .client-list-container {
+    overflow: hidden;
+  } */
 }

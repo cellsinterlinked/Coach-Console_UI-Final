@@ -12,6 +12,7 @@ const NewDiet = ({
   setParentError,
   setNewMode,
   addDietToggle,
+  updateDietsHandler
 }) => {
   const auth = useContext(AuthContext);
   const [error, setError] = useState('');
@@ -60,6 +61,8 @@ const NewDiet = ({
         return;
       }
       setSelectedDiet(results.data.diet);
+      updateDietsHandler()
+      //this isn't working properly
       addDietToggle();
       setNewMode(false);
       setParentError('Successfully Started New Diet');

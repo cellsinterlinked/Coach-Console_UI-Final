@@ -295,7 +295,7 @@ const CoachMessages = ({
             />
 
             {query && query !== '' && searchList && searchList.length > 0 && (
-                  <div className={"search-drop-broken"}>
+                  <div className={"search-drop-message"}>
                     {searchList.map((client, index) => (
                       <div key={client.id}className="cl-message-drop" onClick={() => searchHandler(client)}>
                       <div className="cl-drop-img">
@@ -578,7 +578,7 @@ const CoachMessages = ({
           />
 
             {query && query !== '' && searchList && searchList.length > 0 && (
-                  <div className={"search-drop-broken"}>
+                  <div className={"search-drop-message"}>
                     {searchList.map((client, index) => (
 
                        <div key={client.id}className="cl-message-drop" onClick={() => searchHandler(client)}>

@@ -237,7 +237,7 @@ code {
   align-items: center;
   background: rgba(255, 255, 255, 0.685);
   backdrop-filter: blur(2px);
-  z-index: 300;
+  z-index: 150;
   border: var(--grey-border);
   max-height: 100vh;
   overflow-y: scroll;
@@ -254,7 +254,7 @@ code {
   align-items: center;
   background: rgba(185, 185, 185, 0.685);
   backdrop-filter: blur(2px);
-  z-index: 300;
+  z-index: 150;
   border: var(--grey-border);
   max-height: 80vh;
   overflow-y: scroll;
@@ -271,7 +271,41 @@ code {
   align-items: center;
   background: rgba(185, 185, 185, 0.685);
   backdrop-filter: blur(2px);
-  z-index: 300;
+  z-index: 150;
+  border: var(--grey-border);
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+.search-drop-message {
+  position: absolute;
+  top: 4.5rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgba(185, 185, 185, 0.685);
+  backdrop-filter: blur(2px);
+  z-index: 150;
+  border: var(--grey-border);
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+.search-drop-checkin {
+  position: absolute;
+  top: 4.5rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgba(185, 185, 185, 0.685);
+  backdrop-filter: blur(2px);
+  z-index: 150;
   border: var(--grey-border);
   max-height: 80vh;
   overflow-y: scroll;
@@ -279,14 +313,23 @@ code {
 
 @media (max-width: 800px) {
   .search-drop-broken {
-    /* top: 3.2rem; */
+    top: 3.2rem;
+    padding-top: 5px;
+  }
+
+  .search-drop-message {
+    top: 3.2rem;
+    padding-top: 5px;
+  }
+
+  .search-drop-broken-checkin {
+    top: 3.1rem;
     padding-top: 5px;
   }
 }
 
-.search-drop-broken-checkin {
-  top: 3.1rem;
-  padding-top: 5px;
+.search-drop-checkin {
+  top: 4.2rem;
 }
 
 .weight-display-box {
@@ -364,4 +407,46 @@ code {
   font-size: 0.6rem;
   color: rgba(255, 0, 0, 0.397);
   font-weight: bold;
+}
+
+.list-scroll-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+.list-scroll-container-lg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow: scroll;
+  padding-bottom: 6rem;
+  padding-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 844px) {
+}
+
+.desk-add-client-icon {
+  padding: 8px;
+  height: 2rem;
+  width: 2rem;
+  color: grey;
+  right: 1rem;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 200ms ease;
+}
+
+.desk-add-client-icon:hover {
+  background-color: var(--grey-background);
 }

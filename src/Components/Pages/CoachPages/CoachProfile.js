@@ -265,7 +265,7 @@ const CoachProfile = ({
               onChange={(e) => setName(e.target.value)}
               type="text"
             />
-            <div
+            {userRole === 'client' && <div
               className="profile-client-extras"
               style={{ width: '100%', minHeight: '4rem' }}
             >
@@ -305,7 +305,7 @@ const CoachProfile = ({
                   </div>
                 </>
               )}
-            </div>
+            </div>}
 
             <ImageUpload
               maxImage={1}
@@ -314,7 +314,7 @@ const CoachProfile = ({
             />
             <Button
               contents="SUBMIT"
-              name="auth-button-primary button-margin-sm"
+              name="auth-button-primary button-margin-sm profile"
               click={profileSubmit}
               disabled={parentPreview.length === 0 || name.length < 5}
             />

@@ -11,6 +11,7 @@ const NewWorkout = ({
   setLoadedWorkout,
   setNewMode,
   setParentError,
+  updateWorkoutsHandler
 }) => {
   const auth = useContext(AuthContext);
   const [error, setError] = useState('');
@@ -74,6 +75,7 @@ const NewWorkout = ({
         return;
       }
       setLoadedWorkout(results.data.workout);
+      updateWorkoutsHandler()
       setNewMode(false);
       setParentError('Successfully Started New Workout!');
 

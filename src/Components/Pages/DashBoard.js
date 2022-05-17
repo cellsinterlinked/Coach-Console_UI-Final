@@ -49,6 +49,7 @@ const Dashboard = ({ userId, userRole }) => {
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
         setFullUserData(res.data);
+        console.log('full user', res.data)
       } catch (err) {
         console.log('error', err, auth.token)
         setLoading(false);
@@ -306,7 +307,7 @@ const Dashboard = ({ userId, userRole }) => {
 
           {navActive === true && <Backdrop onClick={navToggle} />}
 
-          <div className="menu-desktop">
+          {fullUserData && <div className="menu-desktop">
             <ClientNav
               page={page}
               setPage={setPage}
@@ -316,7 +317,7 @@ const Dashboard = ({ userId, userRole }) => {
               setHack={setHack}
               // navToggle={navToggle}
             />
-          </div>
+          </div>}
 
           {loading && <LoadingDots />}
 
