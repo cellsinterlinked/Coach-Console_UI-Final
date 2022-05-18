@@ -7,9 +7,9 @@ import './CoachUniversal.css';
 import '../Dashboard.css';
 import Input from '../../Forms/InputFront';
 import Button from '../../Buttons/Button';
-import { IoAddSharp, IoTrash } from 'react-icons/io5';
+import { IoAddSharp } from 'react-icons/io5';
 import { IoTrashOutline } from 'react-icons/io5';
-import { HiOutlineChevronLeft } from 'react-icons/hi';
+
 import { AuthContext } from '../../../Context/auth-context';
 
 import DrawerRight from '../../Nav/DrawerRight';
@@ -47,7 +47,6 @@ const Home = ({
   const [checkinChartData, setCheckinChartData] = useState();
   const [checkinList, setCheckinList] = useState();
   const [checkinDisplay, setCheckinDisplay] = useState();
-  const [clients, setClients] = useState();
   const [fullUserData, setFullUserData] = useState();
   const [chartSelect, setChartSelect] = useState({
     fatMass: true,
@@ -118,21 +117,6 @@ const Home = ({
         );
       }
     }
-
-    // if (query && checkinList && checkinList.length > 0) {
-    //   setSearchList(
-    //     checkinList
-    //       .filter((checkin) => checkin.client === currentClient.id)
-    //       .filter(
-    //         (checkin) =>
-    //           checkin.date.monthString
-    //             .toLowerCase()
-    //             .includes(query.toLowerCase()) ||
-    //           checkin.date.day.toString().includes(query) ||
-    //           checkin.date.year.toString().includes(query)
-    //       )
-    //   );
-    // }
   }, [checkinList, query, userRole, currentClient.id]);
 
   const updateClientData = async () => {
@@ -155,13 +139,12 @@ const Home = ({
   };
 
   const addCheckinToggle = () => {
-    setQuery("")
+    setQuery('');
     setAdd(!add);
     setCheckinDisplay();
   };
 
   const deleteHandler = (id) => {
-    // alert(`${id} is checkin we are deleting`)
     setDeleteId(id);
     setConfirmDelete(true);
   };
@@ -169,9 +152,9 @@ const Home = ({
   const selectHandler = async (checkin) => {
     setLoading(true);
     let newData = fullUserData2;
-    let result;
+
     try {
-      result = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { checkin: checkin.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
@@ -194,17 +177,11 @@ const Home = ({
     setHack(!hack);
   };
 
-  const backHandler = () => {
-    setCheckinDisplay();
-  };
-
   const deleteCheckinHandler = async () => {
     setConfirmDelete(false);
 
-    let results;
-
     try {
-      results = await Axios.delete(
+      await Axios.delete(
         process.env.REACT_APP_BACKEND_URL + `/checkins/${deleteId.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -403,7 +380,13 @@ const Home = ({
                   searchList &&
                   searchList.length > 0 &&
                   userRole === 'client' && (
-                    <div className={checkinDisplay ? "search-drop-broken-checkin" : "search-drop-broken"}>
+                    <div
+                      className={
+                        checkinDisplay
+                          ? 'search-drop-broken-checkin'
+                          : 'search-drop-broken'
+                      }
+                    >
                       {searchList.map((checkin, index) => (
                         <CheckinButton
                           notifications={fullUserData.notifications.checkins.includes(

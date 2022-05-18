@@ -19,7 +19,6 @@ const CoachProfile = ({
   userId,
   userRole,
   fullUserData,
-  updateAll,
   setPage,
   setFullUserData,
   currentClient,
@@ -29,8 +28,6 @@ const CoachProfile = ({
   const [age, setAge] = useState();
   const [gender, setGender] = useState();
   const [name, setName] = useState();
-
-  const [image, setImage] = useState();
   const [parentPreview, setParentPreview] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDisplay, setConfirmDisplay] = useState(false);
@@ -55,7 +52,6 @@ const CoachProfile = ({
 
   useEffect(() => {
     const getAll = async () => {
-      console.log('profile call', userId, auth.token)
       setLoading(true);
       let results;
       try {
@@ -64,7 +60,6 @@ const CoachProfile = ({
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
-
         setError("Couldn't fetch from the database");
         setLoading(false);
         return;
@@ -87,7 +82,6 @@ const CoachProfile = ({
     if (userId && auth.token) {
       getAll();
     }
-
   }, [userId, auth.token]);
 
   useEffect(() => {
@@ -100,7 +94,7 @@ const CoachProfile = ({
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
-      setError(err)
+        setError(err);
         setLoading(false);
         return;
       }
@@ -121,7 +115,6 @@ const CoachProfile = ({
     if (parentPreview.length === 0) {
       uploadOther();
     }
-
   };
 
   let fullUpdate = fullUserData;
@@ -145,9 +138,8 @@ const CoachProfile = ({
       fullUpdate.gender = gender;
     }
 
-    let results;
     try {
-      results = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/${userId}`,
         data,
         { headers: { Authorization: 'Bearer ' + auth.token } }
@@ -155,7 +147,6 @@ const CoachProfile = ({
     } catch (err) {
       setLoading(false);
       setError(err);
-
     }
     setFullUserData(fullUpdate);
     setLoading(false);
@@ -181,7 +172,6 @@ const CoachProfile = ({
       fullUpdate.gender = gender;
     }
 
-
     let results;
     try {
       results = await Axios.patch(
@@ -192,10 +182,9 @@ const CoachProfile = ({
     } catch (err) {
       setLoading(false);
       return setError(err);
-
     }
 
-    setFullUserData({...fullUserData, user:results.data.user});
+    setFullUserData({ ...fullUserData, user: results.data.user });
     setLoading(false);
     setConfirmDisplay(true);
   };
@@ -265,47 +254,49 @@ const CoachProfile = ({
               onChange={(e) => setName(e.target.value)}
               type="text"
             />
-            {userRole === 'client' && <div
-              className="profile-client-extras"
-              style={{ width: '100%', minHeight: '4rem' }}
-            >
-              {userRole === 'client' && (
-                <>
-                  <Input
-                    name="check-input-lg input-margin-top-med"
-                    placeholder="Age"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    type="number"
-                  />
-                  <div className="gender-select-wrapper">
-                    <p>Select Your Sex</p>
-                    <div className="gender-button-wrapper">
-                      <div
-                        className={
-                          gender === 1
-                            ? 'day-box-button day-selected'
-                            : 'day-box-button'
-                        }
-                        onClick={() => setGender(1)}
-                      >
-                        MALE
-                      </div>
-                      <div
-                        className={
-                          gender === 2
-                            ? 'day-box-button day-selected'
-                            : 'day-box-button'
-                        }
-                        onClick={() => setGender(2)}
-                      >
-                        FEMALE
+            {userRole === 'client' && (
+              <div
+                className="profile-client-extras"
+                style={{ width: '100%', minHeight: '4rem' }}
+              >
+                {userRole === 'client' && (
+                  <>
+                    <Input
+                      name="check-input-lg input-margin-top-med"
+                      placeholder="Age"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      type="number"
+                    />
+                    <div className="gender-select-wrapper">
+                      <p>Select Your Sex</p>
+                      <div className="gender-button-wrapper">
+                        <div
+                          className={
+                            gender === 1
+                              ? 'day-box-button day-selected'
+                              : 'day-box-button'
+                          }
+                          onClick={() => setGender(1)}
+                        >
+                          MALE
+                        </div>
+                        <div
+                          className={
+                            gender === 2
+                              ? 'day-box-button day-selected'
+                              : 'day-box-button'
+                          }
+                          onClick={() => setGender(2)}
+                        >
+                          FEMALE
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              )}
-            </div>}
+                  </>
+                )}
+              </div>
+            )}
 
             <ImageUpload
               maxImage={1}

@@ -8,12 +8,11 @@ import Button from '../../Buttons/Button';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { GoSearch } from 'react-icons/go';
 import { MdOutlinePostAdd } from 'react-icons/md';
-import MaterialTable from 'material-table';
-import { alpha } from '@material-ui/core/styles';
+
 import WorkoutButton from '../../Buttons/WorkoutButton';
 import { FaRunning } from 'react-icons/fa';
 import { FaDumbbell } from 'react-icons/fa';
-import { IoAddSharp, IoTrash } from 'react-icons/io5';
+import { IoAddSharp } from 'react-icons/io5';
 import { IoTrashOutline } from 'react-icons/io5';
 import NewWorkout from '../../Forms/NewWorkout';
 import { RiUserShared2Line } from 'react-icons/ri';
@@ -85,8 +84,7 @@ const CoachWorkouts = ({
 
   const [loading, setLoading] = useState(false);
 
-
-  console.log('plese dont rerender')
+  console.log('plese dont rerender');
 
   useEffect(() => {
     setLoading(true);
@@ -110,7 +108,7 @@ const CoachWorkouts = ({
       setLoading(false);
     };
     getWorkoutsHandler();
-  }, [userId]);
+  }, [userId, auth.token]);
 
   useEffect(() => {
     if (loadedWorkout && loadedWorkout.weightData[workoutNum].data) {
@@ -158,10 +156,9 @@ const CoachWorkouts = ({
   };
 
   const workoutDeleteHandler = async () => {
-    let results;
     setDeleteMode(false);
     try {
-      results = await Axios.delete(
+      await Axios.delete(
         process.env.REACT_APP_BACKEND_URL + `/workouts/${loadedWorkout.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -179,9 +176,8 @@ const CoachWorkouts = ({
     setSelectedShare();
     setLoading(true);
 
-    let results;
     try {
-      results = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + '/workouts/send',
         {
           userId: userId,
@@ -210,9 +206,9 @@ const CoachWorkouts = ({
   const selectHandler = async (workout) => {
     setLoading(true);
     let newData = fullUserData;
-    let result;
+
     try {
-      result = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { workout: workout.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
@@ -686,35 +682,33 @@ const CoachWorkouts = ({
 
                 {cardioDisplay === false && loadedWorkout && (
                   <div className="list-scroll-container">
-                  <WorkoutTable
-                    tableData={tableData}
-                    loadedWorkout={loadedWorkout}
-                    workoutNum={workoutNum}
-                    userId={userId}
-                    setTableData={setTableData}
-                    setError={setError}
-                    columns={columns}
-                    selectedRow={selectedRow}
-                    setSelectedRow={setSelectedRow}
-                  />
-
+                    <WorkoutTable
+                      tableData={tableData}
+                      loadedWorkout={loadedWorkout}
+                      workoutNum={workoutNum}
+                      userId={userId}
+                      setTableData={setTableData}
+                      setError={setError}
+                      columns={columns}
+                      selectedRow={selectedRow}
+                      setSelectedRow={setSelectedRow}
+                    />
                   </div>
                 )}
 
                 {cardioDisplay === true && loadedWorkout && (
                   <div className="list-scroll-container">
-                  <CardioTable
-                    cardioData={cardioData}
-                    loadedWorkout={loadedWorkout}
-                    cardioNum={cardioNum}
-                    userId={userId}
-                    setCardioData={setCardioData}
-                    setError={setError}
-                    cardioColumns={cardioColumns}
-                    selectedRow={selectedRow}
-                    setSelectedRow={setSelectedRow}
-                  />
-
+                    <CardioTable
+                      cardioData={cardioData}
+                      loadedWorkout={loadedWorkout}
+                      cardioNum={cardioNum}
+                      userId={userId}
+                      setCardioData={setCardioData}
+                      setError={setError}
+                      cardioColumns={cardioColumns}
+                      selectedRow={selectedRow}
+                      setSelectedRow={setSelectedRow}
+                    />
                   </div>
                 )}
               </div>
@@ -747,25 +741,23 @@ const CoachWorkouts = ({
             <h3>Workout Library</h3>
           </div>
           <div className="list-scroll-container">
-          {workoutList && workoutList.length > 0 && (
-            <>
-              {workoutList.map((workout, index) => (
-                <WorkoutButton
-                  workout={workout}
-                  notifications={fullUserData.notifications.workouts.includes(
-                    workout.id
-                  )}
-                  click={selectHandler}
-                  key={index}
-                  name={workout.name}
-                  description={workout.description}
-                  dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
-                />
-              ))}
-            </>
-          )}
-
-
+            {workoutList && workoutList.length > 0 && (
+              <>
+                {workoutList.map((workout, index) => (
+                  <WorkoutButton
+                    workout={workout}
+                    notifications={fullUserData.notifications.workouts.includes(
+                      workout.id
+                    )}
+                    click={selectHandler}
+                    key={index}
+                    name={workout.name}
+                    description={workout.description}
+                    dateAdded={`${workout.dateAdded.monthString} ${workout.dateAdded.day} ${workout.dateAdded.year}`}
+                  />
+                ))}
+              </>
+            )}
           </div>
 
           {workoutList && workoutList.length < 1 && <div></div>}

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { HiChevronLeft, HiOutlineMenuAlt2 } from 'react-icons/hi';
-import { RiChatCheckLine, RiUserAddLine } from 'react-icons/ri';
 import { GoSearch } from 'react-icons/go';
 import './Clients.css';
 import './CoachUniversal.css';
 import '../Dashboard.css';
 import Input from '../../Forms/InputFront';
 import Button from '../../Buttons/Button';
-import { IoAddSharp, IoTrash } from 'react-icons/io5';
+import { IoAddSharp } from 'react-icons/io5';
 import { IoTrashOutline } from 'react-icons/io5';
 import TotalDisplay from '../../CheckinDisplays/TotalDisplay';
 import DrawerRight from '../../Nav/DrawerRight';
@@ -20,6 +19,7 @@ import Modal from '../../Modals/Modal';
 import ClientCharts from '../../Charts/ClientCharts';
 import LoadingDots from '../../Animations/LoadingDots';
 import { AuthContext } from '../../../Context/auth-context';
+import {RiUserAddLine} from 'react-icons/ri';
 
 const Trainee = ({
   navToggle,
@@ -132,9 +132,9 @@ const Trainee = ({
   const selectHandler = async (checkin) => {
     setLoading(true);
     let newData = fullUserData;
-    let result;
+
     try {
-      result = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { checkin: checkin.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
@@ -156,14 +156,12 @@ const Trainee = ({
     setLoading(false);
     setHack(!hack);
   };
-  const backHandler = () => {
-    setCheckinDisplay();
-  };
+
   const deleteCheckinHandler = async () => {
     setConfirmDelete(false);
-    let results;
+
     try {
-      results = await Axios.delete(
+      await Axios.delete(
         process.env.REACT_APP_BACKEND_URL + `/checkins/${deleteId}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -305,9 +303,8 @@ const Trainee = ({
                 <div
                   className={current ? 'select2' : 'select2 select-green'}
                   onClick={() => {
-                    setQuery("")
-                    setCurrent(false)
-
+                    setQuery('');
+                    setCurrent(false);
                   }}
                 >
                   <p>
@@ -380,7 +377,13 @@ const Trainee = ({
                 />
 
                 {query && query !== '' && searchList && searchList.length > 0 && (
-                  <div className={checkinDisplay ? "search-drop-broken-checkin" : "search-drop-checkin"}>
+                  <div
+                    className={
+                      checkinDisplay
+                        ? 'search-drop-broken-checkin'
+                        : 'search-drop-checkin'
+                    }
+                  >
                     {searchList.map((checkin, index) => (
                       <CheckinButton
                         notifications={fullUserData.notifications.checkins.includes(

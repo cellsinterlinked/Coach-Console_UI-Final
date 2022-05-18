@@ -1,6 +1,6 @@
 import React from 'react'
 import './DietButton.css';
-import {IoDocumentTextSharp} from 'react-icons/io5'
+
 import dietPhoto from '../../Resources/dietphoto.jpeg'
 
 

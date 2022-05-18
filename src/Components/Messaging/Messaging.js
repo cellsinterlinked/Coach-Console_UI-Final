@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Messaging.css';
 import '../Pages/CoachPages/CoachUniversal.css';
 import { IoChevronBackOutline } from 'react-icons/io5';
@@ -7,7 +7,6 @@ import Button from '../Buttons/Button';
 import { IoImageOutline } from 'react-icons/io5';
 import InputFront from '../Forms/InputFront';
 
-
 const Messaging = ({
   convo,
   back,
@@ -15,16 +14,11 @@ const Messaging = ({
   fullUserData,
   userRole,
   userId,
-  myImage,
   messageContent,
   setMessageContent,
   sendMessageHandler,
   mobileImageSend,
-
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -35,9 +29,7 @@ const Messaging = ({
 
   useEffect(() => {
     scrollToBottom();
-  }, [convo, isLoading, messagesEndRef]);
-
-
+  }, [convo, messagesEndRef]);
 
   const annoyingDate = (param) => {
     let now = new Date();
@@ -76,7 +68,13 @@ const Messaging = ({
           <div className="message-head-image">
             <img src={image} alt="Trainee" />
           </div>
-          <h2 className="convo-mobile-header">{userRole === "coach" ? fullUserData.clients.find(client => client.id === convo.client).name : fullUserData.coach.name}</h2>
+          <h2 className="convo-mobile-header">
+            {userRole === 'coach'
+              ? fullUserData.clients.find(
+                  (client) => client.id === convo.client
+                ).name
+              : fullUserData.coach.name}
+          </h2>
         </div>
         <IoMdSettings className="add-user-mobile" />
       </header>
@@ -85,12 +83,12 @@ const Messaging = ({
         {convo.messages.map((message, index) => (
           <div key={index} className="message-component-wrapper">
             {(!convo.messages[index - 1] ||
-                  convo.messages[index - 1].date.time - message.date.time <
-                    -3600000) && (
-                  <div className="message-time-stamp">
-                    {annoyingDate(message.date)}
-                  </div>
-                )}
+              convo.messages[index - 1].date.time - message.date.time <
+                -3600000) && (
+              <div className="message-time-stamp">
+                {annoyingDate(message.date)}
+              </div>
+            )}
 
             {(!message.image || message.image === '') && (
               <div
@@ -146,12 +144,15 @@ const Messaging = ({
         <Button
           contents={
             <>
-            <IoImageOutline
-              style={{ color: 'white' }}
-              className="add-image-icon"
-            />
-            <input type="file" className="message-image-input" onChange={mobileImageSend} />
-
+              <IoImageOutline
+                style={{ color: 'white' }}
+                className="add-image-icon"
+              />
+              <input
+                type="file"
+                className="message-image-input"
+                onChange={mobileImageSend}
+              />
             </>
           }
           name="image-button"

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
-import { alpha } from '@material-ui/core/styles';
 import Axios from 'axios';
 import { AuthContext } from '../../Context/auth-context';
 
@@ -31,10 +30,10 @@ const DietTable = ({
             tempData[dietNum].data = tempTable;
 
             const sendUpdate = async () => {
-              console.log('sendAddFire')
-              let results;
+              console.log('sendAddFire');
+
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
@@ -62,10 +61,10 @@ const DietTable = ({
             tempData[dietNum].data = updatedData;
 
             const sendUpdate = async () => {
-              console.log('sendUpdateFire')
-              let results;
+              console.log('sendUpdateFire');
+
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
@@ -91,10 +90,10 @@ const DietTable = ({
             let tempData = selectedDiet.food;
             tempData[dietNum].data = updatedData;
             const sendUpdate = async () => {
-              console.log('sendDeleteFire')
-              let results;
+              console.log('sendDeleteFire');
+
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
@@ -127,10 +126,10 @@ const DietTable = ({
             let tempData = selectedDiet.food;
             tempData[dietNum].data = updatedRows;
             const sendUpdate = async () => {
-              console.log('bulkUpdateFire')
-              let results;
+              console.log('bulkUpdateFire');
+
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
@@ -156,10 +155,9 @@ const DietTable = ({
       columns={columns}
       data={tableData}
       onRowClick={(evt, selectedRow) => {
-        console.log('selectingRowFire')
-        setSelectedRow(selectedRow.tableData.id)
-      }
-      }
+        console.log('selectingRowFire');
+        setSelectedRow(selectedRow.tableData.id);
+      }}
       options={{
         exportAllData: true,
         exportFileName: 'TableData',

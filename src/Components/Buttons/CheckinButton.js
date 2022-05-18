@@ -1,6 +1,5 @@
 import React from 'react'
 import './CheckinButton.css';
-import { IoTrashOutline } from 'react-icons/io5';
 import {TiDeleteOutline} from 'react-icons/ti';
 
 const CheckinButton = ({image, name, firstCheckin, date, deleteMode, deleteClick, selectClick, id, click, checkin, notifications}) => {

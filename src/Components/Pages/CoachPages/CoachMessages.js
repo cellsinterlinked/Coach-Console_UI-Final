@@ -9,7 +9,7 @@ import Input from '../../Forms/InputFront';
 import Button from '../../Buttons/Button';
 import MessageButton from '../../Buttons/MessageButton';
 import DrawerRight from '../../Nav/DrawerRight';
-import DrawerBottom from '../../Nav/DrawerBottom';
+
 import Messaging from '../../Messaging/Messaging';
 import { IoImageOutline } from 'react-icons/io5';
 import Axios from 'axios';
@@ -33,9 +33,6 @@ const CoachMessages = ({
   const auth = useContext(AuthContext);
   const [error, setError] = useState('');
   const [current, setCurrent] = useState(true);
-  const [add, setAdd] = useState(false);
-
-  const [messages, setMessages] = useState();
   const [selectedMessage, setSelectedMessage] = useState(
     fullUserData.convos[fullUserData.convos.length - 1]
   );
@@ -67,7 +64,7 @@ const CoachMessages = ({
       setLoading(false);
     };
     getConvosHandler();
-  }, [userId, userRole, auth.token]);
+  }, [userId, userRole, auth.token,]);
 
 
   const sendImageHandler = async (event) => {
@@ -160,9 +157,8 @@ const CoachMessages = ({
   const setConvo = async (convo) => {
     setLoading(true);
     let newData = fullUserData;
-    let result;
     try {
-      result = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { message: convo.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }

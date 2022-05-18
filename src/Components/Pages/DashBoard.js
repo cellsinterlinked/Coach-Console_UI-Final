@@ -40,7 +40,7 @@ const Dashboard = ({ userId, userRole }) => {
 
   useEffect(() => {
     const getAll = async () => {
-      console.log('dashboard call', auth.token, auth.userId, auth.role)
+
       setLoading(true);
       let res;
       try {
@@ -51,7 +51,7 @@ const Dashboard = ({ userId, userRole }) => {
         setFullUserData(res.data);
         console.log('full user', res.data)
       } catch (err) {
-        console.log('error', err, auth.token)
+
         setLoading(false);
         return;
       }
@@ -88,7 +88,6 @@ const Dashboard = ({ userId, userRole }) => {
       );
     } catch (err) {
       alert(`couldn't get info from database ${err}`);
-      setError("Couldn't fetch from the database");
       setLoading(false);
       return;
     }
@@ -103,15 +102,14 @@ const Dashboard = ({ userId, userRole }) => {
   const clientSelect = async (client) => {
     setLoading(true);
     let newData = fullUserData;
-    let result;
+
     try {
-      result = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { client: client.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
-      setError(err);
       setLoading(false);
       return;
     }
@@ -139,20 +137,7 @@ const Dashboard = ({ userId, userRole }) => {
 
   return (
     <>
-      {/* <Modal
-        show={error}
-        onCancel={() => setError()}
-        children={
-          <div className="error-modal-container">
-            <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError()}
-            />
-          </div>
-        }
-      /> */}
+
       {userRole === 'coach' && (
         <div className="dash-wrapper">
           {fullUserData && (

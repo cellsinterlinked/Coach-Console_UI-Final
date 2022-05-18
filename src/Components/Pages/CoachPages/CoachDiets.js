@@ -8,11 +8,10 @@ import Button from '../../Buttons/Button';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { GoSearch } from 'react-icons/go';
 import { MdOutlinePostAdd } from 'react-icons/md';
-import MaterialTable from 'material-table';
-import { alpha } from '@material-ui/core/styles';
+
 import DietButton from '../../Buttons/DietButton';
 import { columns } from '../../../Data/DietColumns';
-import { IoAddSharp, IoTrash } from 'react-icons/io5';
+import { IoAddSharp} from 'react-icons/io5';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiUserShared2Line } from 'react-icons/ri';
 import Axios from 'axios';
@@ -83,24 +82,24 @@ const CoachDiets = ({
       }
     };
     getDietsHandler();
-  }, [userId,]);
+  }, [userId, auth.token]);
 
   useEffect(() => {
-    console.log('selectDiet')
+
     if (selectedDiet && selectedDiet.food[0].data) {
       setTableData(selectedDiet.food[dietNum].data);
     }
   }, [selectedDiet, dietNum]);
 
   useEffect(() => {
-    console.log('use effect selected diet')
+
     if (selectedDiet && selectedDiet.food) {
       setPercent(100 / selectedDiet.food.length);
     }
   }, [selectedDiet]);
 
   useEffect(() => {
-    console.log('query')
+
     if (dietList && dietList.length > 0 && query) {
       setSearchList(
         dietList.filter((diet) =>
@@ -131,10 +130,10 @@ const CoachDiets = ({
 
   const dietDeleteHandler = async () => {
     console.log('diet delete handler')
-    let results;
+
     setDeleteMode(false);
     try {
-      results = await Axios.delete(
+      await Axios.delete(
         process.env.REACT_APP_BACKEND_URL + `/diets/${selectedDiet.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -153,9 +152,9 @@ const CoachDiets = ({
     setSelectedShare();
     setLoading(true);
 
-    let results;
+
     try {
-      results = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + '/diets/send',
         {
           userId: userId,
@@ -185,9 +184,9 @@ const CoachDiets = ({
     console.log('select handler')
     setLoading(true);
     let newData = fullUserData;
-    let result;
+
     try {
-      result = await Axios.patch(
+      await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { diet: diet.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }

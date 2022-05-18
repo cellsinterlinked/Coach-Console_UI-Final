@@ -11,8 +11,7 @@ import { useHttpClient } from '../Hooks/http-hook';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError, setError } =
-    useHttpClient();
+  const { error, sendRequest, setError } = useHttpClient();
   const [login, setLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,20 +37,18 @@ const Auth = () => {
       return setError('Password must be at least 6 characters');
     } else {
       try {
-        res = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/users/login','post', {
-          email: email,
-          password: password,
-        },
+        res = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL + '/users/login',
+          'post',
+          {
+            email: email,
+            password: password,
+          }
         );
-          auth.login(res.data.userId, res.data.token, res.data.role);
-        } catch (err) {
-        }
-      }
-    };
-
-
-
-
+        auth.login(res.data.userId, res.data.token, res.data.role);
+      } catch (err) {}
+    }
+  };
 
   const signUpSubmit = async (e) => {
     let res;
@@ -68,20 +65,22 @@ const Auth = () => {
       );
     } else {
       try {
-        res = await Axios.post(process.env.REACT_APP_BACKEND_URL + '/users/signup', {
-          email: email,
-          password: password,
-          role: role,
-          coachCode: coachCode,
-        });
+        res = await Axios.post(
+          process.env.REACT_APP_BACKEND_URL + '/users/signup',
+          {
+            email: email,
+            password: password,
+            role: role,
+            coachCode: coachCode,
+          }
+        );
       } catch (err) {
         setError(` ${err}`);
         return;
       }
 
-      console.log('sign up', res.data)
+      console.log('sign up', res.data);
       auth.login(res.data.userId, res.data.token, res.data.role);
-
     }
   };
 

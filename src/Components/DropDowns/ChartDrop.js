@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { FiChevronDown } from 'react-icons/fi';
 import './Dropdown.css';
 import './ChartDrop.css';
-import {IoDocumentAttachSharp} from 'react-icons/io5';
+
 import {BsCheck2} from 'react-icons/bs';
 
 const ChartDrop = ({list, selection, title, setSelection }) => {

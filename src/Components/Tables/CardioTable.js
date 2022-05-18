@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
-import { alpha } from '@material-ui/core/styles';
 import Axios from 'axios';
 import { AuthContext } from '../../Context/auth-context';
 
@@ -33,9 +32,8 @@ const CardioTable = ({
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = tempTable;
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
@@ -64,9 +62,8 @@ const CardioTable = ({
             tempData[cardioNum].data = updatedData;
 
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
@@ -95,9 +92,8 @@ const CardioTable = ({
             tempData[cardioNum].data = updatedData;
 
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
@@ -127,15 +123,15 @@ const CardioTable = ({
             rows.map((emp) => {
               index = emp.oldData.cardioData.id;
               updatedRows[index] = emp.newData;
+
             });
 
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = updatedRows;
 
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,

@@ -1,6 +1,6 @@
 import React from 'react'
 import './WorkoutButton.css';
-import {IoDocumentTextSharp} from 'react-icons/io5'
+
 import workoutPhoto from '../../Resources/workoutphoto.jpeg';
 
 const WorkoutButton = ({image, name, dateAdded, description, click, notifications, workout}) => {

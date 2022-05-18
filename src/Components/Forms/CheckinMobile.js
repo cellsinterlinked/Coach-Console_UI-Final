@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useState, useContext } from 'react';
 import Input from '../Forms/InputFront';
 import './CheckinMobile.css';
 import { FiChevronDown } from 'react-icons/fi';
@@ -72,9 +72,9 @@ const CheckinMobile = ({
   const [loading, setLoading] = useState(false);
 
   const sendCheckin = async (data) => {
-    let results;
+
     try {
-      results = await Axios.post(process.env.REACT_APP_BACKEND_URL + '/checkins/', data, {
+      await Axios.post(process.env.REACT_APP_BACKEND_URL + '/checkins/', data, {
         headers: { Authorization: 'Bearer ' + auth.token },
       });
     } catch (err) {

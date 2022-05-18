@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './Nav.css';
 import NavButton from '../Buttons/NavButton';
 import { IoPerson } from 'react-icons/io5';
 import { BiMessageDetail } from 'react-icons/bi';
-import { IoPersonAdd } from 'react-icons/io5';
+
 import { MdAddchart } from 'react-icons/md';
 import { MdOutlineFitnessCenter } from 'react-icons/md';
-import { FaNutritionix } from 'react-icons/fa';
+
 import { ImProfile } from 'react-icons/im';
 import NavLogout from '../Buttons/NavLogout';
 import { BiLogOutCircle } from 'react-icons/bi';
-import {GiChickenLeg} from 'react-icons/gi';
+import { GiChickenLeg } from 'react-icons/gi';
 
 const ClientNav = ({
   page,
@@ -18,14 +18,13 @@ const ClientNav = ({
   navToggle,
   fullUserData,
   logoutFunction,
-  hack
+  hack,
 }) => {
-
-  const [something, setSomething] = useState(hack)
+  const [something, setSomething] = useState(hack);
 
   useEffect(() => {
-    setSomething(hack)
-  }, [hack])
+    setSomething(hack);
+  }, [hack]);
 
   return (
     <div className="nav-wrapper">
@@ -43,14 +42,12 @@ const ClientNav = ({
             />
           )}
         </div>
-        {fullUserData && fullUserData.user.name &&
+        {fullUserData && fullUserData.user.name && (
           <p>{fullUserData.user.name}</p>
-        }
-         {fullUserData && fullUserData.user.name === "" &&
-
+        )}
+        {fullUserData && fullUserData.user.name === '' && (
           <p>Select Profile to Update Name</p>
-        }
-
+        )}
       </div>
       <div className="nav-button-container">
         <NavButton

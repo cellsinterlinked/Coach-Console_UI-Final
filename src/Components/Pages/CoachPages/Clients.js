@@ -10,31 +10,18 @@ import Button from '../../Buttons/Button';
 import ClientButton from '../../Buttons/ClientButton';
 import DrawerRight from '../../Nav/DrawerRight';
 
-import { IoTrashOutline } from 'react-icons/io5';
-
 import LineChart from '../../Charts/LineChart';
 import Axios from 'axios';
 import Modal from '../../Modals/Modal';
 import { AuthContext } from '../../../Context/auth-context';
 
-const Clients = ({
-  navToggle,
-  fullUserData,
-  clientSelect,
-  userId,
-}) => {
+const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
   const auth = useContext(AuthContext);
   const [addClient, setAddClient] = useState(false);
   const [error, setError] = useState('');
   const [current, setCurrent] = useState(true);
-  const [add, setAdd] = useState(false);
-
-  const [addMode, setAddMode] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
-
   const [query, setQuery] = useState('');
   const [searchList, setSearchList] = useState();
-
   const [clients, setClients] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -147,11 +134,9 @@ const Clients = ({
         />
       )}
 
-
-
       <header className="dash-head">
         <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />
-        {add === false ? <h1>Clients</h1> : <h1>New Client</h1>}
+        <h1>Clients</h1>
         <RiUserAddLine
           className="add-user-mobile"
           onClick={() => setAddClient(!addClient)}
@@ -167,8 +152,8 @@ const Clients = ({
         <div
           className={current ? 'select2' : 'select2 select-green'}
           onClick={() => {
-            setCurrent(false)
-            setQuery("")
+            setCurrent(false);
+            setQuery('');
           }}
         >
           <p>Analytics</p>
@@ -215,18 +200,16 @@ const Clients = ({
 
         <div className="client-list-container">
           <div className="client-desk-menu">
-            {addMode === false ? <h3>Clients</h3> : <h3>New Client</h3>}
+            <h3>Clients</h3>
 
-            {addMode === false && clients && (
-              <RiUserAddLine
-                className="desk-add-client-icon"
-                onClick={() => setAddClient(!addClient)}
-              />
-            )}
+            <RiUserAddLine
+              className="desk-add-client-icon"
+              onClick={() => setAddClient(!addClient)}
+            />
           </div>
           {fullUserData && clients && clients.length > 0 && !loading && (
             <div className="absurd-box">
-               {/* <div className="list-scroll-container-lg"> */}
+              {/* <div className="list-scroll-container-lg"> */}
               {clients.map((client, index) => (
                 <ClientButton
                   notifications={fullUserData.notifications.checkins.some(
@@ -257,7 +240,6 @@ const Clients = ({
               )}
             </div>
           )}
-
         </div>
       </div>
 

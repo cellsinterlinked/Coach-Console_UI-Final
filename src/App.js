@@ -1,13 +1,12 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React from 'react';
 import './App.css';
 import Auth from './Components/Pages/Auth';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import Dashboard from './Components/Pages/DashBoard';
 import { AuthContext } from './Context/auth-context';
 import { useAuth } from './Components/Hooks/auth-hook';
 
 function App() {
-  const auth = useContext(AuthContext);
   const { token, login, logout, role, userId } = useAuth();
 
   return (

@@ -1,11 +1,8 @@
 import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
-import { alpha } from '@material-ui/core/styles';
+
 import Axios from 'axios';
 import { AuthContext } from '../../Context/auth-context';
-
-
-
 
 const WorkoutTable = ({
   tableData,
@@ -29,13 +26,15 @@ const WorkoutTable = ({
       editable={{
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
-            let tempTable = [...loadedWorkout.weightData[workoutNum].data, newRow];
+            let tempTable = [
+              ...loadedWorkout.weightData[workoutNum].data,
+              newRow,
+            ];
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = tempTable;
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
@@ -63,10 +62,8 @@ const WorkoutTable = ({
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = updatedData;
             const sendUpdate = async () => {
-
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
@@ -96,9 +93,8 @@ const WorkoutTable = ({
             tempData[workoutNum].data = updatedData;
 
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
@@ -118,7 +114,6 @@ const WorkoutTable = ({
             setTimeout(() => resolve(), 500);
           }),
 
-
         /// this isn't working yet
 
         onBulkUpdate: (selectedRows) =>
@@ -135,9 +130,8 @@ const WorkoutTable = ({
             tempData[workoutNum].data = updatedRows;
 
             const sendUpdate = async () => {
-              let results;
               try {
-                results = await Axios.patch(
+                await Axios.patch(
                   process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
