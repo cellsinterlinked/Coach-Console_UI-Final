@@ -60,7 +60,7 @@ const CoachProfile = ({
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/all/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
@@ -96,7 +96,7 @@ const CoachProfile = ({
       let result;
       try {
         result = await Axios.get(
-          `http://localhost:5000/api/checkins/${currentClient.id}`,
+          process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
@@ -148,7 +148,7 @@ const CoachProfile = ({
     let results;
     try {
       results = await Axios.patch(
-        `http://localhost:5000/api/users/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/${userId}`,
         data,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -185,7 +185,7 @@ const CoachProfile = ({
     let results;
     try {
       results = await Axios.patch(
-        `http://localhost:5000/api/users/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/${userId}`,
         data,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );

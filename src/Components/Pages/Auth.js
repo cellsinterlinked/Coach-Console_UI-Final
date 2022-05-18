@@ -38,7 +38,7 @@ const Auth = () => {
       return setError('Password must be at least 6 characters');
     } else {
       try {
-        res = await sendRequest('http://localhost:5000/api/users/login','post', {
+        res = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/users/login','post', {
           email: email,
           password: password,
         },
@@ -68,7 +68,7 @@ const Auth = () => {
       );
     } else {
       try {
-        res = await Axios.post('http://localhost:5000/api/users/signup', {
+        res = await Axios.post(process.env.REACT_APP_BACKEND_URL + '/users/signup', {
           email: email,
           password: password,
           role: role,

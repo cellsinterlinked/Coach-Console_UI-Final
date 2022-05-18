@@ -74,7 +74,7 @@ const CheckinMobile = ({
   const sendCheckin = async (data) => {
     let results;
     try {
-      results = await Axios.post('http://localhost:5000/api/checkins/', data, {
+      results = await Axios.post(process.env.REACT_APP_BACKEND_URL + '/checkins/', data, {
         headers: { Authorization: 'Bearer ' + auth.token },
       });
     } catch (err) {

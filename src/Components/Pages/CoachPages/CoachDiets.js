@@ -69,7 +69,7 @@ const CoachDiets = ({
       console.log("getDietsHandler")
       let results;
       try {
-        results = await Axios.get(`http://localhost:5000/api/diets/${userId}`, {
+        results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/diets/${userId}`, {
           headers: { Authorization: 'Bearer ' + auth.token },
         });
       } catch (err) {
@@ -114,7 +114,7 @@ const CoachDiets = ({
   const updateDietsHandler = async () => {
     let results;
     try {
-      results = await Axios.get(`http://localhost:5000/api/diets/${userId}`, {
+      results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/diets/${userId}`, {
         headers: { Authorization: 'Bearer ' + auth.token },
       });
     } catch (err) {
@@ -135,7 +135,7 @@ const CoachDiets = ({
     setDeleteMode(false);
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/diets/${selectedDiet.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/diets/${selectedDiet.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
@@ -156,7 +156,7 @@ const CoachDiets = ({
     let results;
     try {
       results = await Axios.patch(
-        'http://localhost:5000/api/diets/send',
+        process.env.REACT_APP_BACKEND_URL + '/diets/send',
         {
           userId: userId,
           clientId: client.id,
@@ -188,7 +188,7 @@ const CoachDiets = ({
     let result;
     try {
       result = await Axios.patch(
-        `http://localhost:5000/api/users/notifications/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { diet: diet.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );

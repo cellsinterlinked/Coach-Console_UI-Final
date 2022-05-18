@@ -35,7 +35,7 @@ const DietTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/diets/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
                     food: tempData,
@@ -66,7 +66,7 @@ const DietTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/diets/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
                     dietId: selectedDiet.id,
@@ -95,7 +95,7 @@ const DietTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/diets/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
                     dietId: selectedDiet.id,
@@ -131,7 +131,7 @@ const DietTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/diets/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/diets/edit/',
                   {
                     userId: userId,
                     dietId: selectedDiet.id,

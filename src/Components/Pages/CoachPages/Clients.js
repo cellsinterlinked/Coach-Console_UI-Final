@@ -44,7 +44,7 @@ const Clients = ({
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/clients/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/users/clients/${userId}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {

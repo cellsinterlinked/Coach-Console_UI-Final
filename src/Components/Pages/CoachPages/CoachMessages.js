@@ -53,7 +53,7 @@ const CoachMessages = ({
       let result;
       try {
         result = await Axios.get(
-          `http://localhost:5000/api/convos/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/convos/${userId}`,
           data,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
@@ -88,7 +88,7 @@ const CoachMessages = ({
       let results;
       try {
         results = await Axios.patch(
-          `http://localhost:5000/api/convos/add/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/convos/add/${userId}`,
           {
             convoId: selectedMessage.id,
             role: userRole,
@@ -117,7 +117,7 @@ const CoachMessages = ({
       setLoading(true);
       try {
         results = await Axios.patch(
-          `http://localhost:5000/api/convos/add/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/convos/add/${userId}`,
           {
             convoId: selectedMessage.id,
             role: userRole,
@@ -163,7 +163,7 @@ const CoachMessages = ({
     let result;
     try {
       result = await Axios.patch(
-        `http://localhost:5000/api/users/notifications/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { message: convo.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );

@@ -70,7 +70,7 @@ const Trainee = ({
       let result;
       try {
         result = await Axios.get(
-          `http://localhost:5000/api/checkins/${currentClient.id}`,
+          process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
@@ -106,7 +106,7 @@ const Trainee = ({
     let result;
     try {
       result = await Axios.get(
-        `http://localhost:5000/api/checkins/${currentClient.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
@@ -135,7 +135,7 @@ const Trainee = ({
     let result;
     try {
       result = await Axios.patch(
-        `http://localhost:5000/api/users/notifications/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { checkin: checkin.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -164,7 +164,7 @@ const Trainee = ({
     let results;
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/checkins/${deleteId}`,
+        process.env.REACT_APP_BACKEND_URL + `/checkins/${deleteId}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {

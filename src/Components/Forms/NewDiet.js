@@ -46,7 +46,7 @@ const NewDiet = ({
       let results;
       try {
         results = await Axios.post(
-          'http://localhost:5000/api/diets/',
+          process.env.REACT_APP_BACKEND_URL + '/diets/',
           {
             userId: userId,
             name: name,

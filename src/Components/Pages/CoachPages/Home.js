@@ -72,7 +72,7 @@ const Home = ({
       let result;
       try {
         result = await Axios.get(
-          `http://localhost:5000/api/checkins/${currentClient.id}`,
+          process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
@@ -83,7 +83,7 @@ const Home = ({
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/users/all/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
@@ -140,7 +140,7 @@ const Home = ({
     let result;
     try {
       result = await Axios.get(
-        `http://localhost:5000/api/checkins/${currentClient.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
@@ -172,7 +172,7 @@ const Home = ({
     let result;
     try {
       result = await Axios.patch(
-        `http://localhost:5000/api/users/notifications/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { checkin: checkin.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
@@ -205,7 +205,7 @@ const Home = ({
 
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/checkins/${deleteId.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/checkins/${deleteId.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {

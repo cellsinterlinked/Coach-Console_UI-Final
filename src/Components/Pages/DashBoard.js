@@ -45,7 +45,7 @@ const Dashboard = ({ userId, userRole }) => {
       let res;
       try {
         res = await Axios.get(
-          `http://localhost:5000/api/users/all/${auth.userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/users/all/${auth.userId}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
         setFullUserData(res.data);
@@ -83,7 +83,7 @@ const Dashboard = ({ userId, userRole }) => {
     let results;
     try {
       results = await Axios.get(
-        `http://localhost:5000/api/users/all/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
@@ -106,7 +106,7 @@ const Dashboard = ({ userId, userRole }) => {
     let result;
     try {
       result = await Axios.patch(
-        `http://localhost:5000/api/users/notifications/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { client: client.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );

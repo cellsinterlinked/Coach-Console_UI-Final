@@ -60,7 +60,7 @@ const NewWorkout = ({
       let results;
       try {
         results = await Axios.post(
-          'http://localhost:5000/api/workouts/',
+          process.env.REACT_APP_BACKEND_URL + '/workouts/',
           {
             userId: userId,
             name: name,

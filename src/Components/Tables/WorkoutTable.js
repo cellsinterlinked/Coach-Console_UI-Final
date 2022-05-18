@@ -36,7 +36,7 @@ const WorkoutTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/workouts/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
                     workoutId: loadedWorkout.id,
@@ -67,7 +67,7 @@ const WorkoutTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/workouts/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
                     workoutId: loadedWorkout.id,
@@ -99,7 +99,7 @@ const WorkoutTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/workouts/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
                     workoutId: loadedWorkout.id,
@@ -138,7 +138,7 @@ const WorkoutTable = ({
               let results;
               try {
                 results = await Axios.patch(
-                  'http://localhost:5000/api/workouts/edit/',
+                  process.env.REACT_APP_BACKEND_URL + '/workouts/edit/',
                   {
                     userId: userId,
                     workoutId: loadedWorkout.id,

@@ -94,7 +94,7 @@ const CoachWorkouts = ({
       let results;
       try {
         results = await Axios.get(
-          `http://localhost:5000/api/workouts/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/workouts/${userId}`,
           { headers: { Authorization: 'Bearer ' + auth.token } }
         );
       } catch (err) {
@@ -143,7 +143,7 @@ const CoachWorkouts = ({
     let results;
     try {
       results = await Axios.get(
-        `http://localhost:5000/api/workouts/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/workouts/${userId}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
@@ -162,7 +162,7 @@ const CoachWorkouts = ({
     setDeleteMode(false);
     try {
       results = await Axios.delete(
-        `http://localhost:5000/api/workouts/${loadedWorkout.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/workouts/${loadedWorkout.id}`,
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
     } catch (err) {
@@ -182,7 +182,7 @@ const CoachWorkouts = ({
     let results;
     try {
       results = await Axios.patch(
-        'http://localhost:5000/api/workouts/send',
+        process.env.REACT_APP_BACKEND_URL + '/workouts/send',
         {
           userId: userId,
           clientId: client.id,
@@ -213,7 +213,7 @@ const CoachWorkouts = ({
     let result;
     try {
       result = await Axios.patch(
-        `http://localhost:5000/api/users/notifications/${userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { workout: workout.id },
         { headers: { Authorization: 'Bearer ' + auth.token } }
       );
