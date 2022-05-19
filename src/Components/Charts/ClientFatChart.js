@@ -53,20 +53,16 @@ const ClientFatChart = () => {
   return (
     <div className="chart-wrapper">
       <Line
-      data={data}
-      options = {{
-
-        scales: {
-          xAxes: {
-            ticks: {
-              display: false,
+        data={data}
+        options={{
+          scales: {
+            xAxes: {
+              ticks: {
+                display: false,
+              },
             },
           },
-        },
-      }}
-
-
-
+        }}
       />
     </div>
   );

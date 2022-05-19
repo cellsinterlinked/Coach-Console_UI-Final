@@ -18,10 +18,7 @@ const DrawerRight = (props) => {
     </CSSTransition>
   );
 
-  return ReactDOM.createPortal(
-    content,
-    document.getElementById('drawer-hook-right')
-  );
+  return ReactDOM.createPortal(content, document.getElementById('drawer-hook-right'));
 };
 
 export default DrawerRight;

@@ -1,5 +1,3 @@
-
-
 const cardioColumns = [
   {
     title: 'Type',
@@ -10,8 +8,7 @@ const cardioColumns = [
       fontSize: '.9rem',
     },
     headerStyle: {
-      background:
-        'linear-gradient(266.26deg, #00bcb1 0%, rgba(0, 188, 177, 0) 173.86%)',
+      background: 'linear-gradient(266.26deg, #00bcb1 0%, rgba(0, 188, 177, 0) 173.86%)',
       color: 'white',
       fontWeight: 'bold',
     },
@@ -50,4 +47,4 @@ const cardioColumns = [
   },
 ];
 
-export {cardioColumns}
+export { cardioColumns };

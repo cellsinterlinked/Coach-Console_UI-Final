@@ -25,10 +25,7 @@ const CardioTable = ({
       editable={{
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
-            let tempTable = [
-              ...loadedWorkout.cardioData[cardioNum].data,
-              newRow,
-            ];
+            let tempTable = [...loadedWorkout.cardioData[cardioNum].data, newRow];
             let tempData = loadedWorkout.cardioData;
             tempData[cardioNum].data = tempTable;
             const sendUpdate = async () => {
@@ -41,7 +38,7 @@ const CardioTable = ({
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -71,7 +68,7 @@ const CardioTable = ({
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -101,7 +98,7 @@ const CardioTable = ({
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -123,7 +120,6 @@ const CardioTable = ({
             rows.map((emp) => {
               index = emp.oldData.cardioData.id;
               updatedRows[index] = emp.newData;
-
             });
 
             let tempData = loadedWorkout.cardioData;
@@ -139,7 +135,7 @@ const CardioTable = ({
                     cardioData: tempData,
                     weightData: loadedWorkout.weightData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -157,9 +153,7 @@ const CardioTable = ({
       title={`${loadedWorkout.cardioData[cardioNum].name} Cardio`}
       columns={cardioColumns}
       data={cardioData}
-      onRowClick={(evt, selectedRow) =>
-        setSelectedRow(selectedRow.tableData.id)
-      }
+      onRowClick={(evt, selectedRow) => setSelectedRow(selectedRow.tableData.id)}
       options={{
         // fixedColumns: {
         //   left: 1,
@@ -179,8 +173,7 @@ const CardioTable = ({
         },
         // grouping: true,
         rowStyle: (rowData) => ({
-          backgroundColor:
-            selectedRow === rowData.tableData.id ? '#EEE' : '#FFF',
+          backgroundColor: selectedRow === rowData.tableData.id ? '#EEE' : '#FFF',
         }),
         tableLayout: 'fixed',
       }}

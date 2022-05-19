@@ -1,4 +1,4 @@
-import React, {useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Input from '../Forms/InputFront';
 import './CheckinMobile.css';
 import { FiChevronDown } from 'react-icons/fi';
@@ -72,7 +72,6 @@ const CheckinMobile = ({
   const [loading, setLoading] = useState(false);
 
   const sendCheckin = async (data) => {
-
     try {
       await Axios.post(process.env.REACT_APP_BACKEND_URL + '/checkins/', data, {
         headers: { Authorization: 'Bearer ' + auth.token },
@@ -209,11 +208,7 @@ const CheckinMobile = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError('')}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError('')} />
           </div>
         }
       />
@@ -228,19 +223,13 @@ const CheckinMobile = ({
         >
           <FiChevronDown
             className={
-              weightState === true
-                ? 'checkin-mobile-expand upside-down'
-                : 'checkin-mobile-expand'
+              weightState === true ? 'checkin-mobile-expand upside-down' : 'checkin-mobile-expand'
             }
             onClick={() => setWeightState(!weightState)}
           />
           <h3>Weight</h3>
         </header>
-        <div
-          className={
-            weightState === true ? 'input-expand' : 'input-expand input-close'
-          }
-        >
+        <div className={weightState === true ? 'input-expand' : 'input-expand input-close'}>
           <Input
             type="number"
             name="check-input-sm"
@@ -255,26 +244,18 @@ const CheckinMobile = ({
         <header
           onClick={() => setBfState(!bfState)}
           className={
-            bfState === true
-              ? 'bf-mobile-header center header-active'
-              : 'bf-mobile-header center'
+            bfState === true ? 'bf-mobile-header center header-active' : 'bf-mobile-header center'
           }
         >
           <FiChevronDown
             className={
-              bfState === true
-                ? 'checkin-mobile-expand upside-down'
-                : 'checkin-mobile-expand'
+              bfState === true ? 'checkin-mobile-expand upside-down' : 'checkin-mobile-expand'
             }
             onClick={() => setBfState(!bfState)}
           />
           <h3>Body Fat Measurements</h3>
         </header>
-        <div
-          className={
-            bfState === true ? 'input-expand' : 'input-expand input-close'
-          }
-        >
+        <div className={bfState === true ? 'input-expand' : 'input-expand input-close'}>
           <Input
             parentClass="parent-auto"
             name={
@@ -321,9 +302,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Subscapular"
             value={bodyFat.subscapular}
-            onChange={(e) =>
-              setBodyFat({ ...bodyFat, subscapular: e.target.value })
-            }
+            onChange={(e) => setBodyFat({ ...bodyFat, subscapular: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -335,9 +314,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Abdominal"
             value={bodyFat.abdominal}
-            onChange={(e) =>
-              setBodyFat({ ...bodyFat, abdominal: e.target.value })
-            }
+            onChange={(e) => setBodyFat({ ...bodyFat, abdominal: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -349,9 +326,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Suprailiac"
             value={bodyFat.suprailiac}
-            onChange={(e) =>
-              setBodyFat({ ...bodyFat, suprailiac: e.target.value })
-            }
+            onChange={(e) => setBodyFat({ ...bodyFat, suprailiac: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -372,33 +347,21 @@ const CheckinMobile = ({
         <header
           onClick={() => setPicState(!picState)}
           className={
-            picState === true
-              ? 'bf-mobile-header center header-active'
-              : 'bf-mobile-header center'
+            picState === true ? 'bf-mobile-header center header-active' : 'bf-mobile-header center'
           }
         >
           <h3>Progress Pictures</h3>
           <FiChevronDown
             className={
-              picState === true
-                ? 'checkin-mobile-expand upside-down'
-                : 'checkin-mobile-expand'
+              picState === true ? 'checkin-mobile-expand upside-down' : 'checkin-mobile-expand'
             }
             onClick={() => setPicState(!picState)}
           />
         </header>
         <div
-          className={
-            picState === true
-              ? 'mobile-image-input'
-              : 'mobile-image-input input-close'
-          }
+          className={picState === true ? 'mobile-image-input' : 'mobile-image-input input-close'}
         >
-          <ImageUpload
-            imageArray={imageArray}
-            setImageArray={setImageArray}
-            maxImage={6}
-          />
+          <ImageUpload imageArray={imageArray} setImageArray={setImageArray} maxImage={6} />
         </div>
       </div>
 
@@ -414,18 +377,12 @@ const CheckinMobile = ({
           <h3>Measurements</h3>
           <FiChevronDown
             className={
-              measureState === true
-                ? 'checkin-mobile-expand upside-down'
-                : 'checkin-mobile-expand'
+              measureState === true ? 'checkin-mobile-expand upside-down' : 'checkin-mobile-expand'
             }
             onClick={() => setMeasureState(!measureState)}
           />
         </header>
-        <div
-          className={
-            measureState === true ? 'input-expand' : 'input-expand input-close'
-          }
-        >
+        <div className={measureState === true ? 'input-expand' : 'input-expand input-close'}>
           <Input
             parentClass="parent-auto"
             name={
@@ -436,9 +393,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Neck"
             value={measurements.neck}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, neck: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, neck: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -450,9 +405,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Bicep"
             value={measurements.bicep}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, bicep: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, bicep: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -464,9 +417,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Forearm"
             value={measurements.forearm}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, forearm: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, forearm: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -478,9 +429,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Chest"
             value={measurements.chest}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, chest: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, chest: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -492,9 +441,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Waist"
             value={measurements.waist}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, waist: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, waist: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -506,9 +453,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Hips"
             value={measurements.hips}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, hips: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, hips: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -520,9 +465,7 @@ const CheckinMobile = ({
             type="number"
             placeholder="Thigh"
             value={measurements.thigh}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, thigh: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, thigh: e.target.value })}
           />
           <Input
             parentClass="parent-auto"
@@ -534,20 +477,13 @@ const CheckinMobile = ({
             type="number"
             placeholder="Calf"
             value={measurements.calf}
-            onChange={(e) =>
-              setMeasurements({ ...measurements, calf: e.target.value })
-            }
+            onChange={(e) => setMeasurements({ ...measurements, calf: e.target.value })}
           />
         </div>
       </div>
 
       <div>
-        <Dropdown
-          list={diets}
-          selection={dietState}
-          setSelection={setDietState}
-          title="Diet"
-        />
+        <Dropdown list={diets} selection={dietState} setSelection={setDietState} title="Diet" />
         {dietState.name !== 'none' && (
           <DietButton
             name={dietState.name}
@@ -585,20 +521,12 @@ const CheckinMobile = ({
           <h3>Notes</h3>
           <FiChevronDown
             className={
-              notesState === true
-                ? 'checkin-mobile-expand upside-down'
-                : 'checkin-mobile-expand'
+              notesState === true ? 'checkin-mobile-expand upside-down' : 'checkin-mobile-expand'
             }
             onClick={() => setNotesState(!notesState)}
           />
         </header>
-        <div
-          className={
-            notesState === true
-              ? 'input-expand tall'
-              : 'input-expand input-close'
-          }
-        >
+        <div className={notesState === true ? 'input-expand tall' : 'input-expand input-close'}>
           <p className="check-section-head">Hrs of Sleep</p>
           <Input
             parentClass="parent-auto"
@@ -684,9 +612,7 @@ const CheckinMobile = ({
             value={sleep.sun}
             onChange={(e) => setSleep({ ...sleep, sun: e.target.value })}
           />
-          <p className="check-section-head">
-            Workout Quality 1-5 (1 = Bad - 5 = Great)
-          </p>
+          <p className="check-section-head">Workout Quality 1-5 (1 = Bad - 5 = Great)</p>
           {workoutState.name !== 'none' &&
             workoutState.weightData.map((workout, index) => (
               <Input

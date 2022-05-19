@@ -70,9 +70,7 @@ const Messaging = ({
           </div>
           <h2 className="convo-mobile-header">
             {userRole === 'coach'
-              ? fullUserData.clients.find(
-                  (client) => client.id === convo.client
-                ).name
+              ? fullUserData.clients.find((client) => client.id === convo.client).name
               : fullUserData.coach.name}
           </h2>
         </div>
@@ -83,19 +81,14 @@ const Messaging = ({
         {convo.messages.map((message, index) => (
           <div key={index} className="message-component-wrapper">
             {(!convo.messages[index - 1] ||
-              convo.messages[index - 1].date.time - message.date.time <
-                -3600000) && (
-              <div className="message-time-stamp">
-                {annoyingDate(message.date)}
-              </div>
+              convo.messages[index - 1].date.time - message.date.time < -3600000) && (
+              <div className="message-time-stamp">{annoyingDate(message.date)}</div>
             )}
 
             {(!message.image || message.image === '') && (
               <div
                 className={
-                  message.user === userId
-                    ? 'sender-message-wrapper'
-                    : 'reciever-message-wrapper'
+                  message.user === userId ? 'sender-message-wrapper' : 'reciever-message-wrapper'
                 }
               >
                 {message.message}
@@ -105,9 +98,7 @@ const Messaging = ({
             {message.image && message.image !== '' && (
               <div
                 className={
-                  message.user === userId
-                    ? 'sender-image-wrapper'
-                    : 'reciever-image-wrapper'
+                  message.user === userId ? 'sender-image-wrapper' : 'reciever-image-wrapper'
                 }
               >
                 <img src={message.image} alt="" />
@@ -115,8 +106,7 @@ const Messaging = ({
             )}
 
             {message.user !== userId &&
-              (!convo.messages[index + 1] ||
-                convo.messages[index + 1].user === userId) && (
+              (!convo.messages[index + 1] || convo.messages[index + 1].user === userId) && (
                 <div className="message-user-circle">
                   <img src={image} alt="" />
                 </div>
@@ -135,24 +125,13 @@ const Messaging = ({
             value={messageContent}
             onChange={(e) => setMessageContent(e.target.value)}
           />
-          <Button
-            contents="SEND"
-            name="send-message-btn"
-            click={sendMessageHandler}
-          />
+          <Button contents="SEND" name="send-message-btn" click={sendMessageHandler} />
         </div>
         <Button
           contents={
             <>
-              <IoImageOutline
-                style={{ color: 'white' }}
-                className="add-image-icon"
-              />
-              <input
-                type="file"
-                className="message-image-input"
-                onChange={mobileImageSend}
-              />
+              <IoImageOutline style={{ color: 'white' }} className="add-image-icon" />
+              <input type="file" className="message-image-input" onChange={mobileImageSend} />
             </>
           }
           name="image-button"

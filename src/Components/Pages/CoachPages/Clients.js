@@ -30,10 +30,9 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
       setLoading(true);
       let results;
       try {
-        results = await Axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/clients/${userId}`,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
-        );
+        results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/users/clients/${userId}`, {
+          headers: { Authorization: 'Bearer ' + auth.token },
+        });
       } catch (err) {
         setLoading(false);
         setError('Couldnt fetch clients');
@@ -48,9 +47,7 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
   useEffect(() => {
     if (clients && clients.length > 0 && query) {
       setSearchList(
-        clients.filter((client) =>
-          client.name.toLowerCase().includes(query.toLowerCase())
-        )
+        clients.filter((client) => client.name.toLowerCase().includes(query.toLowerCase())),
       );
     }
   }, [clients, query]);
@@ -66,11 +63,7 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError()}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError()} />
           </div>
         }
       />
@@ -81,9 +74,7 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
         onCancel={() => setAddClient(false)}
         children={
           <div className="error-modal-container">
-            <h3>
-              Add clients by having them sign up with your coach code below!
-            </h3>
+            <h3>Add clients by having them sign up with your coach code below!</h3>
             <p>{fullUserData.code}</p>
             <Button
               name="auth-button-primary"
@@ -137,10 +128,7 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
       <header className="dash-head">
         <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />
         <h1>Clients</h1>
-        <RiUserAddLine
-          className="add-user-mobile"
-          onClick={() => setAddClient(!addClient)}
-        />
+        <RiUserAddLine className="add-user-mobile" onClick={() => setAddClient(!addClient)} />
       </header>
       <div className="mobile-select1">
         <div
@@ -171,21 +159,16 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
             clear={() => setQuery('')}
             clearable={true}
           />
-          <Button
-            name="search-button"
-            contents={<GoSearch className="magnify" />}
-          />
+          <Button name="search-button" contents={<GoSearch className="magnify" />} />
 
           {query && query !== '' && searchList && searchList.length > 0 && (
             <div className="search-drop-broken">
               {searchList.map((client, index) => (
                 <ClientButton
-                  notifications={fullUserData.notifications.checkins.some(
-                    (id) => client.checkins.includes(id)
+                  notifications={fullUserData.notifications.checkins.some((id) =>
+                    client.checkins.includes(id),
                   )}
-                  clientNotification={fullUserData.notifications.clients.includes(
-                    client.id
-                  )}
+                  clientNotification={fullUserData.notifications.clients.includes(client.id)}
                   name={client.name}
                   key={index}
                   image={client.image}
@@ -212,12 +195,10 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
               {/* <div className="list-scroll-container-lg"> */}
               {clients.map((client, index) => (
                 <ClientButton
-                  notifications={fullUserData.notifications.checkins.some(
-                    (id) => client.checkins.includes(id)
+                  notifications={fullUserData.notifications.checkins.some((id) =>
+                    client.checkins.includes(id),
                   )}
-                  clientNotification={fullUserData.notifications.clients.includes(
-                    client.id
-                  )}
+                  clientNotification={fullUserData.notifications.clients.includes(client.id)}
                   name={client.name}
                   key={index}
                   image={client.image}
@@ -232,8 +213,7 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
           {clients && clients.length === 0 && fullUserData.code && !loading && (
             <div className="absurd-box">
               <h3 className="no-data-title">
-                Have your clients sign up with the code below to gain access to
-                your clients!
+                Have your clients sign up with the code below to gain access to your clients!
               </h3>
               {fullUserData && fullUserData.code && (
                 <p className="no-data-addition">{fullUserData.code}</p>

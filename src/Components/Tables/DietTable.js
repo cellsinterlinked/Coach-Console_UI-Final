@@ -40,7 +40,7 @@ const DietTable = ({
                     food: tempData,
                     dietId: selectedDiet.id,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -71,7 +71,7 @@ const DietTable = ({
                     dietId: selectedDiet.id,
                     food: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -100,7 +100,7 @@ const DietTable = ({
                     dietId: selectedDiet.id,
                     food: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -136,7 +136,7 @@ const DietTable = ({
                     dietId: selectedDiet.id,
                     food: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -174,8 +174,7 @@ const DietTable = ({
         },
         // grouping: true,
         rowStyle: (rowData) => ({
-          backgroundColor:
-            selectedRow === rowData.tableData.id ? '#EEE' : '#FFF',
+          backgroundColor: selectedRow === rowData.tableData.id ? '#EEE' : '#FFF',
         }),
 
         // padding: "dense",

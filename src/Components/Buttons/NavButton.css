@@ -5,11 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: linear-gradient(
-    266.26deg,
-    #00bcaf00 0%,
-    rgba(0, 188, 177, 0) 173.86%
-  );
+  background: linear-gradient(266.26deg, #00bcaf00 0%, rgba(0, 188, 177, 0) 173.86%);
   transition: 500ms ease;
 }
 

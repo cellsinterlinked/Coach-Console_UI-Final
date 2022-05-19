@@ -31,16 +31,13 @@ const ClientFatChart = ({ label, data, color, background }) => {
           ],
         }}
         options={{
-
-            plugins: {
-              legend: {
-                labels: {
-                  font: {
-
-                  }
-                }
-              }
+          plugins: {
+            legend: {
+              labels: {
+                font: {},
+              },
             },
+          },
 
           scales: {
             xAxes: {

@@ -72,7 +72,7 @@ const Home = ({
       try {
         result = await Axios.get(
           process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
+          { headers: { Authorization: 'Bearer ' + auth.token } },
         );
       } catch (err) {
         alert(err);
@@ -81,10 +81,9 @@ const Home = ({
       }
       let results;
       try {
-        results = await Axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
-        );
+        results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`, {
+          headers: { Authorization: 'Bearer ' + auth.token },
+        });
       } catch (err) {
         alert(`couldn't get info from database ${err}`);
         setError("Couldn't fetch from the database");
@@ -108,12 +107,10 @@ const Home = ({
         setSearchList(
           checkinList.filter(
             (checkin) =>
-              checkin.date.monthString
-                .toLowerCase()
-                .includes(query.toLowerCase()) ||
+              checkin.date.monthString.toLowerCase().includes(query.toLowerCase()) ||
               checkin.date.day.toString().includes(query) ||
-              checkin.date.year.toString().includes(query)
-          )
+              checkin.date.year.toString().includes(query),
+          ),
         );
       }
     }
@@ -125,7 +122,7 @@ const Home = ({
     try {
       result = await Axios.get(
         process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
-        { headers: { Authorization: 'Bearer ' + auth.token } }
+        { headers: { Authorization: 'Bearer ' + auth.token } },
       );
     } catch (err) {
       alert(err);
@@ -157,7 +154,7 @@ const Home = ({
       await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { checkin: checkin.id },
-        { headers: { Authorization: 'Bearer ' + auth.token } }
+        { headers: { Authorization: 'Bearer ' + auth.token } },
       );
     } catch (err) {
       setError(err);
@@ -166,7 +163,7 @@ const Home = ({
     }
 
     newData.notifications.checkins = newData.notifications.checkins.filter(
-      (item) => item !== checkin.id
+      (item) => item !== checkin.id,
     );
 
     setCheckinDisplay(checkin);
@@ -181,10 +178,9 @@ const Home = ({
     setConfirmDelete(false);
 
     try {
-      await Axios.delete(
-        process.env.REACT_APP_BACKEND_URL + `/checkins/${deleteId.id}`,
-        { headers: { Authorization: 'Bearer ' + auth.token } }
-      );
+      await Axios.delete(process.env.REACT_APP_BACKEND_URL + `/checkins/${deleteId.id}`, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       setError(`Couldnt delete this check-in.${err}`);
       return;
@@ -230,11 +226,7 @@ const Home = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError()}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError()} />
           </div>
         }
       />
@@ -249,10 +241,7 @@ const Home = ({
             children={
               <>
                 {checkinChartData && (
-                  <ClientCharts
-                    checkinChartData={checkinChartData}
-                    chartSelect={chartSelect}
-                  />
+                  <ClientCharts checkinChartData={checkinChartData} chartSelect={chartSelect} />
                 )}
               </>
             }
@@ -285,17 +274,11 @@ const Home = ({
               <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />
               {add !== true ? <h1>Check-Ins</h1> : <h1>New Check-In</h1>}
               {current === true && (
-                <RiUserAddLine
-                  className="add-user-mobile"
-                  onClick={addCheckinToggle}
-                />
+                <RiUserAddLine className="add-user-mobile" onClick={addCheckinToggle} />
               )}
               {current === false && (
                 <div className="chart-drop-container">
-                  <ChartDrop
-                    selection={chartSelect}
-                    setSelection={setChartSelect}
-                  />
+                  <ChartDrop selection={chartSelect} setSelection={setChartSelect} />
                 </div>
               )}
               <div className="mobile-select1">
@@ -309,9 +292,7 @@ const Home = ({
                   className={current ? 'select2' : 'select2 select-green'}
                   onClick={() => setCurrent(false)}
                 >
-                  <p>
-                    {userRole === 'coach' ? 'Client Analytics' : 'My Analyics'}
-                  </p>
+                  <p>{userRole === 'coach' ? 'Client Analytics' : 'My Analyics'}</p>
                 </div>
               </div>
             </header>
@@ -319,28 +300,13 @@ const Home = ({
 
           {checkinDisplay && (
             <header className="dash-head">
-              {add === true && (
-                <HiOutlineMenuAlt2
-                  className="mobile-menu"
-                  onClick={navToggle}
-                />
-              )}
+              {add === true && <HiOutlineMenuAlt2 className="mobile-menu" onClick={navToggle} />}
               {add !== true && (
-                <HiChevronLeft
-                  className="mobile-menu"
-                  onClick={() => setCheckinDisplay()}
-                />
+                <HiChevronLeft className="mobile-menu" onClick={() => setCheckinDisplay()} />
               )}
-              {add !== true ? (
-                <h1>{currentClient.name}</h1>
-              ) : (
-                <h1>New Check-In</h1>
-              )}
+              {add !== true ? <h1>{currentClient.name}</h1> : <h1>New Check-In</h1>}
               {current === true && (
-                <RiUserAddLine
-                  className="add-user-mobile"
-                  onClick={addCheckinToggle}
-                />
+                <RiUserAddLine className="add-user-mobile" onClick={addCheckinToggle} />
               )}
 
               <div className="mobile-select1">
@@ -365,10 +331,7 @@ const Home = ({
                   clear={() => setQuery('')}
                   clearable={true}
                 />
-                <Button
-                  name="search-button"
-                  contents={<GoSearch className="magnify" />}
-                />
+                <Button name="search-button" contents={<GoSearch className="magnify" />} />
                 <Button
                   name="search-button-mobile"
                   contents={<IoTrashOutline className="magnify" />}
@@ -382,16 +345,12 @@ const Home = ({
                   userRole === 'client' && (
                     <div
                       className={
-                        checkinDisplay
-                          ? 'search-drop-broken-checkin'
-                          : 'search-drop-broken'
+                        checkinDisplay ? 'search-drop-broken-checkin' : 'search-drop-broken'
                       }
                     >
                       {searchList.map((checkin, index) => (
                         <CheckinButton
-                          notifications={fullUserData.notifications.checkins.includes(
-                            checkin.id
-                          )}
+                          notifications={fullUserData.notifications.checkins.includes(checkin.id)}
                           checkin={checkin}
                           click={selectHandler}
                           id={checkin.id}
@@ -425,15 +384,8 @@ const Home = ({
             {checkinChartData && (
               <div className="client-list-container">
                 <div className="client-desk-menu">
-                  {checkMode !== true ? (
-                    <h3>Check-Ins</h3>
-                  ) : (
-                    <h3>New Check-In</h3>
-                  )}
-                  <IoAddSharp
-                    className="add-desk-icon"
-                    onClick={() => setCheckMode(!checkMode)}
-                  />
+                  {checkMode !== true ? <h3>Check-Ins</h3> : <h3>New Check-In</h3>}
+                  <IoAddSharp className="add-desk-icon" onClick={() => setCheckMode(!checkMode)} />
                   {checkMode === false && (
                     <IoTrashOutline
                       className="desk-trash-icon"
@@ -470,9 +422,7 @@ const Home = ({
                       checkinChartData.checkins !== [] &&
                       checkinChartData.checkins.map((checkin, index) => (
                         <CheckinButton
-                          notifications={fullUserData.notifications.checkins.includes(
-                            checkin.id
-                          )}
+                          notifications={fullUserData.notifications.checkins.includes(checkin.id)}
                           checkin={checkin}
                           id={checkin.id}
                           name={checkin.name}
@@ -481,23 +431,20 @@ const Home = ({
                           date={`${checkin.date.monthString} ${checkin.date.day} ${checkin.date.year}`}
                           firstCheckin={`${fullUserData.userCheckins[0].date.monthString} ${fullUserData.userCheckins[0].date.day} ${fullUserData.userCheckins[0].date.year}`}
                           deleteMode={deleteMode}
-                          click={
-                            deleteMode === true ? deleteHandler : selectHandler
-                          }
+                          click={deleteMode === true ? deleteHandler : selectHandler}
                         />
                       ))}
                     {/* end checkins list if there are checkins */}
 
                     {/* checkin list if there are no checkins */}
-                    {checkinChartData.checkins &&
-                      checkinChartData.checkins.length === 0 && (
-                        <div className="absurd-box">
-                          <h3 className="no-data-title">
-                            Oops! You have no checkins. Click the + button on
-                            the top right to get started!
-                          </h3>
-                        </div>
-                      )}
+                    {checkinChartData.checkins && checkinChartData.checkins.length === 0 && (
+                      <div className="absurd-box">
+                        <h3 className="no-data-title">
+                          Oops! You have no checkins. Click the + button on the top right to get
+                          started!
+                        </h3>
+                      </div>
+                    )}
                     {/* end checkin list if there are no checkins */}
                   </div>
                 )}
@@ -511,18 +458,12 @@ const Home = ({
             <div className="right-bar-desk">
               <div className="analytics-deskHead">
                 <div className="chart-drop-container">
-                  <ChartDrop
-                    selection={chartSelect}
-                    setSelection={setChartSelect}
-                  />
+                  <ChartDrop selection={chartSelect} setSelection={setChartSelect} />
                 </div>
                 <h3>My Analytics</h3>
               </div>
               {checkinChartData && (
-                <ClientCharts
-                  checkinChartData={checkinChartData}
-                  chartSelect={chartSelect}
-                />
+                <ClientCharts checkinChartData={checkinChartData} chartSelect={chartSelect} />
               )}
             </div>
           </div>

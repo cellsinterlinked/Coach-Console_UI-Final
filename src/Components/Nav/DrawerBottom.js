@@ -18,10 +18,7 @@ const DrawerBottom = (props) => {
     </CSSTransition>
   );
 
-  return ReactDOM.createPortal(
-    content,
-    document.getElementById('drawer-hook-bottom')
-  );
+  return ReactDOM.createPortal(content, document.getElementById('drawer-hook-bottom'));
 };
 
 export default DrawerBottom;

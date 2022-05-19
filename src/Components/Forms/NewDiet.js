@@ -12,7 +12,7 @@ const NewDiet = ({
   setParentError,
   setNewMode,
   addDietToggle,
-  updateDietsHandler
+  updateDietsHandler,
 }) => {
   const auth = useContext(AuthContext);
   const [error, setError] = useState('');
@@ -54,14 +54,14 @@ const NewDiet = ({
             type: type,
             food: dietData,
           },
-          { headers: { Authorization: 'Bearer ' + auth.token } }
+          { headers: { Authorization: 'Bearer ' + auth.token } },
         );
       } catch (err) {
         setError('Couldnt submit new workout');
         return;
       }
       setSelectedDiet(results.data.diet);
-      updateDietsHandler()
+      updateDietsHandler();
       //this isn't working properly
       addDietToggle();
       setNewMode(false);
@@ -83,17 +83,13 @@ const NewDiet = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents={'GOT IT!'}
-              click={() => setError('')}
-            />
+            <Button name="auth-button-primary" contents={'GOT IT!'} click={() => setError('')} />
           </div>
         }
       />
       <h3>
-        To create a new diet first decide on a name, description and if the diet
-        will vary by day or if each day the diet will be the same
+        To create a new diet first decide on a name, description and if the diet will vary by day or
+        if each day the diet will be the same
       </h3>
       <Input
         placeholder="Diet Name..."
@@ -105,17 +101,13 @@ const NewDiet = ({
 
       <div className="day-box-selector">
         <div
-          className={
-            dayNum === 1 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 1 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(1)}
         >
           STATIC
         </div>
         <div
-          className={
-            dayNum === 7 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 7 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(7)}
         >
           VARIED
