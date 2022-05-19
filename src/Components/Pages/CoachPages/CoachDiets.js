@@ -11,7 +11,7 @@ import { MdOutlinePostAdd } from 'react-icons/md';
 
 import DietButton from '../../Buttons/DietButton';
 import { columns } from '../../../Data/DietColumns';
-import { IoAddSharp} from 'react-icons/io5';
+import { IoAddSharp } from 'react-icons/io5';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiUserShared2Line } from 'react-icons/ri';
 import Axios from 'axios';
@@ -31,9 +31,7 @@ const CoachDiets = ({
   setHack,
 }) => {
   const auth = useContext(AuthContext);
-  const [selectedDiet, setSelectedDiet] = useState(
-    fullUserData.diets[0] || null
-  );
+  const [selectedDiet, setSelectedDiet] = useState(fullUserData.diets[0] || null);
 
   const [dietNum, setDietNum] = useState(0);
 
@@ -42,16 +40,14 @@ const CoachDiets = ({
   const [add, setAdd] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [tableData, setTableData] = useState(
-    selectedDiet && selectedDiet.food[dietNum].data
-      ? selectedDiet.food[dietNum].data
-      : null
+    selectedDiet && selectedDiet.food[dietNum].data ? selectedDiet.food[dietNum].data : null,
   );
   const [deleteMode, setDeleteMode] = useState(false);
   const [newMode, setNewMode] = useState(false);
   const [share, setShare] = useState(false);
 
   const [percent, setPercent] = useState(
-    fullUserData.diets.length > 0 ? 100 / fullUserData.diets[0].food.length : 0
+    fullUserData.diets.length > 0 ? 100 / fullUserData.diets[0].food.length : 0,
   );
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
@@ -61,11 +57,11 @@ const CoachDiets = ({
 
   const [dietList, setDietList] = useState();
 
-  console.log('wtf')
+  console.log('wtf');
 
   useEffect(() => {
     const getDietsHandler = async () => {
-      console.log("getDietsHandler")
+      console.log('getDietsHandler');
       let results;
       try {
         results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/diets/${userId}`, {
@@ -85,30 +81,24 @@ const CoachDiets = ({
   }, [userId, auth.token]);
 
   useEffect(() => {
-
     if (selectedDiet && selectedDiet.food[0].data) {
       setTableData(selectedDiet.food[dietNum].data);
     }
   }, [selectedDiet, dietNum]);
 
   useEffect(() => {
-
     if (selectedDiet && selectedDiet.food) {
       setPercent(100 / selectedDiet.food.length);
     }
   }, [selectedDiet]);
 
   useEffect(() => {
-
     if (dietList && dietList.length > 0 && query) {
       setSearchList(
-        dietList.filter((diet) =>
-          diet.name.toLowerCase().includes(query.toLowerCase())
-        )
+        dietList.filter((diet) => diet.name.toLowerCase().includes(query.toLowerCase())),
       );
     }
   }, [dietList, query]);
-
 
   const updateDietsHandler = async () => {
     let results;
@@ -124,19 +114,18 @@ const CoachDiets = ({
   };
 
   const addDietToggle = () => {
-    console.log('add diet handler')
+    console.log('add diet handler');
     setAdd(!add);
   };
 
   const dietDeleteHandler = async () => {
-    console.log('diet delete handler')
+    console.log('diet delete handler');
 
     setDeleteMode(false);
     try {
-      await Axios.delete(
-        process.env.REACT_APP_BACKEND_URL + `/diets/${selectedDiet.id}`,
-        { headers: { Authorization: 'Bearer ' + auth.token } }
-      );
+      await Axios.delete(process.env.REACT_APP_BACKEND_URL + `/diets/${selectedDiet.id}`, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       setError(err);
       return;
@@ -147,11 +136,10 @@ const CoachDiets = ({
   };
 
   const shareDietHandler = async (client) => {
-    console.log('sharediethandler')
+    console.log('sharediethandler');
     setShare(false);
     setSelectedShare();
     setLoading(true);
-
 
     try {
       await Axios.patch(
@@ -161,14 +149,12 @@ const CoachDiets = ({
           clientId: client.id,
           dietId: selectedDiet.id,
         },
-        { headers: { Authorization: 'Bearer ' + auth.token } }
+        { headers: { Authorization: 'Bearer ' + auth.token } },
       );
     } catch (err) {
       setShare(false);
       setSelectedShare();
-      setError(
-        'They either already have this diet or something else went wrong!'
-      );
+      setError('They either already have this diet or something else went wrong!');
       setLoading(false);
       return;
     }
@@ -181,7 +167,7 @@ const CoachDiets = ({
   };
 
   const selectHandler = async (diet) => {
-    console.log('select handler')
+    console.log('select handler');
     setLoading(true);
     let newData = fullUserData;
 
@@ -189,7 +175,7 @@ const CoachDiets = ({
       await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { diet: diet.id },
-        { headers: { Authorization: 'Bearer ' + auth.token } }
+        { headers: { Authorization: 'Bearer ' + auth.token } },
       );
     } catch (err) {
       setError(err);
@@ -197,9 +183,7 @@ const CoachDiets = ({
       return;
     }
 
-    newData.notifications.diets = newData.notifications.diets.filter(
-      (item) => item !== diet.id
-    );
+    newData.notifications.diets = newData.notifications.diets.filter((item) => item !== diet.id);
     setSelectedDiet(diet);
     setCurrent(true);
     setFullUserData(newData);
@@ -218,11 +202,7 @@ const CoachDiets = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError()}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError()} />
           </div>
         }
       />
@@ -340,9 +320,7 @@ const CoachDiets = ({
             {userRole === 'coach' && (
               <div
                 className={
-                  share === true
-                    ? 'share-drop-container'
-                    : 'share-drop-container share-null'
+                  share === true ? 'share-drop-container' : 'share-drop-container share-null'
                 }
               >
                 {fullUserData.clients.map((client, index) => (
@@ -350,9 +328,7 @@ const CoachDiets = ({
                     onClick={() => setSelectedShare(client)}
                     key={index}
                     className={
-                      share === true
-                        ? 'share-user-select'
-                        : 'share-user-select share-null'
+                      share === true ? 'share-user-select' : 'share-user-select share-null'
                     }
                   >
                     <div className="share-user-image">
@@ -367,18 +343,12 @@ const CoachDiets = ({
             {userRole === 'client' && (
               <div
                 className={
-                  share === true
-                    ? 'share-drop-container'
-                    : 'share-drop-container share-null'
+                  share === true ? 'share-drop-container' : 'share-drop-container share-null'
                 }
               >
                 <div
                   onClick={() => setSelectedShare(fullUserData.coach)}
-                  className={
-                    share === true
-                      ? 'share-user-select'
-                      : 'share-user-select share-null'
-                  }
+                  className={share === true ? 'share-user-select' : 'share-user-select share-null'}
                 >
                   <div className="share-user-image">
                     <img src={fullUserData.coach.image} alt="" />
@@ -397,10 +367,7 @@ const CoachDiets = ({
               onClick={() => setDeleteMode(!deleteMode)}
             />
 
-            <RiUserShared2Line
-              className="share-desk-icon"
-              onClick={() => setShare(!share)}
-            />
+            <RiUserShared2Line className="share-desk-icon" onClick={() => setShare(!share)} />
           </div>
         ) : (
           <div></div>
@@ -416,18 +383,13 @@ const CoachDiets = ({
             clear={() => setQuery('')}
             clearable={true}
           />
-          <Button
-            name="search-button"
-            contents={<GoSearch className="magnify" />}
-          />
+          <Button name="search-button" contents={<GoSearch className="magnify" />} />
           {query && query !== '' && searchList && searchList.length > 0 && (
             <div className="search-drop">
               {searchList.map((diet, index) => (
                 <DietButton
                   diet={diet}
-                  notifications={fullUserData.notifications.diets.includes(
-                    diet.id
-                  )}
+                  notifications={fullUserData.notifications.diets.includes(diet.id)}
                   click={selectHandler}
                   key={index}
                   name={diet.name}
@@ -444,9 +406,7 @@ const CoachDiets = ({
             {userRole === 'coach' && (
               <div
                 className={
-                  share === true
-                    ? 'share-drop-container'
-                    : 'share-drop-container share-null'
+                  share === true ? 'share-drop-container' : 'share-drop-container share-null'
                 }
               >
                 {fullUserData.clients.map((client, index) => (
@@ -454,9 +414,7 @@ const CoachDiets = ({
                     onClick={() => setSelectedShare(client)}
                     key={index}
                     className={
-                      share === true
-                        ? 'share-user-select'
-                        : 'share-user-select share-null'
+                      share === true ? 'share-user-select' : 'share-user-select share-null'
                     }
                   >
                     <div className="share-user-image">
@@ -471,18 +429,12 @@ const CoachDiets = ({
             {userRole === 'client' && (
               <div
                 className={
-                  share === true
-                    ? 'share-drop-container'
-                    : 'share-drop-container share-null'
+                  share === true ? 'share-drop-container' : 'share-drop-container share-null'
                 }
               >
                 <div
                   onClick={() => setSelectedShare(fullUserData.coach)}
-                  className={
-                    share === true
-                      ? 'share-user-select'
-                      : 'share-user-select share-null'
-                  }
+                  className={share === true ? 'share-user-select' : 'share-user-select share-null'}
                 >
                   <div className="share-user-image">
                     <img src={fullUserData.coach.image} alt="" />
@@ -497,10 +449,7 @@ const CoachDiets = ({
             ) : (
               <h3>Create New Diet</h3>
             )}
-            <IoAddSharp
-              className="add-desk-icon"
-              onClick={() => setNewMode(!newMode)}
-            />
+            <IoAddSharp className="add-desk-icon" onClick={() => setNewMode(!newMode)} />
 
             {newMode === false && selectedDiet && (
               <IoTrashOutline
@@ -509,10 +458,7 @@ const CoachDiets = ({
               />
             )}
             {newMode === false && selectedDiet && (
-              <RiUserShared2Line
-                className="share-desk-icon"
-                onClick={() => setShare(!share)}
-              />
+              <RiUserShared2Line className="share-desk-icon" onClick={() => setShare(!share)} />
             )}
           </div>
           {newMode === false && selectedDiet ? (
@@ -541,18 +487,18 @@ const CoachDiets = ({
                   ></div>
                 </div>
               </div>
-            <div className="list-scroll-container">
-              <DietTable
-                tableData={tableData}
-                selectedDiet={selectedDiet}
-                dietNum={dietNum}
-                userId={userId}
-                setTableData={setTableData}
-                setError={setError}
-                columns={columns}
-                selectedRow={selectedRow}
-                setSelectedRow={setSelectedRow}
-              />
+              <div className="list-scroll-container">
+                <DietTable
+                  tableData={tableData}
+                  selectedDiet={selectedDiet}
+                  dietNum={dietNum}
+                  userId={userId}
+                  setTableData={setTableData}
+                  setError={setError}
+                  columns={columns}
+                  selectedRow={selectedRow}
+                  setSelectedRow={setSelectedRow}
+                />
               </div>
             </div>
           ) : (
@@ -578,23 +524,21 @@ const CoachDiets = ({
             <h3>Diet Library</h3>
           </div>
           <div className="list-scroll-container">
-          {dietList && (
-            <>
-              {dietList.map((diet, index) => (
-                <DietButton
-                  diet={diet}
-                  notifications={fullUserData.notifications.diets.includes(
-                    diet.id
-                  )}
-                  click={selectHandler}
-                  key={index}
-                  name={diet.name}
-                  description={diet.description}
-                  dateAdded={`${diet.dateAdded.monthString} ${diet.dateAdded.day} ${diet.dateAdded.year}`}
-                />
-              ))}
-            </>
-          )}
+            {dietList && (
+              <>
+                {dietList.map((diet, index) => (
+                  <DietButton
+                    diet={diet}
+                    notifications={fullUserData.notifications.diets.includes(diet.id)}
+                    click={selectHandler}
+                    key={index}
+                    name={diet.name}
+                    description={diet.description}
+                    dateAdded={`${diet.dateAdded.monthString} ${diet.dateAdded.day} ${diet.dateAdded.year}`}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>

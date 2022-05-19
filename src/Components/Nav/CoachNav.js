@@ -10,14 +10,7 @@ import { BiLogOutCircle } from 'react-icons/bi';
 import NavLogout from '../Buttons/NavLogout';
 import { GiChickenLeg } from 'react-icons/gi';
 
-const CoachNav = ({
-  page,
-  setPage,
-  navToggle,
-  fullUserData,
-  logoutFunction,
-  hack,
-}) => {
+const CoachNav = ({ page, setPage, navToggle, fullUserData, logoutFunction, hack }) => {
   const [something, setSomething] = useState(hack);
 
   useEffect(() => {
@@ -35,9 +28,7 @@ const CoachNav = ({
           {fullUserData && fullUserData.user.image ? (
             <img alt="" src={fullUserData.user.image} />
           ) : (
-            <IoPerson
-              style={{ height: '100%', width: 'auto', color: 'grey' }}
-            />
+            <IoPerson style={{ height: '100%', width: 'auto', color: 'grey' }} />
           )}
         </div>
         {fullUserData && fullUserData.name ? (

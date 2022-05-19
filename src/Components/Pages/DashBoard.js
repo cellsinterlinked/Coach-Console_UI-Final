@@ -21,7 +21,7 @@ import Home from './CoachPages/Home';
 const Dashboard = ({ userId, userRole }) => {
   const auth = useContext(AuthContext);
 
-  console.log(auth)
+  console.log(auth);
   const [page, setPage] = useState(userRole === 'client' ? 'Home' : 'Clients');
 
   const [currentClient, setCurrentClient] = useState();
@@ -32,26 +32,23 @@ const Dashboard = ({ userId, userRole }) => {
 
   const [reset, setReset] = useState(false);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState()
+  const [error, setError] = useState();
 
   const [hack, setHack] = useState(true);
 
   useEffect(() => {
     const getAll = async () => {
-
       setLoading(true);
       let res;
       try {
-        res = await Axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/all/${auth.userId}`,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
-        );
+        res = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/users/all/${auth.userId}`, {
+          headers: { Authorization: 'Bearer ' + auth.token },
+        });
         setFullUserData(res.data);
-        console.log('full user', res.data)
+        console.log('full user', res.data);
       } catch (err) {
-
         setLoading(false);
         return;
       }
@@ -72,20 +69,16 @@ const Dashboard = ({ userId, userRole }) => {
     };
     if (auth.role && auth.userId && auth.token) {
       getAll();
-
     }
-
-
   }, [auth.userId, auth.role, auth.token]);
 
   const updateAll = async () => {
     setLoading(true);
     let results;
     try {
-      results = await Axios.get(
-        process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`,
-        { headers: { Authorization: 'Bearer ' + auth.token } }
-      );
+      results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       alert(`couldn't get info from database ${err}`);
       setLoading(false);
@@ -107,7 +100,7 @@ const Dashboard = ({ userId, userRole }) => {
       await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { client: client.id },
-        { headers: { Authorization: 'Bearer ' + auth.token } }
+        { headers: { Authorization: 'Bearer ' + auth.token } },
       );
     } catch (err) {
       setLoading(false);
@@ -115,7 +108,7 @@ const Dashboard = ({ userId, userRole }) => {
     }
 
     newData.notifications.clients = newData.notifications.clients.filter(
-      (item) => item !== client.id
+      (item) => item !== client.id,
     );
 
     setCurrentClient(client);
@@ -137,7 +130,6 @@ const Dashboard = ({ userId, userRole }) => {
 
   return (
     <>
-
       {userRole === 'coach' && (
         <div className="dash-wrapper">
           {fullUserData && (
@@ -292,17 +284,19 @@ const Dashboard = ({ userId, userRole }) => {
 
           {navActive === true && <Backdrop onClick={navToggle} />}
 
-          {fullUserData && <div className="menu-desktop">
-            <ClientNav
-              page={page}
-              setPage={setPage}
-              fullUserData={fullUserData}
-              logoutFunction={logoutFunction}
-              hack={hack}
-              setHack={setHack}
-              // navToggle={navToggle}
-            />
-          </div>}
+          {fullUserData && (
+            <div className="menu-desktop">
+              <ClientNav
+                page={page}
+                setPage={setPage}
+                fullUserData={fullUserData}
+                logoutFunction={logoutFunction}
+                hack={hack}
+                setHack={setHack}
+                // navToggle={navToggle}
+              />
+            </div>
+          )}
 
           {loading && <LoadingDots />}
 

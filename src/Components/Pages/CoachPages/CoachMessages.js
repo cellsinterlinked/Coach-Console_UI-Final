@@ -34,7 +34,7 @@ const CoachMessages = ({
   const [error, setError] = useState('');
   const [current, setCurrent] = useState(true);
   const [selectedMessage, setSelectedMessage] = useState(
-    fullUserData.convos[fullUserData.convos.length - 1]
+    fullUserData.convos[fullUserData.convos.length - 1],
   );
 
   const [loading, setLoading] = useState(false);
@@ -49,11 +49,9 @@ const CoachMessages = ({
       setLoading(true);
       let result;
       try {
-        result = await Axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/convos/${userId}`,
-          data,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
-        );
+        result = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/convos/${userId}`, data, {
+          headers: { Authorization: 'Bearer ' + auth.token },
+        });
       } catch (err) {
         setError('err');
         setLoading(false);
@@ -64,8 +62,7 @@ const CoachMessages = ({
       setLoading(false);
     };
     getConvosHandler();
-  }, [userId, userRole, auth.token,]);
-
+  }, [userId, userRole, auth.token]);
 
   const sendImageHandler = async (event) => {
     setLoading(true);
@@ -91,7 +88,7 @@ const CoachMessages = ({
             role: userRole,
             image: finalFile,
           },
-          { headers: { Authorization: 'Bearer ' + auth.token } }
+          { headers: { Authorization: 'Bearer ' + auth.token } },
         );
       } catch (err) {
         setError('Couldnt send image');
@@ -120,7 +117,7 @@ const CoachMessages = ({
             role: userRole,
             message: messageContent,
           },
-          { headers: { Authorization: 'Bearer ' + auth.token } }
+          { headers: { Authorization: 'Bearer ' + auth.token } },
         );
       } catch (err) {
         setError('Couldnt send message');
@@ -140,19 +137,14 @@ const CoachMessages = ({
   };
 
   useEffect(() => {
-    if ( userRole === 'coach' && query && convos && convos.length > 0) {
-      setSearchList(fullUserData.clients.filter(
-        (client) => client.name.toLowerCase()
-            .includes(query.toLowerCase())
-            ))
-          }
-        }, [fullUserData.clients, query, convos, userRole]);
-
-
-
-
-
-
+    if (userRole === 'coach' && query && convos && convos.length > 0) {
+      setSearchList(
+        fullUserData.clients.filter((client) =>
+          client.name.toLowerCase().includes(query.toLowerCase()),
+        ),
+      );
+    }
+  }, [fullUserData.clients, query, convos, userRole]);
 
   const setConvo = async (convo) => {
     setLoading(true);
@@ -161,7 +153,7 @@ const CoachMessages = ({
       await Axios.patch(
         process.env.REACT_APP_BACKEND_URL + `/users/notifications/${userId}`,
         { message: convo.id },
-        { headers: { Authorization: 'Bearer ' + auth.token } }
+        { headers: { Authorization: 'Bearer ' + auth.token } },
       );
     } catch (err) {
       setError(err);
@@ -170,7 +162,7 @@ const CoachMessages = ({
     }
 
     newData.notifications.messages = newData.notifications.messages.filter(
-      (item) => item !== convo.id
+      (item) => item !== convo.id,
     );
     setFullUserData(newData);
     setQuery('');
@@ -190,11 +182,10 @@ const CoachMessages = ({
   };
 
   const searchHandler = (c) => {
-    let clickedConvo = convos.filter(convo => convo.id === c.conversations[0])
-    console.log(clickedConvo[0])
-    setConvo(clickedConvo[0])
-  }
-
+    let clickedConvo = convos.filter((convo) => convo.id === c.conversations[0]);
+    console.log(clickedConvo[0]);
+    setConvo(clickedConvo[0]);
+  };
 
   return (
     <>
@@ -204,11 +195,7 @@ const CoachMessages = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError()}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError()} />
           </div>
         }
       />
@@ -224,9 +211,8 @@ const CoachMessages = ({
                 userRole={userRole}
                 image={
                   userRole === 'coach'
-                    ? fullUserData.clients.find(
-                        (client) => client.id === selectedMessage.client
-                      ).image
+                    ? fullUserData.clients.find((client) => client.id === selectedMessage.client)
+                        .image
                     : NoImage
                 }
                 myImage={fullUserData.user.image}
@@ -280,9 +266,9 @@ const CoachMessages = ({
               parentClass="parent-auto"
               placeholder={'Search Messages'}
               onChange={queryHandler}
-                  value={query}
-                  clear={() => setQuery('')}
-                  clearable={true}
+              value={query}
+              clear={() => setQuery('')}
+              clearable={true}
             />
             <Button
               name="search-button"
@@ -291,20 +277,21 @@ const CoachMessages = ({
             />
 
             {query && query !== '' && searchList && searchList.length > 0 && (
-                  <div className={"search-drop-message"}>
-                    {searchList.map((client, index) => (
-                      <div key={client.id}className="cl-message-drop" onClick={() => searchHandler(client)}>
-                      <div className="cl-drop-img">
-                       <img alt="" src={client.image} />
-                      </div>
-                      <p className="cl-drop-name">{client.name}</p>
-                      </div>
-                    ))}
+              <div className={'search-drop-message'}>
+                {searchList.map((client, index) => (
+                  <div
+                    key={client.id}
+                    className="cl-message-drop"
+                    onClick={() => searchHandler(client)}
+                  >
+                    <div className="cl-drop-img">
+                      <img alt="" src={client.image} />
+                    </div>
+                    <p className="cl-drop-name">{client.name}</p>
                   </div>
-                )}
-
-
-
+                ))}
+              </div>
+            )}
           </div>
           <div className="mid-convo-container">
             <div className="mid-convo-header">
@@ -318,7 +305,7 @@ const CoachMessages = ({
                       src={
                         userRole === 'coach'
                           ? fullUserData.clients.find(
-                              (client) => client.id === selectedMessage.client
+                              (client) => client.id === selectedMessage.client,
                             ).image
                           : NoImage
                       }
@@ -335,9 +322,8 @@ const CoachMessages = ({
                 fullUserData.clients.length > 0 && (
                   <h3>
                     {userRole === 'coach'
-                      ? fullUserData.clients.find(
-                          (client) => client.id === selectedMessage.client
-                        ).name
+                      ? fullUserData.clients.find((client) => client.id === selectedMessage.client)
+                          .name
                       : fullUserData.coach.name}
                   </h3>
                 )}
@@ -367,9 +353,8 @@ const CoachMessages = ({
                   userRole={userRole}
                   image={
                     userRole === 'coach'
-                      ? fullUserData.clients.find(
-                          (client) => client.id === selectedMessage.client
-                        ).image
+                      ? fullUserData.clients.find((client) => client.id === selectedMessage.client)
+                          .image
                       : fullUserData.coach.image
                   }
                   myImage={fullUserData.user.image}
@@ -397,24 +382,13 @@ const CoachMessages = ({
               value={messageContent}
               onChange={(e) => setMessageContent(e.target.value)}
             />
-            <Button
-              contents="SEND"
-              name="send-message-btn-desk"
-              click={sendMessageHandler}
-            />
+            <Button contents="SEND" name="send-message-btn-desk" click={sendMessageHandler} />
 
             <Button
               contents={
                 <>
-                  <IoImageOutline
-                    style={{ color: 'white' }}
-                    className="add-image-icon-desk"
-                  />
-                  <input
-                    type="file"
-                    className="message-image-input"
-                    onChange={sendImageHandler}
-                  />
+                  <IoImageOutline style={{ color: 'white' }} className="add-image-icon-desk" />
+                  <input type="file" className="message-image-input" onChange={sendImageHandler} />
                 </>
               }
               name="image-button-desk"
@@ -437,9 +411,7 @@ const CoachMessages = ({
                     <MessageButton
                       convo={convo}
                       click={setConvo}
-                      notifications={fullUserData.notifications.messages.includes(
-                        convo.id
-                      )}
+                      notifications={fullUserData.notifications.messages.includes(convo.id)}
                       index={index}
                       userId={userId}
                       key={index}
@@ -450,22 +422,17 @@ const CoachMessages = ({
                       }
                       name={
                         userRole === 'coach'
-                          ? fullUserData.clients.find(
-                              (client) => client.id === convo.client
-                            ).name
+                          ? fullUserData.clients.find((client) => client.id === convo.client).name
                           : fullUserData.coach.name
                       }
                       image={
                         userRole === 'coach'
-                          ? fullUserData.clients.find(
-                              (client) => client.id === convo.client
-                            ).image
+                          ? fullUserData.clients.find((client) => client.id === convo.client).image
                           : fullUserData.coach.image
                       }
                       lastMessageMonth={
                         convo.messages.length > 0
-                          ? convo.messages[convo.messages.length - 1].date
-                              .monthString
+                          ? convo.messages[convo.messages.length - 1].date.monthString
                           : ''
                       }
                       lastMessageDay={
@@ -480,11 +447,8 @@ const CoachMessages = ({
                       }
                       lastMessage={
                         convo.messages.length > 0 &&
-                        convo.messages[convo.messages.length - 1].message !==
-                          null
-                          ? convo.messages[
-                              convo.messages.length - 1
-                            ].message.slice(0, 33)
+                        convo.messages[convo.messages.length - 1].message !== null
+                          ? convo.messages[convo.messages.length - 1].message.slice(0, 33)
                           : ''
                       }
                     />
@@ -504,9 +468,7 @@ const CoachMessages = ({
                     <MessageButton
                       convo={convo}
                       click={setConvo}
-                      notifications={fullUserData.notifications.messages.includes(
-                        convo.id
-                      )}
+                      notifications={fullUserData.notifications.messages.includes(convo.id)}
                       index={index}
                       userId={userId}
                       key={index}
@@ -519,8 +481,7 @@ const CoachMessages = ({
                       image={fullUserData.coach.image}
                       lastMessageMonth={
                         convo.messages.length > 0
-                          ? convo.messages[convo.messages.length - 1].date
-                              .monthString
+                          ? convo.messages[convo.messages.length - 1].date.monthString
                           : ''
                       }
                       lastMessageDay={
@@ -535,11 +496,8 @@ const CoachMessages = ({
                       }
                       lastMessage={
                         convo.messages.length > 0 &&
-                        convo.messages[convo.messages.length - 1].message !==
-                          null
-                          ? convo.messages[
-                              convo.messages.length - 1
-                            ].message.slice(0, 33)
+                        convo.messages[convo.messages.length - 1].message !== null
+                          ? convo.messages[convo.messages.length - 1].message.slice(0, 33)
                           : ''
                       }
                     />
@@ -564,28 +522,28 @@ const CoachMessages = ({
             parentClass="parent-auto"
             placeholder={'Search Messages'}
             onChange={queryHandler}
-                  value={query}
-                  clear={() => setQuery('')}
-                  clearable={true}
+            value={query}
+            clear={() => setQuery('')}
+            clearable={true}
           />
-          <Button
-            name="search-button"
-            contents={<GoSearch className="magnify" />}
-          />
+          <Button name="search-button" contents={<GoSearch className="magnify" />} />
 
-            {query && query !== '' && searchList && searchList.length > 0 && (
-                  <div className={"search-drop-message"}>
-                    {searchList.map((client, index) => (
-
-                       <div key={client.id}className="cl-message-drop" onClick={() => searchHandler(client)}>
-                       <div className="cl-drop-img">
-                        <img alt="" src={client.image} />
-                       </div>
-                       <p className="cl-drop-name">{client.name}</p>
-                       </div>
-                    ))}
+          {query && query !== '' && searchList && searchList.length > 0 && (
+            <div className={'search-drop-message'}>
+              {searchList.map((client, index) => (
+                <div
+                  key={client.id}
+                  className="cl-message-drop"
+                  onClick={() => searchHandler(client)}
+                >
+                  <div className="cl-drop-img">
+                    <img alt="" src={client.image} />
                   </div>
-                )}
+                  <p className="cl-drop-name">{client.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         {userRole === 'coach' && (
           <div className="client-list-container">
@@ -610,9 +568,7 @@ const CoachMessages = ({
                   <MessageButton
                     convo={convo}
                     click={setConvo}
-                    notifications={fullUserData.notifications.messages.includes(
-                      convo.id
-                    )}
+                    notifications={fullUserData.notifications.messages.includes(convo.id)}
                     index={index}
                     userId={userId}
                     key={index}
@@ -623,22 +579,17 @@ const CoachMessages = ({
                     }
                     name={
                       userRole === 'coach'
-                        ? fullUserData.clients.find(
-                            (client) => client.id === convo.client
-                          ).name
+                        ? fullUserData.clients.find((client) => client.id === convo.client).name
                         : fullUserData.coach.name
                     }
                     image={
                       userRole === 'coach'
-                        ? fullUserData.clients.find(
-                            (client) => client.id === convo.client
-                          ).image
+                        ? fullUserData.clients.find((client) => client.id === convo.client).image
                         : fullUserData.coach.image
                     }
                     lastMessageMonth={
                       convo.messages.length > 0
-                        ? convo.messages[convo.messages.length - 1].date
-                            .monthString
+                        ? convo.messages[convo.messages.length - 1].date.monthString
                         : ''
                     }
                     lastMessageDay={
@@ -654,9 +605,7 @@ const CoachMessages = ({
                     lastMessage={
                       convo.messages.length > 0 &&
                       convo.messages[convo.messages.length - 1].message !== null
-                        ? convo.messages[
-                            convo.messages.length - 1
-                          ].message.slice(0, 33)
+                        ? convo.messages[convo.messages.length - 1].message.slice(0, 33)
                         : ''
                     }
                   />
@@ -689,9 +638,7 @@ const CoachMessages = ({
                   <MessageButton
                     convo={convo}
                     click={setConvo}
-                    notifications={fullUserData.notifications.messages.includes(
-                      convo.id
-                    )}
+                    notifications={fullUserData.notifications.messages.includes(convo.id)}
                     index={index}
                     userId={userId}
                     key={index}
@@ -704,8 +651,7 @@ const CoachMessages = ({
                     image={fullUserData.coach.image}
                     lastMessageMonth={
                       convo.messages.length > 0
-                        ? convo.messages[convo.messages.length - 1].date
-                            .monthString
+                        ? convo.messages[convo.messages.length - 1].date.monthString
                         : ''
                     }
                     lastMessageDay={
@@ -721,9 +667,7 @@ const CoachMessages = ({
                     lastMessage={
                       convo.messages.length > 0 &&
                       convo.messages[convo.messages.length - 1].message !== null
-                        ? convo.messages[
-                            convo.messages.length - 1
-                          ].message.slice(0, 33)
+                        ? convo.messages[convo.messages.length - 1].message.slice(0, 33)
                         : ''
                     }
                   />

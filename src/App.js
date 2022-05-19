@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Auth from './Components/Pages/Auth';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './Components/Pages/DashBoard';
 import { AuthContext } from './Context/auth-context';
 import { useAuth } from './Components/Hooks/auth-hook';
@@ -29,10 +29,7 @@ function App() {
 
         {token && (
           <Routes>
-            <Route
-              path="/"
-              element={<Dashboard userId={userId} userRole={role} />}
-            />
+            <Route path="/" element={<Dashboard userId={userId} userRole={role} />} />
           </Routes>
         )}
       </BrowserRouter>

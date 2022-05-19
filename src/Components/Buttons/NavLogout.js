@@ -1,15 +1,12 @@
 import React from 'react';
 import './NavButton.css';
 
-
 const NavLogout = ({ name, icon, logoutFunction }) => {
   return (
     <div
-      className='nav-button-wrapper'
-
+      className="nav-button-wrapper"
       onClick={() => {
-        logoutFunction()
-
+        logoutFunction();
       }}
     >
       <div className="nav-icon-container">{icon}</div>

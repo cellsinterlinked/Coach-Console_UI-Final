@@ -12,14 +12,7 @@ import NavLogout from '../Buttons/NavLogout';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { GiChickenLeg } from 'react-icons/gi';
 
-const ClientNav = ({
-  page,
-  setPage,
-  navToggle,
-  fullUserData,
-  logoutFunction,
-  hack,
-}) => {
+const ClientNav = ({ page, setPage, navToggle, fullUserData, logoutFunction, hack }) => {
   const [something, setSomething] = useState(hack);
 
   useEffect(() => {
@@ -37,17 +30,11 @@ const ClientNav = ({
           {fullUserData && fullUserData.user.image ? (
             <img alt="" src={fullUserData.user.image} />
           ) : (
-            <IoPerson
-              style={{ height: '100%', width: 'auto', color: 'grey' }}
-            />
+            <IoPerson style={{ height: '100%', width: 'auto', color: 'grey' }} />
           )}
         </div>
-        {fullUserData && fullUserData.user.name && (
-          <p>{fullUserData.user.name}</p>
-        )}
-        {fullUserData && fullUserData.user.name === '' && (
-          <p>Select Profile to Update Name</p>
-        )}
+        {fullUserData && fullUserData.user.name && <p>{fullUserData.user.name}</p>}
+        {fullUserData && fullUserData.user.name === '' && <p>Select Profile to Update Name</p>}
       </div>
       <div className="nav-button-container">
         <NavButton

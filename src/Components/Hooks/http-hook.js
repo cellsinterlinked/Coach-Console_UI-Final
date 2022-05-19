@@ -7,29 +7,26 @@ export const useHttpClient = () => {
 
   const activeHttpRequests = useRef([]);
 
-  const sendRequest = useCallback(
-    async (url, method, body = null, headers = {}) => {
-      // setLoading(true);
-      const httpAbortCtrl = new AbortController();
-      activeHttpRequests.current.push(httpAbortCtrl);
-      // might be why im getting auth page. loading issue ^
+  const sendRequest = useCallback(async (url, method, body = null, headers = {}) => {
+    // setLoading(true);
+    const httpAbortCtrl = new AbortController();
+    activeHttpRequests.current.push(httpAbortCtrl);
+    // might be why im getting auth page. loading issue ^
 
-      try {
-        const response = await axios[method](url, body, headers, {
-          signal: httpAbortCtrl.signal,
-        });
+    try {
+      const response = await axios[method](url, body, headers, {
+        signal: httpAbortCtrl.signal,
+      });
 
-        // setLoading(false);
+      // setLoading(false);
 
-        return response;
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-        throw err;
-      }
-    },
-    []
-  );
+      return response;
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+      throw err;
+    }
+  }, []);
 
   const clearError = () => {
     setError(null);

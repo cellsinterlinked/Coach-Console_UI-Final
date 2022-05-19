@@ -8,45 +8,43 @@ const DUMMYLEAN = [
     date: 'NOV 15',
     value: 140,
     weight: 160,
-    fat: 20
+    fat: 20,
   },
   {
     date: 'NOV 22',
     value: 141,
     weight: 162,
-    fat: 22
+    fat: 22,
   },
   {
     date: 'NOV 29',
     value: 142,
     weight: 163,
-    fat: 22
+    fat: 22,
   },
   {
     date: 'DEC 05',
     value: 145,
     weight: 165,
-    fat: 23
+    fat: 23,
   },
   {
     date: 'DEC12',
     value: 145,
     weight: 167,
-    fat: 24
+    fat: 24,
   },
 ];
 let labelLean = [];
 let dataLean = [];
-let dataWeight = []
-let fatData = []
+let dataWeight = [];
+let fatData = [];
 for (let i = 0; i < DUMMYLEAN.length; i++) {
   dataLean.push(DUMMYLEAN[i].value);
   labelLean.push(DUMMYLEAN[i].date);
-  dataWeight.push(DUMMYLEAN[i].weight)
-  fatData.push(DUMMYLEAN[i].fat)
+  dataWeight.push(DUMMYLEAN[i].weight);
+  fatData.push(DUMMYLEAN[i].fat);
 }
-
-
 
 const data = {
   labels: labelLean,

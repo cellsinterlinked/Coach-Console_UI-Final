@@ -55,10 +55,9 @@ const CoachProfile = ({
       setLoading(true);
       let results;
       try {
-        results = await Axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
-        );
+        results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/users/all/${userId}`, {
+          headers: { Authorization: 'Bearer ' + auth.token },
+        });
       } catch (err) {
         setError("Couldn't fetch from the database");
         setLoading(false);
@@ -91,7 +90,7 @@ const CoachProfile = ({
       try {
         result = await Axios.get(
           process.env.REACT_APP_BACKEND_URL + `/checkins/${currentClient.id}`,
-          { headers: { Authorization: 'Bearer ' + auth.token } }
+          { headers: { Authorization: 'Bearer ' + auth.token } },
         );
       } catch (err) {
         setError(err);
@@ -139,11 +138,9 @@ const CoachProfile = ({
     }
 
     try {
-      await Axios.patch(
-        process.env.REACT_APP_BACKEND_URL + `/users/${userId}`,
-        data,
-        { headers: { Authorization: 'Bearer ' + auth.token } }
-      );
+      await Axios.patch(process.env.REACT_APP_BACKEND_URL + `/users/${userId}`, data, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       setLoading(false);
       setError(err);
@@ -174,11 +171,9 @@ const CoachProfile = ({
 
     let results;
     try {
-      results = await Axios.patch(
-        process.env.REACT_APP_BACKEND_URL + `/users/${userId}`,
-        data,
-        { headers: { Authorization: 'Bearer ' + auth.token } }
-      );
+      results = await Axios.patch(process.env.REACT_APP_BACKEND_URL + `/users/${userId}`, data, {
+        headers: { Authorization: 'Bearer ' + auth.token },
+      });
     } catch (err) {
       setLoading(false);
       return setError(err);
@@ -207,11 +202,7 @@ const CoachProfile = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError()}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError()} />
           </div>
         }
       />
@@ -255,10 +246,7 @@ const CoachProfile = ({
               type="text"
             />
             {userRole === 'client' && (
-              <div
-                className="profile-client-extras"
-                style={{ width: '100%', minHeight: '4rem' }}
-              >
+              <div className="profile-client-extras" style={{ width: '100%', minHeight: '4rem' }}>
                 {userRole === 'client' && (
                   <>
                     <Input
@@ -273,9 +261,7 @@ const CoachProfile = ({
                       <div className="gender-button-wrapper">
                         <div
                           className={
-                            gender === 1
-                              ? 'day-box-button day-selected'
-                              : 'day-box-button'
+                            gender === 1 ? 'day-box-button day-selected' : 'day-box-button'
                           }
                           onClick={() => setGender(1)}
                         >
@@ -283,9 +269,7 @@ const CoachProfile = ({
                         </div>
                         <div
                           className={
-                            gender === 2
-                              ? 'day-box-button day-selected'
-                              : 'day-box-button'
+                            gender === 2 ? 'day-box-button day-selected' : 'day-box-button'
                           }
                           onClick={() => setGender(2)}
                         >
@@ -355,10 +339,7 @@ const CoachProfile = ({
               <h3>Stats</h3>
             </div>
             {checkinChartData && (
-              <ClientCharts
-                checkinChartData={checkinChartData}
-                chartSelect={chartSelect}
-              />
+              <ClientCharts checkinChartData={checkinChartData} chartSelect={chartSelect} />
             )}
           </div>
         )}

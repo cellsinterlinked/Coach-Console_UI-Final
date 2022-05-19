@@ -76,8 +76,7 @@
   width: 1.6rem;
   border-radius: 50%;
   background-color: rgb(102, 102, 102);
-  box-shadow: inset 1px 1px 3px rgb(0, 0, 0),
-    inset -1px -1px 1px rgb(167, 167, 167);
+  box-shadow: inset 1px 1px 3px rgb(0, 0, 0), inset -1px -1px 1px rgb(167, 167, 167);
 }
 
 .dot-ridge2 {

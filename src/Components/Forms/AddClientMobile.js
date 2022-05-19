@@ -7,14 +7,15 @@ import ClientButton from '../Buttons/ClientButton';
 
 const AddClientMobile = ({ users }) => {
   const [query, setQuery] = useState();
-  const [displayedUsers, setDisplayedUsers] = useState()
+  const [displayedUsers, setDisplayedUsers] = useState();
 
   useEffect(() => {
-    if(users && query) {
-      setDisplayedUsers(users.filter(user => user.name.toLowerCase().includes(query.toLowerCase())))
-
+    if (users && query) {
+      setDisplayedUsers(
+        users.filter((user) => user.name.toLowerCase().includes(query.toLowerCase())),
+      );
     }
-  },[query, users])
+  }, [query, users]);
 
   return (
     <div className="add-client-wrapper">
@@ -25,13 +26,13 @@ const AddClientMobile = ({ users }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <Button
-          contents={<GoSearch className="magnify" />}
-          name="search-button"
-        />
+        <Button contents={<GoSearch className="magnify" />} name="search-button" />
       </div>
 
-      {displayedUsers && displayedUsers.map((user, index) => <ClientButton key={index} image={user.image} name={user.name}  />)}
+      {displayedUsers &&
+        displayedUsers.map((user, index) => (
+          <ClientButton key={index} image={user.image} name={user.name} />
+        ))}
     </div>
   );
 };

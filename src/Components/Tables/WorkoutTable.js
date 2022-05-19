@@ -26,10 +26,7 @@ const WorkoutTable = ({
       editable={{
         onRowAdd: (newRow) =>
           new Promise((resolve, reject) => {
-            let tempTable = [
-              ...loadedWorkout.weightData[workoutNum].data,
-              newRow,
-            ];
+            let tempTable = [...loadedWorkout.weightData[workoutNum].data, newRow];
             let tempData = loadedWorkout.weightData;
             tempData[workoutNum].data = tempTable;
             const sendUpdate = async () => {
@@ -42,7 +39,7 @@ const WorkoutTable = ({
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -71,7 +68,7 @@ const WorkoutTable = ({
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -102,7 +99,7 @@ const WorkoutTable = ({
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -139,7 +136,7 @@ const WorkoutTable = ({
                     cardioData: loadedWorkout.cardioData,
                     weightData: tempData,
                   },
-                  { headers: { Authorization: 'Bearer ' + auth.token } }
+                  { headers: { Authorization: 'Bearer ' + auth.token } },
                 );
               } catch (err) {
                 setError(err);
@@ -157,9 +154,7 @@ const WorkoutTable = ({
       title={loadedWorkout.weightData[workoutNum].name}
       columns={columns}
       data={tableData}
-      onRowClick={(evt, selectedRow) =>
-        setSelectedRow(selectedRow.tableData.id)
-      }
+      onRowClick={(evt, selectedRow) => setSelectedRow(selectedRow.tableData.id)}
       options={{
         // fixedColumns: {
         //   left: 1,
@@ -179,8 +174,7 @@ const WorkoutTable = ({
         },
         // grouping: true,
         rowStyle: (rowData) => ({
-          backgroundColor:
-            selectedRow === rowData.tableData.id ? '#EEE' : '#FFF',
+          backgroundColor: selectedRow === rowData.tableData.id ? '#EEE' : '#FFF',
         }),
         tableLayout: 'fixed',
       }}

@@ -66,11 +66,7 @@
   border-bottom: var(--grey-border);
   color: rgb(63, 63, 63);
   transition: 500ms ease;
-  background: linear-gradient(
-    270deg,
-    #00bcbc00 21.5%,
-    rgba(0, 230, 230, 0) 137.45%
-  );
+  background: linear-gradient(270deg, #00bcbc00 21.5%, rgba(0, 230, 230, 0) 137.45%);
   font-size: 0.9rem;
 }
 

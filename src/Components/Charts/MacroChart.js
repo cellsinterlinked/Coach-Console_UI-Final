@@ -8,45 +8,43 @@ const DUMMYMACROS = [
     date: 'NOV 15',
     protein: 250,
     carbs: 290,
-    fat: 85
+    fat: 85,
   },
   {
     date: 'NOV 22',
     protein: 250,
     carbs: 300,
-    fat: 85
+    fat: 85,
   },
   {
     date: 'NOV 29',
     protein: 250,
     carbs: 320,
-    fat: 90
+    fat: 90,
   },
   {
     date: 'DEC 05',
     protein: 250,
     carbs: 320,
-    fat: 90
+    fat: 90,
   },
   {
     date: 'DEC12',
     protein: 250,
     carbs: 340,
-    fat: 95
+    fat: 95,
   },
 ];
 let labelMacro = [];
 let dataPro = [];
-let dataCarb = []
-let dataFat = []
+let dataCarb = [];
+let dataFat = [];
 for (let i = 0; i < DUMMYMACROS.length; i++) {
   dataPro.push(DUMMYMACROS[i].protein);
   dataCarb.push(DUMMYMACROS[i].carbs);
-  dataFat.push(DUMMYMACROS[i].fat)
-  labelMacro.push(DUMMYMACROS[i].date)
+  dataFat.push(DUMMYMACROS[i].fat);
+  labelMacro.push(DUMMYMACROS[i].date);
 }
-
-
 
 const data = {
   labels: labelMacro,

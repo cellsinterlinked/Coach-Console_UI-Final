@@ -1,18 +1,18 @@
 import React from 'react';
 import 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
-import './chart.css'
+import './chart.css';
 
 const data = {
-  labels: ['January', '', '', '', 'May', ],
+  labels: ['January', '', '', '', 'May'],
 
   datasets: [
     {
-      tension: .1,
+      tension: 0.1,
       borderWidth: 1,
       pointRadius: 1,
       fill: true,
-      label: "Checkins",
+      label: 'Checkins',
       data: [12, 19, 3, 5, 2],
       backgroundColor: [
         'rgba(0, 188, 177, .2)',
@@ -30,15 +30,17 @@ const data = {
       ],
       options: {
         scales: {
-            xAxes: [{
-                ticks: {
-                    autoSkip: false,
+          xAxes: [
+            {
+              ticks: {
+                autoSkip: false,
 
-                    minRotation: 50
-                }
-            }]
-        }
-    }
+                minRotation: 50,
+              },
+            },
+          ],
+        },
+      },
     },
   ],
 };

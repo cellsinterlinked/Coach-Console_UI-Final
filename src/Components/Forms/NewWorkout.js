@@ -11,7 +11,7 @@ const NewWorkout = ({
   setLoadedWorkout,
   setNewMode,
   setParentError,
-  updateWorkoutsHandler
+  updateWorkoutsHandler,
 }) => {
   const auth = useContext(AuthContext);
   const [error, setError] = useState('');
@@ -68,14 +68,14 @@ const NewWorkout = ({
             weightData: weightData,
             cardioData: cardioData,
           },
-          { headers: { Authorization: 'Bearer ' + auth.token } }
+          { headers: { Authorization: 'Bearer ' + auth.token } },
         );
       } catch (err) {
         setError('Couldnt submit new workout');
         return;
       }
       setLoadedWorkout(results.data.workout);
-      updateWorkoutsHandler()
+      updateWorkoutsHandler();
       setNewMode(false);
       setParentError('Successfully Started New Workout!');
 
@@ -94,17 +94,13 @@ const NewWorkout = ({
         children={
           <div className="error-modal-container">
             <h3>{error}</h3>
-            <Button
-              name="auth-button-primary"
-              contents="GOT IT!"
-              click={() => setError('')}
-            />
+            <Button name="auth-button-primary" contents="GOT IT!" click={() => setError('')} />
           </div>
         }
       />
       <h3>
-        To create a new workout first decide on a name, description and how many
-        days the split will be.
+        To create a new workout first decide on a name, description and how many days the split will
+        be.
       </h3>
       <Input
         placeholder="Workout Name..."
@@ -116,57 +112,43 @@ const NewWorkout = ({
 
       <div className="day-box-selector">
         <div
-          className={
-            dayNum === 1 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 1 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(1)}
         >
           1 DAY
         </div>
         <div
-          className={
-            dayNum === 2 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 2 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(2)}
         >
           2 DAY
         </div>
         <div
-          className={
-            dayNum === 3 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 3 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(3)}
         >
           3 DAY
         </div>
         <div
-          className={
-            dayNum === 4 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 4 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(4)}
         >
           4 DAY
         </div>
         <div
-          className={
-            dayNum === 5 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 5 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(5)}
         >
           5 DAY
         </div>
         <div
-          className={
-            dayNum === 6 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 6 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(6)}
         >
           6 DAY
         </div>
         <div
-          className={
-            dayNum === 7 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={dayNum === 7 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setDayNum(7)}
         >
           7 DAY
@@ -185,57 +167,43 @@ const NewWorkout = ({
 
       <div className="day-box-selector">
         <div
-          className={
-            cardioNum === 1 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 1 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(1)}
         >
           1 DAY
         </div>
         <div
-          className={
-            cardioNum === 2 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 2 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(2)}
         >
           2 DAY
         </div>
         <div
-          className={
-            cardioNum === 3 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 3 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(3)}
         >
           3 DAY
         </div>
         <div
-          className={
-            cardioNum === 4 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 4 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(4)}
         >
           4 DAY
         </div>
         <div
-          className={
-            cardioNum === 5 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 5 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(5)}
         >
           5 DAY
         </div>
         <div
-          className={
-            cardioNum === 6 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 6 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(6)}
         >
           6 DAY
         </div>
         <div
-          className={
-            cardioNum === 7 ? 'day-box-button day-selected' : 'day-box-button'
-          }
+          className={cardioNum === 7 ? 'day-box-button day-selected' : 'day-box-button'}
           onClick={() => setCardioNum(7)}
         >
           7 DAY
