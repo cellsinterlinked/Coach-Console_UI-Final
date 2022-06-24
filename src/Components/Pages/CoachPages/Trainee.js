@@ -84,6 +84,7 @@ const Trainee = ({
       setLoading(false);
     };
     getClientData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentClient.id]);
 
   useEffect(() => {

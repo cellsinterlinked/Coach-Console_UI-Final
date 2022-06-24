@@ -1,7 +1,7 @@
 import React from 'react';
 import './DietButton.css';
 
-import dietPhoto from '../../Resources/dietphoto.jpeg';
+
 
 const DietButton = ({ image, name, dateAdded, description, click, notifications, diet }) => {
   const setterFunction = () => {
@@ -16,7 +16,7 @@ const DietButton = ({ image, name, dateAdded, description, click, notifications,
       )}
       <div className="diet-btn-img">
         {/* <IoDocumentTextSharp  className="diet-icon"/> */}
-        <img src={dietPhoto} alt="" />
+        <img src={'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/dietphoto_rypam4.jpg'} alt="" />
       </div>
       <div className="diet-btn-info">
         <div className="diet-btn-info-top">

@@ -118,6 +118,7 @@ const DietTable = ({
             let rows = Object.values(selectedRows);
             let updatedRows = [...selectedDiet.food[dietNum].data];
             let index;
+            // eslint-disable-next-line array-callback-return
             rows.map((emp) => {
               index = emp.oldData.tableData.id;
               updatedRows[index] = emp.newData;

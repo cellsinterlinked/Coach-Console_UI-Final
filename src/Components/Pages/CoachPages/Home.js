@@ -99,7 +99,8 @@ const Home = ({
     };
 
     getClientData();
-  }, [currentClient, currentClient.id]);
+  }, [auth.token, currentClient, currentClient.id, userId]);
+  //didn't originally have token
 
   useEffect(() => {
     if (userRole === 'client') {

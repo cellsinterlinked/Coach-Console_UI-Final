@@ -118,6 +118,7 @@ const WorkoutTable = ({
             const rows = Object.values(selectedRows);
             const updatedRows = [...loadedWorkout.weightData[workoutNum].data];
             let index;
+            // eslint-disable-next-line array-callback-return
             rows.map((emp) => {
               index = emp.oldData.tableData.id;
               updatedRows[index] = emp.newData;

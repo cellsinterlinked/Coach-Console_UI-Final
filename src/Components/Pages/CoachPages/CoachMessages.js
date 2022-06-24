@@ -14,7 +14,6 @@ import Messaging from '../../Messaging/Messaging';
 import { IoImageOutline } from 'react-icons/io5';
 import Axios from 'axios';
 import LoadingDots from '../../Animations/LoadingDots';
-import NoImage from '../../../Resources/userimage.jpeg';
 import { AuthContext } from '../../../Context/auth-context';
 import Modal from '../../Modals/Modal';
 
@@ -62,7 +61,9 @@ const CoachMessages = ({
       setLoading(false);
     };
     getConvosHandler();
-  }, [userId, userRole, auth.token]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, userRole]);
+
 
   const sendImageHandler = async (event) => {
     setLoading(true);
@@ -213,7 +214,7 @@ const CoachMessages = ({
                   userRole === 'coach'
                     ? fullUserData.clients.find((client) => client.id === selectedMessage.client)
                         .image
-                    : NoImage
+                    : 'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/userimage_chtuqf.jpg'
                 }
                 myImage={fullUserData.user.image}
                 userId={userId}
@@ -307,7 +308,7 @@ const CoachMessages = ({
                           ? fullUserData.clients.find(
                               (client) => client.id === selectedMessage.client,
                             ).image
-                          : NoImage
+                          : 'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/userimage_chtuqf.jpg'
                       }
                     />
                   )}

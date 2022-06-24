@@ -1,7 +1,6 @@
 import React from 'react';
 import './WorkoutButton.css';
 
-import workoutPhoto from '../../Resources/workoutphoto.jpeg';
 
 const WorkoutButton = ({ image, name, dateAdded, description, click, notifications, workout }) => {
   const setterFunction = () => {
@@ -16,7 +15,7 @@ const WorkoutButton = ({ image, name, dateAdded, description, click, notificatio
       )}
       <div className="wo-btn-img">
         {/* <IoDocumentTextSharp  className="wo-icon"/> */}
-        <img src={workoutPhoto} alt="" />
+        <img src={'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/workoutphoto_lbahhs.jpg'} alt="" />
       </div>
       <div className="wo-btn-info">
         <div className="wo-btn-info-top">

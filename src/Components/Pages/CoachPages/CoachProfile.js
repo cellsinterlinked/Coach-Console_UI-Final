@@ -24,6 +24,7 @@ const CoachProfile = ({
   currentClient,
 }) => {
   const auth = useContext(AuthContext);
+  // eslint-disable-next-line no-unused-vars
   const [userData, setUserData] = useState();
   const [age, setAge] = useState();
   const [gender, setGender] = useState();
@@ -33,6 +34,7 @@ const CoachProfile = ({
   const [confirmDisplay, setConfirmDisplay] = useState(false);
   const [error, setError] = useState();
   const [checkinChartData, setCheckinChartData] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [chartSelect, setChartSelect] = useState({
     fatMass: true,
     bodyFat: true,
@@ -104,6 +106,7 @@ const CoachProfile = ({
     if (userRole === 'client' && currentClient) {
       getClientData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentClient, userRole]);
 
   const profileSubmit = () => {

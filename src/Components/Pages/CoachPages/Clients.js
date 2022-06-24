@@ -42,7 +42,8 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
       setLoading(false);
     };
     fetchClientsHandler();
-  }, [userId]);
+  }, [auth.token, userId]);
+  // didn't originally include the token
 
   useEffect(() => {
     if (clients && clients.length > 0 && query) {

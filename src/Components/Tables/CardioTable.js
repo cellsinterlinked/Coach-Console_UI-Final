@@ -117,6 +117,7 @@ const CardioTable = ({
             const rows = Object.values(selectedRows);
             const updatedRows = [...loadedWorkout.cardioData[cardioNum].data];
             let index;
+            // eslint-disable-next-line array-callback-return
             rows.map((emp) => {
               index = emp.oldData.cardioData.id;
               updatedRows[index] = emp.newData;

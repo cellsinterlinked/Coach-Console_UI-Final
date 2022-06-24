@@ -11,6 +11,7 @@ import NavLogout from '../Buttons/NavLogout';
 import { GiChickenLeg } from 'react-icons/gi';
 
 const CoachNav = ({ page, setPage, navToggle, fullUserData, logoutFunction, hack }) => {
+  // eslint-disable-next-line no-unused-vars
   const [something, setSomething] = useState(hack);
 
   useEffect(() => {

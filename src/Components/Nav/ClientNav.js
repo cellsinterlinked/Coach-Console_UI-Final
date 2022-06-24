@@ -13,6 +13,7 @@ import { BiLogOutCircle } from 'react-icons/bi';
 import { GiChickenLeg } from 'react-icons/gi';
 
 const ClientNav = ({ page, setPage, navToggle, fullUserData, logoutFunction, hack }) => {
+  // eslint-disable-next-line no-unused-vars
   const [something, setSomething] = useState(hack);
 
   useEffect(() => {

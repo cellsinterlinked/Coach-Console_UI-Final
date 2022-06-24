@@ -1,12 +1,10 @@
 import React, { useState, useContext } from 'react';
-import CoverImage from '../../Resources/tyler-nix-Y1drF0Y3Oe0-unsplash.jpg';
 import './Auth.css';
 import Input from '../Forms/InputFront';
 import Button from '../Buttons/Button';
 import Validator from 'validator';
 import Axios from 'axios';
 import { AuthContext } from '../../Context/auth-context';
-import icon from '../../Resources/Group 1.png';
 import { useHttpClient } from '../Hooks/http-hook';
 
 const Auth = () => {
@@ -79,12 +77,12 @@ const Auth = () => {
     <div className="auth-wrapper center">
       <div className="auth-container">
         <div className="auth-image-wrapper center">
-          <img src={CoverImage} alt="" />
+          <img src={'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/tyler-nix-Y1drF0Y3Oe0-unsplash_ipw6d2.jpg'} alt="" />
           <div className="vignette"></div>
         </div>
         <div className="auth-details center">
           <div className="auth-icon-container">
-            <img alt="" src={icon} />
+            <img alt="" src={'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/Group_1_ukjfft.png'} />
           </div>
           <h1>COACH CONSOLE</h1>
           <p>Something About How Cool This App Is</p>
