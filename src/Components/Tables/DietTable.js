@@ -30,7 +30,7 @@ const DietTable = ({
             tempData[dietNum].data = tempTable;
 
             const sendUpdate = async () => {
-              console.log('sendAddFire');
+
 
               try {
                 await Axios.patch(
@@ -61,7 +61,7 @@ const DietTable = ({
             tempData[dietNum].data = updatedData;
 
             const sendUpdate = async () => {
-              console.log('sendUpdateFire');
+
 
               try {
                 await Axios.patch(
@@ -90,7 +90,7 @@ const DietTable = ({
             let tempData = selectedDiet.food;
             tempData[dietNum].data = updatedData;
             const sendUpdate = async () => {
-              console.log('sendDeleteFire');
+
 
               try {
                 await Axios.patch(
@@ -127,7 +127,7 @@ const DietTable = ({
             let tempData = selectedDiet.food;
             tempData[dietNum].data = updatedRows;
             const sendUpdate = async () => {
-              console.log('bulkUpdateFire');
+
 
               try {
                 await Axios.patch(
@@ -156,7 +156,7 @@ const DietTable = ({
       columns={columns}
       data={tableData}
       onRowClick={(evt, selectedRow) => {
-        console.log('selectingRowFire');
+
         setSelectedRow(selectedRow.tableData.id);
       }}
       options={{

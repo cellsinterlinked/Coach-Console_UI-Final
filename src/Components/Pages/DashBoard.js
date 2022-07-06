@@ -20,8 +20,6 @@ import Home from './CoachPages/Home';
 
 const Dashboard = ({ userId, userRole }) => {
   const auth = useContext(AuthContext);
-
-  console.log(auth);
   const [page, setPage] = useState(userRole === 'client' ? 'Home' : 'Clients');
 
   const [currentClient, setCurrentClient] = useState();
@@ -34,7 +32,6 @@ const Dashboard = ({ userId, userRole }) => {
 
   const [loading, setLoading] = useState(false);
 
-
   const [hack, setHack] = useState(true);
 
   useEffect(() => {
@@ -45,8 +42,6 @@ const Dashboard = ({ userId, userRole }) => {
         res = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/users/all/${auth.userId}`, {
           headers: { Authorization: 'Bearer ' + auth.token },
         });
-        setFullUserData(res.data);
-        console.log('full user', res.data);
       } catch (err) {
         setLoading(false);
         return;
@@ -57,10 +52,12 @@ const Dashboard = ({ userId, userRole }) => {
       }
       if (auth.role === 'coach') {
         setCurrentClient(newData.clients[0] || { name: 'none', id: '0' });
+        setFullUserData(newData);
         setPage('Clients');
       }
       if (auth.role === 'client') {
         setCurrentClient(newData.user);
+        setFullUserData(newData);
         setPage('Home');
       }
 
@@ -126,6 +123,8 @@ const Dashboard = ({ userId, userRole }) => {
   const logoutFunction = () => {
     auth.logout();
   };
+
+
 
   return (
     <>

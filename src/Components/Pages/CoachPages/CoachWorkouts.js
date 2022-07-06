@@ -78,8 +78,6 @@ const CoachWorkouts = ({
 
   const [loading, setLoading] = useState(false);
 
-  console.log('plese dont rerender');
-
   useEffect(() => {
     setLoading(true);
     const getWorkoutsHandler = async () => {

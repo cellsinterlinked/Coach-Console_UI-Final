@@ -57,11 +57,8 @@ const CoachDiets = ({
 
   const [dietList, setDietList] = useState();
 
-  console.log('wtf');
-
   useEffect(() => {
     const getDietsHandler = async () => {
-      console.log('getDietsHandler');
       let results;
       try {
         results = await Axios.get(process.env.REACT_APP_BACKEND_URL + `/diets/${userId}`, {
@@ -114,13 +111,10 @@ const CoachDiets = ({
   };
 
   const addDietToggle = () => {
-    console.log('add diet handler');
     setAdd(!add);
   };
 
   const dietDeleteHandler = async () => {
-    console.log('diet delete handler');
-
     setDeleteMode(false);
     try {
       await Axios.delete(process.env.REACT_APP_BACKEND_URL + `/diets/${selectedDiet.id}`, {
@@ -136,7 +130,6 @@ const CoachDiets = ({
   };
 
   const shareDietHandler = async (client) => {
-    console.log('sharediethandler');
     setShare(false);
     setSelectedShare();
     setLoading(true);
@@ -167,7 +160,6 @@ const CoachDiets = ({
   };
 
   const selectHandler = async (diet) => {
-    console.log('select handler');
     setLoading(true);
     let newData = fullUserData;
 

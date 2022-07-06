@@ -68,7 +68,6 @@ const Auth = () => {
         return;
       }
 
-      console.log('sign up', res.data);
       auth.login(res.data.userId, res.data.token, res.data.role);
     }
   };
@@ -77,12 +76,22 @@ const Auth = () => {
     <div className="auth-wrapper center">
       <div className="auth-container">
         <div className="auth-image-wrapper center">
-          <img src={'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/tyler-nix-Y1drF0Y3Oe0-unsplash_ipw6d2.jpg'} alt="" />
+          <img
+            src={
+              'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/tyler-nix-Y1drF0Y3Oe0-unsplash_ipw6d2.jpg'
+            }
+            alt=""
+          />
           <div className="vignette"></div>
         </div>
         <div className="auth-details center">
           <div className="auth-icon-container">
-            <img alt="" src={'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/Group_1_ukjfft.png'} />
+            <img
+              alt=""
+              src={
+                'https://res.cloudinary.com/dbnapmpvm/image/upload/v1656088944/coachProd/Group_1_ukjfft.png'
+              }
+            />
           </div>
           <h1>COACH CONSOLE</h1>
           <p>Something About How Cool This App Is</p>

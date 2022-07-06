@@ -61,9 +61,8 @@ const CoachMessages = ({
       setLoading(false);
     };
     getConvosHandler();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, userRole]);
-
 
   const sendImageHandler = async (event) => {
     setLoading(true);
@@ -184,7 +183,7 @@ const CoachMessages = ({
 
   const searchHandler = (c) => {
     let clickedConvo = convos.filter((convo) => convo.id === c.conversations[0]);
-    console.log(clickedConvo[0]);
+
     setConvo(clickedConvo[0]);
   };
 
@@ -271,11 +270,7 @@ const CoachMessages = ({
               clear={() => setQuery('')}
               clearable={true}
             />
-            <Button
-              name="search-button"
-              click={() => console.log(convos)}
-              contents={<GoSearch className="magnify" />}
-            />
+            <Button name="search-button" contents={<GoSearch className="magnify" />} />
 
             {query && query !== '' && searchList && searchList.length > 0 && (
               <div className={'search-drop-message'}>

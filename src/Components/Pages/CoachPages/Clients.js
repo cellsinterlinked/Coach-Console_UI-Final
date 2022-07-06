@@ -35,7 +35,6 @@ const Clients = ({ navToggle, fullUserData, clientSelect, userId }) => {
         });
       } catch (err) {
         setLoading(false);
-        setError('Couldnt fetch clients');
         return;
       }
       setClients(results.data.clients);
