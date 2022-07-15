@@ -15,6 +15,15 @@
   max-width: 25rem;
 }
 
+@media(max-width: 780px) {
+  .new-workout-wrapper h3 {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+
+  }
+
+}
+
 .new-workout-wrapper p {
   color: var(--grey-title);
   font-size: 0.9rem;

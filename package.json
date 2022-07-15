@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
+
     "build": "react-scripts build",
     "prettier": "prettier -c --write \"src/**/*\"",
     "test": "react-scripts test",

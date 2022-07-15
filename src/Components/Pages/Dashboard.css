@@ -9,7 +9,7 @@
   overflow-y: hidden;
 }
 
-.dash-head {
+/* .dash-head {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -34,7 +34,7 @@
   text-align: center;
   font-size: 1.6rem;
   width: 60%;
-}
+} */
 
 .mobile-menu {
   margin-left: 1rem;

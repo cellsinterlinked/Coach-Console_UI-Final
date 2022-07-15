@@ -40,6 +40,18 @@
   margin-bottom: 4rem;
 }
 
+@media(max-width: 780px) {
+  .my-info {
+    margin-bottom: 0rem;
+
+  }
+  .nav-top {
+
+    height: 2rem;
+
+  }
+}
+
 .my-info p {
   color: white;
   font-family: var(--font);

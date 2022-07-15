@@ -36,7 +36,7 @@
   height: 4px;
   background-color: #00ded1;
   transition: 500ms ease;
-  z-index: 40;
+  z-index: 35;
 }
 
 .mobile-head-option-container {

@@ -53,22 +53,28 @@
   .drawer-right-partial_trainee {
     display: none;
   }
+  .drawer-bottom-partial {
+    display: none;
+  }
 }
 
 .drawer-bottom-partial {
   position: fixed;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 40;
   height: calc(100vh - 4rem);
   width: 100%;
   overflow-y: scroll;
   background: #ffffff;
 }
 
-@media (min-width: 844px) {
+@media (max-width: 844px) {
   .drawer-bottom-partial {
-    display: none;
+    height:calc(100vh - 11rem)
+  }
+  .drawer-right-partial {
+    height:calc(100vh - 11rem)
   }
 }
 

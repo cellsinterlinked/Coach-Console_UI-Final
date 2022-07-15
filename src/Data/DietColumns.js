@@ -12,13 +12,13 @@ const columns = [
       color: 'white',
       fontWeight: 'bold',
     },
-    width: '30%',
+    width: '26%',
   },
 
   {
     title: 'Cals',
     field: 'cals',
-
+    width: '13%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -33,6 +33,7 @@ const columns = [
   {
     title: 'Pro',
     field: 'pro',
+    width: '13%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -47,6 +48,7 @@ const columns = [
   {
     title: 'Fat',
     field: 'fat',
+    width: '12%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -61,6 +63,7 @@ const columns = [
   {
     title: 'Carb',
     field: 'carb',
+    width: '14%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',

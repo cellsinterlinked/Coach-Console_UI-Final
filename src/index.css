@@ -32,6 +32,7 @@ body {
   --friend-message-bg: #e4e1e1;
   --user-message-bg: rgba(11, 207, 195, 0.26);
   --dark-backing: #484848;
+  --title-light: rgb(68, 68, 68)
 }
 
 code {
@@ -173,6 +174,12 @@ code {
 .chart-group {
   height: auto;
   overflow-y: scroll;
+}
+
+@media(max-width: 843px) {
+  .chart-group {
+    margin-top: 4.4rem;
+  }
 }
 
 .delete-button-cover {

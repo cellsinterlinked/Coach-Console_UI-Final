@@ -16,6 +16,13 @@
   font-size: 16px;
 }
 
+@media(max-width: 844px) {
+  .front-input {
+    width: 90%;
+    border-radius: 2rem;
+  }
+}
+
 .front-input:focus {
   border: 2px solid #00d7ca;
   background-color: white;
@@ -74,6 +81,7 @@
   width: 90%;
 }
 
+
 .parent-auto {
   width: auto;
 }
@@ -84,13 +92,13 @@
 
 .message-input {
   height: 1.8rem;
-  border-radius: 15px;
+  border-radius: 18px;
   border: var(--grey-border);
   outline: none;
   box-shadow: none;
-  width: 18rem;
+  width: 17rem;
   padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-right: 2rem;
   font-size: 16px;
 }
 

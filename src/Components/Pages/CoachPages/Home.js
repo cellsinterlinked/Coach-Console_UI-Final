@@ -278,9 +278,12 @@ const Home = ({
                 <RiUserAddLine className="add-user-mobile" onClick={addCheckinToggle} />
               )}
               {current === false && (
+                <>
+                <div style={{ height: '2rem', width: '3rem' }}></div>
                 <div className="chart-drop-container">
                   <ChartDrop selection={chartSelect} setSelection={setChartSelect} />
                 </div>
+                </>
               )}
               <div className="mobile-select1">
                 <div

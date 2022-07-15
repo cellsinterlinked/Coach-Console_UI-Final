@@ -66,6 +66,7 @@
 .msg-btn-info-top h3 {
   font-size: 1rem;
   margin: 0px;
+  color: var(--title-light);
 }
 
 .msg-btn-info-top p {

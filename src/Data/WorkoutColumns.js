@@ -13,10 +13,12 @@ const columns = [
       color: 'white',
       fontWeight: 'bold',
     },
+    width: '25%'
   },
   {
     title: 'Sets',
     field: 'sets',
+    width: '14%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -31,6 +33,7 @@ const columns = [
   {
     title: 'Reps',
     field: 'reps',
+    width: '18%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',
@@ -45,6 +48,7 @@ const columns = [
   {
     title: 'Weight',
     field: 'weight',
+    width: '22%',
     cellStyle: {
       backgroundColor: 'transparent',
       color: '828282',

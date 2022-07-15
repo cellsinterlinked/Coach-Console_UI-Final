@@ -90,6 +90,12 @@
   z-index: 200;
 }
 
+@media(max-width: 843px) {
+  .chart-selectionButton {
+    height: 2.4rem;
+  }
+}
+
 .chart-selectionButton:hover {
   background: rgba(255, 255, 255, 0.096);
 }

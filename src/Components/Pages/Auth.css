@@ -60,6 +60,7 @@
 .auth-details p {
   font-weight: bold;
   margin: 7px;
+  color: rgb(200, 200, 200);
 }
 
 .auth-form {
@@ -129,10 +130,38 @@
 }
 
 @media (max-width: 780px) {
+
   .loginHead {
     margin: 0px;
     height: 0px;
     font-size: 0px;
+  }
+  .auth-details h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    margin-top: 5px;
+  }
+
+  .auth-details p {
+    display: none;
+    font-weight: bold;
+    margin: 7px;
+  }
+
+  .auth-details {
+    position: absolute;
+    z-index: 5;
+    top: 2rem;
+    width: 20rem;
+    text-align: center;
+    font-family: var(--font);
+    color: white;
+    left: 2rem;
+    flex-direction: column;
+    margin: 0px;
+  }
+  .auth-form {
+    height: 32rem;
   }
 }
 

@@ -94,10 +94,10 @@ const Auth = () => {
             />
           </div>
           <h1>COACH CONSOLE</h1>
-          <p>Something About How Cool This App Is</p>
+          <p>Simplifying your road to wellness.</p>
           <p>
-            More information neato stuff cool you know whats up all the information about all the
-            cool features and customization and buzz words to make you click.
+            Coach Console provides tools for both trainer and trainee to create and modify fitness
+            programs as well as communicate and track progress accross all fields.
           </p>
         </div>
         <div className="auth-form center">
