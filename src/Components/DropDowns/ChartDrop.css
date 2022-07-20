@@ -8,14 +8,12 @@
   height: 100%;
   width: 100%;
   color: var(--grey-title);
-  /* border-bottom: var(--grey-border); */
   transition: 500ms ease;
   text-align: center;
   cursor: pointer;
 }
 
 .chart-drop-active-back {
-  /* background: var(--grey-background); */
   background: rgb(92, 92, 92);
   border-bottom: 1px solid rgb(255, 255, 255);
   color: white;
@@ -90,7 +88,7 @@
   z-index: 200;
 }
 
-@media(max-width: 843px) {
+@media (max-width: 843px) {
   .chart-selectionButton {
     height: 2.4rem;
   }

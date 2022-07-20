@@ -14,7 +14,7 @@
   transition: 200ms ease;
   cursor: pointer;
   position: relative;
-  color: var(--title-light)
+  color: var(--title-light);
 }
 
 .client-button-wrapper:hover {

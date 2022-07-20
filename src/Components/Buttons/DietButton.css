@@ -17,7 +17,7 @@
   transition: 200ms ease;
   cursor: pointer;
   position: relative;
-  color: var(--title-light)
+  color: var(--title-light);
 }
 
 @media (max-width: 849px) {

@@ -14,7 +14,7 @@
   background: white;
   transition: 200ms ease;
   cursor: pointer;
-  color: var(--title-light)
+  color: var(--title-light);
 }
 
 .check-button-wrapper:hover {
@@ -60,7 +60,6 @@
 .check-btn-info-top h3 {
   font-size: 1rem;
   margin: 0px;
-
 }
 
 .check-btn-info-top p {
