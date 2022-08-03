@@ -65,6 +65,9 @@
   .drawer-right-partial {
     height: calc(100vh - 11rem);
   }
+  /* .drawer-right-partialtrainee {
+    height: calc(100vh - 11rem);
+  } */
 }
 
 .nav-drawer {

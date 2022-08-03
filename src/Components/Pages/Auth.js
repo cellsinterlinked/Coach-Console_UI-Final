@@ -14,9 +14,15 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPass, setShowPass] = useState(false);
 
   const [role, setRole] = useState('coach');
   const [coachCode, setCoachCode] = useState('');
+
+
+  const iconToggle = () => {
+    setShowPass(!showPass)
+  }
 
   const signInToggle = () => {
     setLogin(true);
@@ -110,16 +116,24 @@ const Auth = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
+          type={showPass ? "test" : "password"}
             name="front-input"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            icon= "true"
+            iconStatus={showPass ? true : false}
+            iconToggle={iconToggle}
           />
           <Input
             name={login === true ? 'front-input hidden' : 'front-input'}
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            type={showPass ? "test" : "password"}
+            icon={login === true ? "false" : "true"}
+            iconStatus={showPass ? true : false}
+            iconToggle={iconToggle}
           />
 
           <Input

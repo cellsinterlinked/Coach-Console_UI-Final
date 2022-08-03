@@ -16,11 +16,44 @@
   font-size: 16px;
 }
 
-@media(max-width: 844px) {
+.eye-visible {
+  position: absolute;
+  top: 1.9rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  right: 1rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  z-index: 50;
+  cursor: pointer;
+  color: #00a499;
+  transition: 300ms ease;
+}
+
+.eye-hidden {
+  position: absolute;
+  top: 1.9rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  right: 1em;
+  height: 1.2rem;
+  width: 1.2rem;
+  z-index: 50;
+  cursor: pointer;
+  color: grey;
+  transition: 300ms ease;
+}
+
+@media (max-width: 844px) {
   .front-input {
     width: 90%;
     border-radius: 2rem;
   }
+}
+
+.eye-visible,
+.eye-hidden {
+  top: 2.1rem;
 }
 
 .front-input:focus {
@@ -80,7 +113,6 @@
   position: relative;
   width: 90%;
 }
-
 
 .parent-auto {
   width: auto;

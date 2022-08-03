@@ -222,7 +222,7 @@ const Trainee = ({
         <>
           <DrawerRight
             show={current === false}
-            name="drawer-right-partial-trainee"
+            name="drawer-right-partial_trainee"
             children={
               <>
                 {checkinChartData && (

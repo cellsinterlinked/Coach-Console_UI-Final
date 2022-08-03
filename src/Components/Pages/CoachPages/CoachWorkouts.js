@@ -546,7 +546,7 @@ const CoachWorkouts = ({
           </div>
 
           {newMode === false && loadedWorkout && loadedWorkout.weightData && workoutList && (
-            <div className="absurd-box">
+            <div className="absurd-box absurd-workout">
               {cardioDisplay === false && (
                 <div className="day-changer-container">
                   <div className="day-title-container">
@@ -601,9 +601,9 @@ const CoachWorkouts = ({
                 </div>
               )}
 
-              {loading && <LoadingDots />}
+               {loading && <LoadingDots />}
 
-              {cardioDisplay === false && (loadedWorkout === null) & !loading && (
+              {cardioDisplay === false && (loadedWorkout === null) && !loading && (
                 <div>Your workout Will be displayed here.</div>
               )}
 

@@ -454,7 +454,7 @@ const CoachDiets = ({
             )}
           </div>
           {newMode === false && selectedDiet ? (
-            <div className="absurd-box">
+            <div className="absurd-box absurd-workout">
               <div className="day-changer-container">
                 <div className="day-title-container">
                   {selectedDiet.food.map((w, index) => (
