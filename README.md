@@ -210,4 +210,4 @@ Project Link: [https://github.com/cellsinterlinked/Coach-Console_UI-Final](https
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: https://res.cloudinary.com/dbnapmpvm/image/upload/v1644349964/Portfolio/BBF1A966-F0A9-41FF-9122-29B43C58841B_1_105_c_sdq7ou.jpg
+[product-screenshot]: https://res.cloudinary.com/dbnapmpvm/image/upload/v1658358075/Portfolio/Image_7-20-22_at_6.47_PM_wyf7s3.jpg
