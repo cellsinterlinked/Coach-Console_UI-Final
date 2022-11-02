@@ -70,10 +70,12 @@ Coach console's purpose is to give fitness trainers/nutrition coaches a tool to 
 <br/>
 Each coach has their own "coach code" which can be given to clients. Clients sign up with this coach code and will show up in the coach's client dashboard
 <br/>
+
 Workouts and nutrition plans can be created by both the client and the coach. Plans are created based on how many days a week they will be working out and if the diet varies from day to day, or is the same for every day. Plans can be fully edited and added to by both parties. 
-<br>
+<br/>
+
 Check-ins have many optional fields including body fat calculator, progress pictures, measurements, sleep quality and weight. Check-ins can also track data from whichever nutrition plan or workout plan were used for that week. 
-<br>
+<br/>
 Notifications will be present on users dashboards for new workouts, nutrition plans, messages, or check ins. A large number of charts are available to show progress of all logged parameters over time along with nutrition and training volume if nutrition or workout plans were present in the check-ins. 
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description` -->
