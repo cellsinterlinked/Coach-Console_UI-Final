@@ -76,6 +76,7 @@ Workouts and nutrition plans can be created by both the client and the coach. Pl
 
 Check-ins have many optional fields including body fat calculator, progress pictures, measurements, sleep quality and weight. Check-ins can also track data from whichever nutrition plan or workout plan were used for that week. 
 <br/>
+
 Notifications will be present on users dashboards for new workouts, nutrition plans, messages, or check ins. A large number of charts are available to show progress of all logged parameters over time along with nutrition and training volume if nutrition or workout plans were present in the check-ins. 
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description` -->
@@ -210,4 +211,4 @@ Project Link: [https://github.com/cellsinterlinked/Coach-Console_UI-Final](https
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: https://res.cloudinary.com/dbnapmpvm/image/upload/v1644349964/Portfolio/BBF1A966-F0A9-41FF-9122-29B43C58841B_1_105_c_sdq7ou.jpg
+[product-screenshot]: https://res.cloudinary.com/dbnapmpvm/image/upload/v1658358075/Portfolio/Image_7-20-22_at_6.47_PM_wyf7s3.jpg
